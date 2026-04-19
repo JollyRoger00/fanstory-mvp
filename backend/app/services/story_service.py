@@ -11,15 +11,7 @@ from app.domain.models import (
     StoryState,
 )
 from app.services.chapter_planner import ChapterPlanningInput, plan_next_chapter
-from app.services.chapter_writer import ChapterWriterResult, ChapterWritingInput, write_chapter_from_plan
-from app.schemas import (
-    ChapterResponse,
-    ChoiceResponse,
-    ChoiceResolutionResponse,
-    StoryAggregateResponse,
-    StoryConfigResponse,
-    StoryCreateRequest,
-)
+from app.services.chapter_writer import ChapterWritingInput, write_chapter_from_plan
 from app.services.story_exceptions import StoryGenerationValidationError
 from app.services.story_validation import validate_chapter_plan, validate_writer_result
 
@@ -145,17 +137,24 @@ def apply_state_update(
     )
 
 
-def create_story_aggregate(payload: StoryCreateRequest) -> StoryAggregate:
+def create_story_aggregate(
+    *,
+    universe: str,
+    protagonist: str,
+    theme: str,
+    genre: str,
+    tone: str,
+) -> StoryAggregate:
     story_id = create_story_id()
     created_at = datetime.now(timezone.utc)
 
     config = StoryConfig(
         story_id=story_id,
-        universe=payload.universe,
-        protagonist=payload.protagonist,
-        theme=payload.theme,
-        genre=payload.genre,
-        tone=payload.tone,
+        universe=universe,
+        protagonist=protagonist,
+        theme=theme,
+        genre=genre,
+        tone=tone,
         created_at=created_at,
     )
 
@@ -215,42 +214,4 @@ def create_story_aggregate(payload: StoryCreateRequest) -> StoryAggregate:
         chapters=[chapter],
         available_choices=choices,
         choice_history=[],
-    )
-
-
-def map_story_aggregate_to_response(story: StoryAggregate) -> StoryAggregateResponse:
-    return StoryAggregateResponse(
-        story_id=story.story_id,
-        config=StoryConfigResponse(
-            universe=story.config.universe,
-            protagonist=story.config.protagonist,
-            theme=story.config.theme,
-            genre=story.config.genre,
-            tone=story.config.tone,
-        ),
-        current_state_summary=story.state.current_state_summary,
-        chapters=[
-            ChapterResponse(
-                chapter_id=chapter.chapter_id,
-                chapter_number=chapter.chapter_number,
-                title=chapter.title,
-                text=chapter.text,
-            )
-            for chapter in story.chapters
-        ],
-        available_choices=[
-            ChoiceResponse(
-                choice_id=choice.choice_id,
-                label=choice.label,
-            )
-            for choice in story.available_choices
-        ],
-        choice_history=[
-            ChoiceResolutionResponse(
-                choice_id=choice.choice_id,
-                chapter_number=choice.chapter_number,
-                resolution_summary=choice.resolution_summary,
-            )
-            for choice in story.choice_history
-        ],
     )

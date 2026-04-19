@@ -8,6 +8,7 @@ from app.main import app
 from app.repositories.memory import InMemoryStoryRepository
 from app.services.chapter_planner import ChapterPlan
 from app.services.chapter_writer import ChapterWriterResult
+from app.services.llm_client import MissingOpenAIAPIKeyError
 
 
 class StoryApiTests(unittest.TestCase):
@@ -147,6 +148,12 @@ class StoryApiTests(unittest.TestCase):
         self.assertEqual(get_response.status_code, 200)
         self.assertEqual(get_response.json(), story)
 
+    def test_get_story_not_found_returns_normalized_404(self) -> None:
+        response = self.client.get("/stories/story_missing")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"detail": "story not found"})
+
     def test_invalid_writer_result_does_not_persist_story(self) -> None:
         payload = {
             "universe": "Harry Potter",
@@ -172,7 +179,26 @@ class StoryApiTests(unittest.TestCase):
             response = self.client.post("/stories", json=payload)
 
         self.assertEqual(response.status_code, 502)
+        self.assertEqual(response.json(), {"detail": "generation failed"})
         self.assertEqual(self.repository._stories, {})
+
+    def test_create_story_missing_api_key_returns_normalized_500(self) -> None:
+        payload = {
+            "universe": "Harry Potter",
+            "protagonist": "A student",
+            "theme": "A castle mystery",
+            "genre": "Fantasy",
+            "tone": "Atmospheric",
+        }
+
+        with patch(
+            "app.services.story_service.plan_next_chapter",
+            side_effect=MissingOpenAIAPIKeyError("OpenAI API key is not configured."),
+        ):
+            response = self.client.post("/stories", json=payload)
+
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json(), {"detail": "internal server error"})
 
     def test_choose_story_branch_returns_updated_aggregate(self) -> None:
         story = self.create_story()
@@ -272,6 +298,7 @@ class StoryApiTests(unittest.TestCase):
             )
 
         self.assertEqual(response.status_code, 502)
+        self.assertEqual(response.json(), {"detail": "generation failed"})
 
         get_response = self.client.get(f"/stories/{story['story_id']}")
 

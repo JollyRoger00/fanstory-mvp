@@ -245,10 +245,10 @@ Minimal meaning of each folder:
 
 Current state in code:
 
-- `backend/app/main.py` mixes API, orchestration, environment loading and in-memory persistence
-- `backend/app/services/story_engine.py` mixes prompt building and one-step generation
+- `backend/app/main.py` is now mostly app wiring, environment loading and debug endpoints
+- `backend/app/services/story_engine.py` is now a thin raw debug helper instead of the main story pipeline
 - `backend/app/services/llm_client.py` is already the right seed for the future LLM adapter
-- `backend/app/schemas.py` mixes transport schema and emerging domain shape
+- transport DTOs now live under `backend/app/api/dto`, while the service and domain layers remain separate from request/response models
 
 Target direction:
 

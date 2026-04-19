@@ -38,6 +38,7 @@ The project is at the first working end-to-end MVP stage: story creation and con
 ## Key Backend Modules Already Present
 
 - `backend/app/main.py`
+- `backend/app/api/dto/stories.py`
 - `backend/app/api/routes/stories.py`
 - `backend/app/domain/models.py`
 - `backend/app/repositories/base.py`
@@ -64,7 +65,7 @@ The project is at the first working end-to-end MVP stage: story creation and con
 
 ## Technical Debt
 
-- transport schemas still live in a shared `backend/app/schemas.py`
+- transport DTO boundaries are cleaner now, but API error helpers and route wiring are still intentionally lightweight
 - error wording and casing are not fully uniform across all endpoints
 - there is no durable persistence implementation behind the repository abstraction yet
 - there are backend tests, but no full end-to-end browser tests

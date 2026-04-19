@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.dto.stories import StoryCreateRequest
 from app.api.routes.stories import router as stories_router
-from app.schemas import StoryCreateRequest
 from app.services.llm_client import (
     InvalidOpenAIResponseError,
     MissingOpenAIAPIKeyError,

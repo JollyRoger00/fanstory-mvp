@@ -1,8 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 
+from app.api.dto.stories import (
+    StoryAggregateResponse,
+    StoryChooseRequest,
+    StoryCreateRequest,
+    map_story_aggregate_to_response,
+)
 from app.dependencies import get_story_repository
 from app.repositories.base import StoryRepository
-from app.schemas import StoryAggregateResponse, StoryChooseRequest, StoryCreateRequest
 from app.services.llm_client import (
     InvalidOpenAIResponseError,
     MissingOpenAIAPIKeyError,
@@ -15,12 +20,20 @@ from app.services.story_exceptions import (
     StoryGenerationValidationError,
     StoryNotFoundError,
 )
-from app.services.story_service import (
-    create_story_aggregate,
-    map_story_aggregate_to_response,
-)
+from app.services.story_service import create_story_aggregate
 
 router = APIRouter(tags=["stories"])
+
+STORY_NOT_FOUND_DETAIL = "story not found"
+INVALID_CHOICE_DETAIL = "invalid choice"
+CHOICE_ALREADY_USED_DETAIL = "choice already used"
+GENERATION_FAILED_DETAIL = "generation failed"
+INTERNAL_SERVER_ERROR_DETAIL = "internal server error"
+
+
+def _log_route_error(route_label: str, exc: Exception) -> None:
+    error_message = getattr(exc, "error_message", str(exc))
+    print(f"[{route_label}] {type(exc).__name__}:", error_message)
 
 
 @router.post("/stories", response_model=StoryAggregateResponse, status_code=201)
@@ -29,19 +42,26 @@ async def create_story(
     repository: StoryRepository = Depends(get_story_repository),
 ) -> StoryAggregateResponse:
     try:
-        story = create_story_aggregate(payload)
+        story = create_story_aggregate(
+            universe=payload.universe,
+            protagonist=payload.protagonist,
+            theme=payload.theme,
+            genre=payload.genre,
+            tone=payload.tone,
+        )
     except MissingOpenAIAPIKeyError as exc:
-        print("[POST /stories] MissingOpenAIAPIKeyError:", exc)
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
-    except OpenAIRequestError as exc:
-        print("[POST /stories] OpenAIRequestError:", exc.error_message)
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
-    except InvalidOpenAIResponseError as exc:
-        print("[POST /stories] InvalidOpenAIResponseError:", exc.error_message)
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
-    except StoryGenerationValidationError as exc:
-        print("[POST /stories] StoryGenerationValidationError:", exc)
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
+        _log_route_error("POST /stories", exc)
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL) from exc
+    except (
+        OpenAIRequestError,
+        InvalidOpenAIResponseError,
+        StoryGenerationValidationError,
+    ) as exc:
+        _log_route_error("POST /stories", exc)
+        raise HTTPException(status_code=502, detail=GENERATION_FAILED_DETAIL) from exc
+    except Exception as exc:
+        _log_route_error("POST /stories", exc)
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL) from exc
 
     stored_story = repository.save(story)
     return map_story_aggregate_to_response(stored_story)
@@ -55,7 +75,7 @@ async def get_story(
     story = repository.get_by_id(story_id)
 
     if story is None:
-        raise HTTPException(status_code=404, detail="Story not found")
+        raise HTTPException(status_code=404, detail=STORY_NOT_FOUND_DETAIL)
 
     return map_story_aggregate_to_response(story)
 
@@ -73,28 +93,23 @@ async def choose_story_branch(
             repository=repository,
         )
     except StoryNotFoundError as exc:
-        raise HTTPException(status_code=404, detail="story not found") from exc
+        raise HTTPException(status_code=404, detail=STORY_NOT_FOUND_DETAIL) from exc
     except InvalidChoiceError as exc:
-        raise HTTPException(status_code=400, detail="invalid choice") from exc
+        raise HTTPException(status_code=400, detail=INVALID_CHOICE_DETAIL) from exc
     except ChoiceAlreadyUsedError as exc:
-        raise HTTPException(status_code=409, detail="choice already used") from exc
+        raise HTTPException(status_code=409, detail=CHOICE_ALREADY_USED_DETAIL) from exc
     except MissingOpenAIAPIKeyError as exc:
-        print("[POST /stories/{story_id}/choose] MissingOpenAIAPIKeyError:", exc)
-        raise HTTPException(status_code=500, detail="internal server error") from exc
-    except OpenAIRequestError as exc:
-        print("[POST /stories/{story_id}/choose] OpenAIRequestError:", exc.error_message)
-        raise HTTPException(status_code=502, detail="generation failed") from exc
-    except InvalidOpenAIResponseError as exc:
-        print(
-            "[POST /stories/{story_id}/choose] InvalidOpenAIResponseError:",
-            exc.error_message,
-        )
-        raise HTTPException(status_code=502, detail="generation failed") from exc
-    except StoryGenerationValidationError as exc:
-        print("[POST /stories/{story_id}/choose] StoryGenerationValidationError:", exc)
-        raise HTTPException(status_code=502, detail="generation failed") from exc
+        _log_route_error("POST /stories/{story_id}/choose", exc)
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL) from exc
+    except (
+        OpenAIRequestError,
+        InvalidOpenAIResponseError,
+        StoryGenerationValidationError,
+    ) as exc:
+        _log_route_error("POST /stories/{story_id}/choose", exc)
+        raise HTTPException(status_code=502, detail=GENERATION_FAILED_DETAIL) from exc
     except Exception as exc:
-        print("[POST /stories/{story_id}/choose] Unexpected error:", type(exc).__name__, exc)
-        raise HTTPException(status_code=500, detail="internal server error") from exc
+        _log_route_error("POST /stories/{story_id}/choose", exc)
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL) from exc
 
     return map_story_aggregate_to_response(updated_story)

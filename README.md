@@ -145,7 +145,7 @@ OPENAI_MODEL=gpt-5.4-mini
 Notes:
 - do not put the API key in the frontend
 - OpenAI requests are made only from the backend
-- if `OPENAI_API_KEY` is missing, generation endpoints return a clear backend error
+- if `OPENAI_API_KEY` is missing, story generation endpoints return `500 internal server error`, while technical details stay in backend logs
 
 ## Quick Manual Checks
 
