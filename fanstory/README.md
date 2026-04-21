@@ -1,0 +1,307 @@
+# FanStory
+
+FanStory is a clean-slate Next.js foundation for an interactive AI-story product.
+
+This codebase is intentionally **not a refactor of the old MVP structure**. The previous prototype was used only as a logic reference for the story loop. The application, database schema, server boundaries, and UI flows in this folder were rebuilt from scratch as a modular monolith oriented toward a final product foundation.
+
+## Project Structure
+
+```text
+fanstory/
+  app/
+    (marketing)/
+    (auth)/sign-in/
+    (app)/
+      dashboard/
+      stories/
+      saves/
+      wallet/
+      subscriptions/
+    api/auth/[...nextauth]/
+  components/
+    layout/
+    shared/
+    ui/
+  entities/
+    story/
+    save/
+    wallet/
+    purchase/
+    subscription/
+    user/
+  features/
+    auth/
+    profile/
+    stories/
+    story-reader/
+    saves/
+    wallet/
+    subscriptions/
+  lib/
+    db/
+    env/
+    validations/
+  prisma/
+    schema.prisma
+    seed.ts
+  server/
+    access/
+    auth/
+    profile/
+    purchases/
+    saves/
+    stories/
+    story-generation/
+    story-reader/
+    subscriptions/
+    wallet/
+  docs/
+```
+
+## Stack
+
+- Next.js 16 App Router
+- TypeScript
+- Tailwind CSS v4
+- shadcn/ui
+- Prisma 7
+- PostgreSQL
+- Auth.js / NextAuth with Google login
+- Zod
+- Server Actions
+- ESLint + Prettier
+
+## What Is Implemented
+
+- Landing page
+- Google-only sign-in page
+- Protected application routes via `proxy.ts`
+- Dashboard / profile center
+- Story list page
+- New story generation flow
+- Story detail page
+- Reader / play mode
+- Save creation and save listing
+- Wallet balance + transaction ledger
+- Premium chapter purchase flow
+- Subscription foundation with mock activation
+- Provider abstraction for AI generation with a working mock provider
+- Prisma schema for users, auth, stories, runs, chapters, choices, saves, wallet, purchases, subscriptions, and generation logs
+- Seed script for subscription plans
+
+## Domain Model
+
+Core persisted models:
+
+- `User`
+- `Account`
+- `Session`
+- `VerificationToken`
+- `Authenticator`
+- `Story`
+- `StoryRun`
+- `StoryChapter`
+- `StoryChoice`
+- `StoryDecision`
+- `Save`
+- `Wallet`
+- `WalletTransaction`
+- `Purchase`
+- `PurchasedChapterAccess`
+- `SubscriptionPlan`
+- `Subscription`
+- `GenerationLog`
+
+Important product rules already encoded in the server layer:
+
+- unauthenticated users do not reach dashboard/product routes
+- Google login creates a persisted account through the Auth.js Prisma adapter
+- the profile is the center of user operations
+- premium chapter access is evaluated outside UI in `server/access`
+- wallet balance and purchase ledger are handled in dedicated services
+- subscriptions are a separate entitlement layer, not a UI flag
+
+## Architecture
+
+### 1. Modular monolith
+
+The app is one Next.js deployment, but the code is split by responsibility:
+
+- `features/*` for product-facing UI slices
+- `entities/*` for view models and domain-facing types
+- `server/*` for use cases, access rules, mutations and orchestration
+- `lib/*` for environment, Prisma and shared validation
+
+### 2. Provider abstraction for AI
+
+The story engine never imports a provider inside components.
+
+Current flow:
+
+- `server/story-generation/types.ts` defines provider contracts
+- `server/story-generation/mock-provider.ts` implements a working provider
+- `server/story-generation/provider.ts` resolves the active provider
+
+Supported contracts:
+
+- `generateInitialStory`
+- `applyChoice`
+- `generateNextChapter`
+
+This is the seam where a future OpenAI provider should be added.
+
+### 3. Access and monetization
+
+Premium chapter access is not hardcoded in React components.
+
+Instead:
+
+- `server/access/access.service.ts` decides whether a chapter is available
+- `server/purchases/purchase.service.ts` handles chapter unlocking
+- `server/wallet/wallet.service.ts` maintains balance and ledger entries
+- `server/subscriptions/subscription.service.ts` handles subscription coverage
+
+### 4. Story state
+
+The current story run stores structured state on `StoryRun`:
+
+- `currentStateSummary`
+- `activeGoals`
+- `unresolvedTensions`
+- `knownFacts`
+
+This is the foundation for evolving the reader into a richer state-driven engine instead of treating prose as the only source of truth.
+
+## Local Run
+
+### 1. Install
+
+```bash
+npm install
+```
+
+### 2. Configure env
+
+Copy the example file and replace placeholders:
+
+```bash
+cp .env.example .env
+```
+
+Required envs:
+
+- `DATABASE_URL`
+- `DIRECT_URL`
+- `AUTH_SECRET`
+- `AUTH_GOOGLE_ID`
+- `AUTH_GOOGLE_SECRET`
+- `AUTH_TRUST_HOST`
+- `NEXT_PUBLIC_APP_URL`
+- `STORY_PROVIDER`
+- `STORY_FREE_CHAPTERS`
+- `STORY_DEFAULT_CHAPTER_PRICE`
+- `STORY_DEMO_TOP_UP_AMOUNT`
+- `STORY_STARTER_CREDITS`
+
+### 3. Generate Prisma client
+
+```bash
+npm run db:generate
+```
+
+### 4. Apply schema and seed data
+
+Make sure PostgreSQL is running, then:
+
+```bash
+npm run db:push
+npm run db:seed
+```
+
+### 5. Start the app
+
+```bash
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:3000
+```
+
+## Useful Commands
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm run format
+npm run db:studio
+```
+
+## Seed Data
+
+`prisma/seed.ts` creates subscription plans:
+
+- `FanStory Plus`
+- `FanStory Pro`
+
+These are enough to exercise subscription activation and access coverage during development.
+
+## Current Product Flow
+
+1. User signs in with Google.
+2. Auth.js persists `User` + `Account` data.
+3. Dashboard ensures a wallet exists and shows profile metrics.
+4. User creates a story.
+5. Story service calls the active generation provider and persists:
+   - `Story`
+   - `StoryRun`
+   - first `StoryChapter`
+   - first `StoryChoice[]`
+   - `GenerationLog`
+6. Reader shows the latest chapter and the next choices.
+7. Access service decides whether the next chapter is free, purchased, subscription-covered, or locked.
+8. If locked, the user can unlock it through wallet-backed purchase flow or activate a subscription placeholder.
+9. Reader progression stores `StoryDecision` and appends new chapters.
+10. Save flow persists checkpoints in `Save`.
+
+## Extension Points
+
+### Real AI provider
+
+Replace the placeholder OpenAI provider in `server/story-generation/provider.ts` with a real implementation that satisfies `StoryGenerationProvider`.
+
+### Real payments
+
+Replace demo top-up and mock subscription activation with:
+
+- payment intent creation
+- provider webhooks
+- ledger reconciliation
+- subscription renewal / expiration sync
+
+The current architecture already separates these concerns from the UI.
+
+### Richer save/branch mechanics
+
+`Save.snapshot` already stores serialized run state. This can evolve into:
+
+- restore-to-run
+- branch creation
+- alternate timeline tracking
+
+### Catalog / public stories
+
+The current product is profile-centric. Public catalog or shareable story routes can be added without changing the internal ownership model.
+
+## Verification
+
+Verified locally in this workspace:
+
+- `npm run lint`
+- `npm run typecheck`
+- `npm run build`
+
+Database push/seed still require a running PostgreSQL instance and valid local env values.

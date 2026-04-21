@@ -1,0 +1,429 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../lib/db/generated"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+  runtime             = "nodejs"
+  engineType          = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum StoryStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum StoryRunStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum ChapterStatus {
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ChapterAccessMode {
+  FREE
+  PAY_PER_CHAPTER
+  SUBSCRIPTION
+}
+
+enum PurchaseType {
+  CHAPTER
+  SUBSCRIPTION
+  CREDIT_TOP_UP
+  MANUAL_ADJUSTMENT
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELED
+}
+
+enum WalletTransactionType {
+  STARTER_GRANT
+  CREDIT_TOP_UP
+  CHAPTER_PURCHASE
+  SUBSCRIPTION_PURCHASE
+  REFUND
+  ADJUSTMENT
+}
+
+enum SubscriptionPlanStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+enum SubscriptionInterval {
+  MONTHLY
+  YEARLY
+  LIFETIME
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  TRIALING
+  PAST_DUE
+}
+
+enum GenerationProvider {
+  MOCK
+  OPENAI
+}
+
+enum GenerationEventType {
+  STORY_CREATED
+  CHOICE_APPLIED
+  CHAPTER_GENERATED
+}
+
+model User {
+  id                     String                   @id @default(cuid())
+  name                   String?
+  email                  String?                  @unique
+  emailVerified          DateTime?
+  image                  String?
+  role                   UserRole                 @default(USER)
+  accounts               Account[]
+  sessions               Session[]
+  authenticators         Authenticator[]
+  wallet                 Wallet?
+  walletTransactions     WalletTransaction[]
+  stories                Story[]
+  storyRuns              StoryRun[]
+  saves                  Save[]
+  purchases              Purchase[]
+  purchasedChapterAccess PurchasedChapterAccess[]
+  subscriptions          Subscription[]
+  generationLogs         GenerationLog[]
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([sessionToken])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String  @db.Text
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+model Wallet {
+  id           String              @id @default(cuid())
+  userId       String              @unique
+  balance      Int                 @default(0)
+  currency     String              @default("CREDITS")
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions WalletTransaction[]
+  purchases    Purchase[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+}
+
+model WalletTransaction {
+  id           String                @id @default(cuid())
+  walletId     String
+  userId       String
+  purchaseId   String?
+  type         WalletTransactionType
+  amount       Int
+  balanceAfter Int
+  description  String
+  metadata     Json?
+  wallet       Wallet                @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  user         User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purchase     Purchase?             @relation(fields: [purchaseId], references: [id], onDelete: SetNull)
+  createdAt    DateTime              @default(now())
+
+  @@index([walletId, createdAt(sort: Desc)])
+}
+
+model Story {
+  id             String                   @id @default(cuid())
+  userId         String
+  title          String
+  slug           String                   @unique
+  synopsis       String?                  @db.Text
+  universe       String
+  protagonist    String
+  theme          String
+  genre          String
+  tone           String
+  status         StoryStatus              @default(ACTIVE)
+  accessPrice    Int                      @default(15)
+  provider       GenerationProvider       @default(MOCK)
+  owner          User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs           StoryRun[]
+  chapters       StoryChapter[]
+  decisions      StoryDecision[]
+  saves          Save[]
+  purchases      Purchase[]
+  purchasedAccess PurchasedChapterAccess[]
+  generationLogs GenerationLog[]
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model StoryRun {
+  id                  String             @id @default(cuid())
+  storyId             String
+  userId              String
+  status              StoryRunStatus     @default(ACTIVE)
+  provider            GenerationProvider @default(MOCK)
+  promptVersion       String             @default("mock-v1")
+  currentChapterNumber Int               @default(1)
+  currentStateSummary String             @db.Text
+  activeGoals         String[]           @default([])
+  unresolvedTensions  String[]           @default([])
+  knownFacts          String[]           @default([])
+  lastChoiceSummary   String?
+  story               Story              @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapters            StoryChapter[]
+  decisions           StoryDecision[]
+  saves               Save[]
+  purchasedAccess     PurchasedChapterAccess[]
+  generationLogs      GenerationLog[]
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  @@unique([storyId, userId])
+  @@index([userId, updatedAt(sort: Desc)])
+}
+
+model StoryChapter {
+  id            String             @id @default(cuid())
+  storyId       String
+  storyRunId    String
+  number        Int
+  title         String
+  summary       String             @db.Text
+  content       String             @db.Text
+  status        ChapterStatus      @default(PUBLISHED)
+  accessMode    ChapterAccessMode  @default(PAY_PER_CHAPTER)
+  priceCredits  Int                @default(15)
+  generatedBy   GenerationProvider @default(MOCK)
+  story         Story              @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyRun      StoryRun           @relation(fields: [storyRunId], references: [id], onDelete: Cascade)
+  choices       StoryChoice[]
+  decisions     StoryDecision[]
+  saves         Save[]
+  purchasedAccess PurchasedChapterAccess[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@unique([storyId, number])
+  @@index([storyRunId, number])
+}
+
+model StoryChoice {
+  id          String          @id @default(cuid())
+  chapterId   String
+  key         String
+  label       String
+  outcomeHint String?
+  position    Int
+  chapter     StoryChapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  decisions   StoryDecision[]
+  createdAt   DateTime        @default(now())
+
+  @@unique([chapterId, key])
+}
+
+model StoryDecision {
+  id                   String      @id @default(cuid())
+  storyRunId           String
+  storyId              String
+  storyChapterId       String
+  storyChoiceId        String
+  chapterNumber        Int
+  selectedLabel        String
+  resolutionSummary    String      @db.Text
+  resultingStateSummary String     @db.Text
+  storyRun             StoryRun    @relation(fields: [storyRunId], references: [id], onDelete: Cascade)
+  story                Story       @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  chapter              StoryChapter @relation(fields: [storyChapterId], references: [id], onDelete: Cascade)
+  choice               StoryChoice @relation(fields: [storyChoiceId], references: [id], onDelete: Cascade)
+  createdAt            DateTime    @default(now())
+
+  @@index([storyRunId, createdAt])
+}
+
+model Save {
+  id            String       @id @default(cuid())
+  userId        String
+  storyId       String
+  storyRunId    String
+  storyChapterId String?
+  label         String
+  chapterNumber Int
+  stateSummary  String       @db.Text
+  snapshot      Json?
+  lastOpenedAt  DateTime?
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story         Story        @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyRun      StoryRun     @relation(fields: [storyRunId], references: [id], onDelete: Cascade)
+  chapter       StoryChapter? @relation(fields: [storyChapterId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model SubscriptionPlan {
+  id                     String                  @id @default(cuid())
+  code                   String                  @unique
+  name                   String
+  description            String?                 @db.Text
+  status                 SubscriptionPlanStatus  @default(ACTIVE)
+  interval               SubscriptionInterval    @default(MONTHLY)
+  priceCredits           Int                     @default(0)
+  chapterDiscountPercent Int                     @default(100)
+  unlimitedPremiumAccess Boolean                 @default(true)
+  metadata               Json?
+  subscriptions          Subscription[]
+  purchases              Purchase[]
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+}
+
+model Subscription {
+  id         String             @id @default(cuid())
+  userId     String
+  planId     String
+  status     SubscriptionStatus @default(TRIALING)
+  startsAt   DateTime           @default(now())
+  endsAt     DateTime?
+  renewsAt   DateTime?
+  canceledAt DateTime?
+  metadata   Json?
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan       SubscriptionPlan   @relation(fields: [planId], references: [id], onDelete: Restrict)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@index([userId, status])
+}
+
+model Purchase {
+  id                 String           @id @default(cuid())
+  userId             String
+  walletId           String?
+  storyId            String?
+  subscriptionPlanId String?
+  type               PurchaseType
+  status             PurchaseStatus   @default(COMPLETED)
+  amount             Int
+  chapterNumber      Int?
+  description        String?
+  metadata           Json?
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet             Wallet?          @relation(fields: [walletId], references: [id], onDelete: SetNull)
+  story              Story?           @relation(fields: [storyId], references: [id], onDelete: SetNull)
+  subscriptionPlan   SubscriptionPlan? @relation(fields: [subscriptionPlanId], references: [id], onDelete: SetNull)
+  chapterAccess      PurchasedChapterAccess[]
+  walletTransactions WalletTransaction[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model PurchasedChapterAccess {
+  id           String       @id @default(cuid())
+  userId       String
+  storyId      String
+  storyRunId   String?
+  storyChapterId String?
+  purchaseId   String
+  chapterNumber Int
+  grantedAt    DateTime     @default(now())
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story        Story        @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyRun     StoryRun?    @relation(fields: [storyRunId], references: [id], onDelete: SetNull)
+  chapter      StoryChapter? @relation(fields: [storyChapterId], references: [id], onDelete: SetNull)
+  purchase     Purchase     @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, storyId, chapterNumber])
+}
+
+model GenerationLog {
+  id           String              @id @default(cuid())
+  userId       String
+  storyId      String
+  storyRunId   String?
+  provider     GenerationProvider
+  eventType    GenerationEventType
+  status       String
+  promptVersion String?
+  latencyMs    Int?
+  input        Json?
+  output       Json?
+  errorMessage String?
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story        Story               @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyRun     StoryRun?           @relation(fields: [storyRunId], references: [id], onDelete: SetNull)
+  createdAt    DateTime            @default(now())
+
+  @@index([storyId, createdAt(sort: Desc)])
+}
