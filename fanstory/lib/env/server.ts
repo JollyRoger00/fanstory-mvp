@@ -1,25 +1,49 @@
 import { z } from "zod";
 
-const serverEnvSchema = z.object({
-  NODE_ENV: z
-    .enum(["development", "test", "production"])
-    .default("development"),
-  DATABASE_URL: z.url(),
-  DIRECT_URL: z.url().optional(),
-  AUTH_SECRET: z.string().min(32),
-  AUTH_GOOGLE_ID: z.string().min(1),
-  AUTH_GOOGLE_SECRET: z.string().min(1),
-  AUTH_TRUST_HOST: z
-    .string()
-    .optional()
-    .transform((value) => value === "true"),
-  NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
-  STORY_PROVIDER: z.enum(["mock", "openai"]).default("mock"),
-  STORY_FREE_CHAPTERS: z.coerce.number().int().positive().default(1),
-  STORY_DEFAULT_CHAPTER_PRICE: z.coerce.number().int().positive().default(15),
-  STORY_DEMO_TOP_UP_AMOUNT: z.coerce.number().int().positive().default(100),
-  STORY_STARTER_CREDITS: z.coerce.number().int().nonnegative().default(60),
-});
+const serverEnvSchema = z
+  .object({
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
+    DATABASE_URL: z.url(),
+    DIRECT_URL: z.url().optional(),
+    AUTH_SECRET: z.string().min(32),
+    AUTH_GOOGLE_ID: z.string().min(1),
+    AUTH_GOOGLE_SECRET: z.string().min(1),
+    AUTH_TRUST_HOST: z
+      .string()
+      .optional()
+      .transform((value) => value === "true"),
+    NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
+    STORY_PROVIDER: z.enum(["mock", "openai"]).default("mock"),
+    OPENAI_API_KEY: z.string().min(1).optional(),
+    OPENAI_MODEL: z.string().min(1).optional(),
+    STORY_FREE_CHAPTERS: z.coerce.number().int().positive().default(1),
+    STORY_DEFAULT_CHAPTER_PRICE: z.coerce.number().int().positive().default(15),
+    STORY_DEMO_TOP_UP_AMOUNT: z.coerce.number().int().positive().default(100),
+    STORY_STARTER_CREDITS: z.coerce.number().int().nonnegative().default(60),
+  })
+  .superRefine((value, ctx) => {
+    if (value.STORY_PROVIDER !== "openai") {
+      return;
+    }
+
+    if (!value.OPENAI_API_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["OPENAI_API_KEY"],
+        message: "OPENAI_API_KEY is required when STORY_PROVIDER=openai.",
+      });
+    }
+
+    if (!value.OPENAI_MODEL) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["OPENAI_MODEL"],
+        message: "OPENAI_MODEL is required when STORY_PROVIDER=openai.",
+      });
+    }
+  });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
 

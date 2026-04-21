@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { storyContentLanguages } from "@/entities/story/language";
+
+export const storyContentLanguageSchema = z.enum(storyContentLanguages);
 
 export const createStoryInputSchema = z.object({
   title: z.string().min(3).max(80),
@@ -8,6 +11,7 @@ export const createStoryInputSchema = z.object({
   theme: z.string().min(2).max(80),
   genre: z.string().min(2).max(40),
   tone: z.string().min(2).max(40),
+  contentLanguage: storyContentLanguageSchema.default("en"),
 });
 
 export const chooseStoryPathSchema = z.object({
@@ -26,3 +30,6 @@ export const createSaveSchema = z.object({
 });
 
 export type CreateStoryInput = z.infer<typeof createStoryInputSchema>;
+export type StoryContentLanguageInput = z.infer<
+  typeof storyContentLanguageSchema
+>;

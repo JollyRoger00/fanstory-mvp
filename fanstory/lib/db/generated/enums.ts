@@ -35,6 +35,14 @@ export const StoryStatus = {
 export type StoryStatus = (typeof StoryStatus)[keyof typeof StoryStatus]
 
 
+export const StoryContentLanguage = {
+  en: 'en',
+  ru: 'ru'
+} as const
+
+export type StoryContentLanguage = (typeof StoryContentLanguage)[keyof typeof StoryContentLanguage]
+
+
 export const StoryRunStatus = {
   ACTIVE: 'ACTIVE',
   PAUSED: 'PAUSED',

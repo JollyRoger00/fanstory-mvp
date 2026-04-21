@@ -52,6 +52,10 @@ const ruMessages = {
         PAY_PER_CHAPTER: "Премиум",
         SUBSCRIPTION: "Подписка",
       },
+      storyLanguage: {
+        en: "Английский",
+        ru: "Русский",
+      },
       subscriptionInterval: {
         MONTHLY: "Ежемесячно",
         YEARLY: "Ежегодно",
@@ -113,6 +117,7 @@ const ruMessages = {
       nextChapterAccess: "Доступ к следующей главе",
       chooseNextMove: "Выберите следующий ход",
       storyLibrary: "Библиотека историй",
+      storyLanguage: "Язык истории",
     },
     relative: {
       ago: "{value} назад",
@@ -147,8 +152,7 @@ const ruMessages = {
       },
       {
         title: "Разделение кошелька и леджера",
-        description:
-          "Кошелек и журнал покупок отделены от компонентов и форм.",
+        description: "Кошелек и журнал покупок отделены от компонентов и форм.",
       },
       {
         title: "Абстракция провайдера",
@@ -205,7 +209,8 @@ const ruMessages = {
     },
     recentStories: {
       title: "Последние истории",
-      description: "Последняя активность по историям и текущий прогресс по главам.",
+      description:
+        "Последняя активность по историям и текущий прогресс по главам.",
       item: "{chapterLabel} {chapterNumber} • {updatedLabel} {updatedAt}",
       emptyTitle: "Историй пока нет",
       emptyDescription:
@@ -240,6 +245,7 @@ const ruMessages = {
       formDescription:
         "Эта форма пишет в story-generation service, а не в локальное состояние UI. Первая глава генерируется сразу через provider abstraction.",
       fields: {
+        contentLanguage: "Язык истории",
         title: "Название истории",
         synopsis: "Синопсис",
         universe: "Вселенная",
@@ -247,6 +253,10 @@ const ruMessages = {
         theme: "Тема",
         genre: "Жанр",
         tone: "Тональность",
+      },
+      hints: {
+        contentLanguage:
+          "Определяет язык глав, описаний состояния и выборов. Это отдельная настройка и не зависит от языка интерфейса.",
       },
       placeholders: {
         title: "Дом за сигналом",
@@ -288,8 +298,7 @@ const ruMessages = {
         "Сохранений: {count}. Сейвы хранят snapshot run и указатель главы для будущего восстановления и ветвления.",
       accessDescription:
         "Доступ вычисляется в отдельном сервисном слое. UI только отображает результат.",
-      accessAllowed:
-        "Следующая глава уже доступна по схеме доступа: {reason}.",
+      accessAllowed: "Следующая глава уже доступна по схеме доступа: {reason}.",
       accessLocked:
         "{chapterLabel} {chapterNumber} закрыта. Откройте за {price} или покройте доступ подпиской.",
     },

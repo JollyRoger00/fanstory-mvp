@@ -1,3 +1,4 @@
+import type { StoryContentLanguage } from "@/entities/story/language";
 import type { CreateStoryInput } from "@/lib/validations/story";
 
 export type StoryStateSnapshot = {
@@ -11,6 +12,17 @@ export type GeneratedChoice = {
   key: string;
   label: string;
   outcomeHint?: string;
+};
+
+export type StoryGenerationContext = {
+  title: string;
+  synopsis: string | null;
+  universe: string;
+  protagonist: string;
+  theme: string;
+  genre: string;
+  tone: string;
+  contentLanguage: StoryContentLanguage;
 };
 
 export type InitialStoryRequest = CreateStoryInput & {
@@ -32,15 +44,7 @@ export type GeneratedInitialStory = {
 };
 
 export type ApplyChoiceRequest = {
-  story: {
-    title: string;
-    synopsis: string | null;
-    universe: string;
-    protagonist: string;
-    theme: string;
-    genre: string;
-    tone: string;
-  };
+  story: StoryGenerationContext;
   currentChapterNumber: number;
   currentState: StoryStateSnapshot;
   selectedChoice: GeneratedChoice;
@@ -58,7 +62,7 @@ export type AppliedChoiceResult = {
 };
 
 export type GenerateNextChapterRequest = {
-  story: ApplyChoiceRequest["story"];
+  story: StoryGenerationContext;
   nextChapterNumber: number;
   previousChapterSummary: string;
   transition: AppliedChoiceResult;

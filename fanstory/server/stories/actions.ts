@@ -16,6 +16,7 @@ export async function createStoryAction(formData: FormData) {
     theme: formData.get("theme"),
     genre: formData.get("genre"),
     tone: formData.get("tone"),
+    contentLanguage: formData.get("contentLanguage"),
   });
 
   revalidatePath("/dashboard");

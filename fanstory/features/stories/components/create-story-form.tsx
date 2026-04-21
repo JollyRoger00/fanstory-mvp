@@ -13,7 +13,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { getI18n } from "@/lib/i18n/server";
 
 export async function CreateStoryForm() {
-  const { t } = await getI18n();
+  const { locale, raw, t } = await getI18n();
+  const storyLanguageLabels = raw<Record<string, string>>(
+    "common.enums.storyLanguage",
+  );
 
   return (
     <Card className="border-white/60 bg-white/85">
@@ -25,6 +28,23 @@ export async function CreateStoryForm() {
       </CardHeader>
       <CardContent>
         <form action={createStoryAction} className="grid gap-6">
+          <div className="grid gap-2">
+            <Label htmlFor="contentLanguage">
+              {t("stories.create.fields.contentLanguage")}
+            </Label>
+            <select
+              id="contentLanguage"
+              name="contentLanguage"
+              defaultValue={locale}
+              className="flex h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 transition outline-none focus:border-slate-400"
+            >
+              <option value="en">{storyLanguageLabels.en ?? "English"}</option>
+              <option value="ru">{storyLanguageLabels.ru ?? "Russian"}</option>
+            </select>
+            <p className="text-sm leading-6 text-slate-500">
+              {t("stories.create.hints.contentLanguage")}
+            </p>
+          </div>
           <div className="grid gap-2">
             <Label htmlFor="title">{t("stories.create.fields.title")}</Label>
             <Input

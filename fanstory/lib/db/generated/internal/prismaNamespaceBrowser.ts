@@ -190,6 +190,7 @@ export const StoryScalarFieldEnum = {
   theme: 'theme',
   genre: 'genre',
   tone: 'tone',
+  contentLanguage: 'contentLanguage',
   status: 'status',
   accessPrice: 'accessPrice',
   provider: 'provider',

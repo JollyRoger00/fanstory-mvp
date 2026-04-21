@@ -1895,6 +1895,7 @@ export const StoryScalarFieldEnum = {
   theme: 'theme',
   genre: 'genre',
   tone: 'tone',
+  contentLanguage: 'contentLanguage',
   status: 'status',
   accessPrice: 'accessPrice',
   provider: 'provider',
@@ -2227,6 +2228,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'StoryContentLanguage'
+ */
+export type EnumStoryContentLanguageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StoryContentLanguage'>
+    
+
+
+/**
+ * Reference to a field of type 'StoryContentLanguage[]'
+ */
+export type ListEnumStoryContentLanguageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StoryContentLanguage[]'>
     
 
 

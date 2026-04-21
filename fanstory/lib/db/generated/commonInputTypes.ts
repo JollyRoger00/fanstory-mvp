@@ -304,6 +304,13 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
 }
 
+export type EnumStoryContentLanguageFilter<$PrismaModel = never> = {
+  equals?: $Enums.StoryContentLanguage | Prisma.EnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  in?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStoryContentLanguageFilter<$PrismaModel> | $Enums.StoryContentLanguage
+}
+
 export type EnumStoryStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.StoryStatus | Prisma.EnumStoryStatusFieldRefInput<$PrismaModel>
   in?: $Enums.StoryStatus[] | Prisma.ListEnumStoryStatusFieldRefInput<$PrismaModel>
@@ -316,6 +323,16 @@ export type EnumGenerationProviderFilter<$PrismaModel = never> = {
   in?: $Enums.GenerationProvider[] | Prisma.ListEnumGenerationProviderFieldRefInput<$PrismaModel>
   notIn?: $Enums.GenerationProvider[] | Prisma.ListEnumGenerationProviderFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumGenerationProviderFilter<$PrismaModel> | $Enums.GenerationProvider
+}
+
+export type EnumStoryContentLanguageWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StoryContentLanguage | Prisma.EnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  in?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStoryContentLanguageWithAggregatesFilter<$PrismaModel> | $Enums.StoryContentLanguage
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStoryContentLanguageFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStoryContentLanguageFilter<$PrismaModel>
 }
 
 export type EnumStoryStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -767,6 +784,13 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
 }
 
+export type NestedEnumStoryContentLanguageFilter<$PrismaModel = never> = {
+  equals?: $Enums.StoryContentLanguage | Prisma.EnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  in?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStoryContentLanguageFilter<$PrismaModel> | $Enums.StoryContentLanguage
+}
+
 export type NestedEnumStoryStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.StoryStatus | Prisma.EnumStoryStatusFieldRefInput<$PrismaModel>
   in?: $Enums.StoryStatus[] | Prisma.ListEnumStoryStatusFieldRefInput<$PrismaModel>
@@ -779,6 +803,16 @@ export type NestedEnumGenerationProviderFilter<$PrismaModel = never> = {
   in?: $Enums.GenerationProvider[] | Prisma.ListEnumGenerationProviderFieldRefInput<$PrismaModel>
   notIn?: $Enums.GenerationProvider[] | Prisma.ListEnumGenerationProviderFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumGenerationProviderFilter<$PrismaModel> | $Enums.GenerationProvider
+}
+
+export type NestedEnumStoryContentLanguageWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StoryContentLanguage | Prisma.EnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  in?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StoryContentLanguage[] | Prisma.ListEnumStoryContentLanguageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStoryContentLanguageWithAggregatesFilter<$PrismaModel> | $Enums.StoryContentLanguage
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStoryContentLanguageFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStoryContentLanguageFilter<$PrismaModel>
 }
 
 export type NestedEnumStoryStatusWithAggregatesFilter<$PrismaModel = never> = {

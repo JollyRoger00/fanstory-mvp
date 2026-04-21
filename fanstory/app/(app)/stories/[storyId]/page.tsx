@@ -21,6 +21,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const chapterAccessModeLabels = raw<Record<string, string>>(
     "common.enums.chapterAccessMode",
   );
+  const storyLanguageLabels = raw<Record<string, string>>(
+    "common.enums.storyLanguage",
+  );
 
   return (
     <div className="space-y-8">
@@ -57,6 +60,10 @@ export default async function StoryPage({ params }: StoryPageProps) {
               <Badge variant="secondary">{story.universe}</Badge>
               <Badge variant="outline">{story.genre}</Badge>
               <Badge variant="outline">{story.tone}</Badge>
+              <Badge variant="outline">
+                {storyLanguageLabels[story.contentLanguage] ??
+                  story.contentLanguage}
+              </Badge>
               <Badge variant="outline">
                 {t("common.labels.chapter")} {story.currentChapterNumber}
               </Badge>
@@ -150,7 +157,8 @@ export default async function StoryPage({ params }: StoryPageProps) {
                   {t("common.labels.chapter")} {chapter.number}
                 </Badge>
                 <Badge variant="outline">
-                  {chapterAccessModeLabels[chapter.accessMode] ?? chapter.accessMode}
+                  {chapterAccessModeLabels[chapter.accessMode] ??
+                    chapter.accessMode}
                 </Badge>
               </div>
               <h3 className="font-heading mt-3 text-2xl text-slate-950">

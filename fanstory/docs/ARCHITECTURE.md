@@ -162,9 +162,9 @@ Current methods:
 Current implementations:
 
 - `MockStoryGenerationProvider`
-- OpenAI placeholder class
+- `OpenAIStoryGenerationProvider`
 
-This lets the current product remain usable before real model integration is finished.
+This keeps provider concerns isolated inside `server/story-generation` while the rest of the product stays unaware of the active AI backend.
 
 ## Auth and Route Protection
 

@@ -87,7 +87,7 @@ fanstory/
 - Wallet balance + transaction ledger
 - Premium chapter purchase flow
 - Subscription foundation with mock activation
-- Provider abstraction for AI generation with a working mock provider
+- Provider abstraction for AI generation with both mock and OpenAI providers
 - Prisma schema for users, auth, stories, runs, chapters, choices, saves, wallet, purchases, subscriptions, and generation logs
 - Seed script for subscription plans
 
@@ -142,6 +142,7 @@ Current flow:
 
 - `server/story-generation/types.ts` defines provider contracts
 - `server/story-generation/mock-provider.ts` implements a working provider
+- `server/story-generation/openai-provider.ts` implements the real OpenAI provider through the official SDK
 - `server/story-generation/provider.ts` resolves the active provider
 
 Supported contracts:
@@ -150,7 +151,7 @@ Supported contracts:
 - `applyChoice`
 - `generateNextChapter`
 
-This is the seam where a future OpenAI provider should be added.
+The UI remains provider-agnostic. All provider selection, prompting, structured validation, and diagnostics stay inside `server/story-generation`.
 
 ### 3. Access and monetization
 
@@ -226,6 +227,8 @@ Required envs:
 - `AUTH_TRUST_HOST`
 - `NEXT_PUBLIC_APP_URL`
 - `STORY_PROVIDER`
+- `OPENAI_API_KEY` when `STORY_PROVIDER=openai`
+- `OPENAI_MODEL` when `STORY_PROVIDER=openai`
 - `STORY_FREE_CHAPTERS`
 - `STORY_DEFAULT_CHAPTER_PRICE`
 - `STORY_DEMO_TOP_UP_AMOUNT`
@@ -297,9 +300,17 @@ These are enough to exercise subscription activation and access coverage during 
 
 ## Extension Points
 
-### Real AI provider
+### AI providers
 
-Replace the placeholder OpenAI provider in `server/story-generation/provider.ts` with a real implementation that satisfies `StoryGenerationProvider`.
+The production path now supports `STORY_PROVIDER=openai` with:
+
+- official OpenAI SDK
+- Responses API structured output parsing
+- Zod schema validation
+- stage-specific prompts for initial story, choice resolution, and next chapter
+- diagnostic server logs with request IDs and generation stage metadata
+
+The mock provider remains available for local development or offline work.
 
 ### Real payments
 

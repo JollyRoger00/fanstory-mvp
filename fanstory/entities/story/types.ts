@@ -1,3 +1,5 @@
+import type { StoryContentLanguage } from "@/entities/story/language";
+
 export type StoryListItem = {
   id: string;
   slug: string;
@@ -6,6 +8,7 @@ export type StoryListItem = {
   universe: string;
   genre: string;
   tone: string;
+  contentLanguage: StoryContentLanguage;
   status: string;
   chapterCount: number;
   currentChapterNumber: number;
@@ -57,6 +60,7 @@ export type StoryDetailView = {
   theme: string;
   genre: string;
   tone: string;
+  contentLanguage: StoryContentLanguage;
   status: string;
   accessPrice: number;
   currentChapterNumber: number;

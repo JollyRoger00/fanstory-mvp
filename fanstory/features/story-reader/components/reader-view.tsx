@@ -22,6 +22,9 @@ export async function ReaderView({ data }: ReaderViewProps) {
   const chapterAccessModeLabels = raw<Record<string, string>>(
     "common.enums.chapterAccessMode",
   );
+  const storyLanguageLabels = raw<Record<string, string>>(
+    "common.enums.storyLanguage",
+  );
 
   return (
     <div className="space-y-8">
@@ -34,6 +37,10 @@ export async function ReaderView({ data }: ReaderViewProps) {
         </Badge>
         <Badge variant="secondary">{data.story.genre}</Badge>
         <Badge variant="outline">{data.story.tone}</Badge>
+        <Badge variant="outline">
+          {storyLanguageLabels[data.story.contentLanguage] ??
+            data.story.contentLanguage}
+        </Badge>
       </div>
 
       {data.visibleChapters.map((chapter) => (
@@ -52,15 +59,18 @@ export async function ReaderView({ data }: ReaderViewProps) {
                 </CardTitle>
               </div>
               <Badge
-                variant={chapter.accessMode === "FREE" ? "secondary" : "outline"}
+                variant={
+                  chapter.accessMode === "FREE" ? "secondary" : "outline"
+                }
               >
-                {chapterAccessModeLabels[chapter.accessMode] ?? chapter.accessMode}
+                {chapterAccessModeLabels[chapter.accessMode] ??
+                  chapter.accessMode}
               </Badge>
             </div>
             <p className="text-sm text-slate-500">{chapter.summary}</p>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="whitespace-pre-line text-base leading-8 text-slate-700">
+            <div className="text-base leading-8 whitespace-pre-line text-slate-700">
               {chapter.content}
             </div>
             {chapter.number === data.story.currentChapterNumber &&
@@ -179,7 +189,10 @@ export async function ReaderView({ data }: ReaderViewProps) {
                     {t("stories.reader.accessLocked", {
                       chapterLabel: t("common.labels.chapter"),
                       chapterNumber: data.nextAccess.nextChapterNumber,
-                      price: formatCredits(data.nextAccess.priceCredits, locale),
+                      price: formatCredits(
+                        data.nextAccess.priceCredits,
+                        locale,
+                      ),
                     })}
                   </p>
                   <form action={purchaseChapterAction}>

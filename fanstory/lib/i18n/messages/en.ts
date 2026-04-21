@@ -52,6 +52,10 @@ const enMessages = {
         PAY_PER_CHAPTER: "Premium",
         SUBSCRIPTION: "Subscription",
       },
+      storyLanguage: {
+        en: "English",
+        ru: "Russian",
+      },
       subscriptionInterval: {
         MONTHLY: "Monthly",
         YEARLY: "Yearly",
@@ -113,6 +117,7 @@ const enMessages = {
       nextChapterAccess: "Next chapter access",
       chooseNextMove: "Choose the next move",
       storyLibrary: "Story library",
+      storyLanguage: "Story language",
     },
     relative: {
       ago: "{value} ago",
@@ -239,6 +244,7 @@ const enMessages = {
       formDescription:
         "This form writes into the story-generation service, not directly into UI state. The first chapter is generated immediately through the provider abstraction.",
       fields: {
+        contentLanguage: "Story language",
         title: "Story title",
         synopsis: "Synopsis",
         universe: "Universe",
@@ -246,6 +252,10 @@ const enMessages = {
         theme: "Theme",
         genre: "Genre",
         tone: "Tone",
+      },
+      hints: {
+        contentLanguage:
+          "Controls the language of generated chapters, state summaries and choices. It is independent from the UI locale.",
       },
       placeholders: {
         title: "The House Behind the Signal",
@@ -260,8 +270,7 @@ const enMessages = {
     },
     detail: {
       eyebrow: "Story detail",
-      descriptionFallback:
-        "Interactive story metadata and current run state.",
+      descriptionFallback: "Interactive story metadata and current run state.",
       currentStateTitle: "Current story state",
       activeGoals: "Active goals",
       tensions: "Tensions",
@@ -287,8 +296,7 @@ const enMessages = {
         "Existing saves: {count}. Saves store the run snapshot and chapter pointer for future resume and branching work.",
       accessDescription:
         "Access is evaluated in a dedicated service layer. UI only reflects the decision.",
-      accessAllowed:
-        "Next chapter is already available via {reason} access.",
+      accessAllowed: "Next chapter is already available via {reason} access.",
       accessLocked:
         "{chapterLabel} {chapterNumber} is locked. Unlock for {price} or cover it with a subscription.",
     },
@@ -321,7 +329,8 @@ const enMessages = {
     },
     transactionDescriptions: {
       STARTER_GRANT: "Starter credits granted on first sign-in.",
-      CREDIT_TOP_UP: "Demo credits added for local development and purchase testing.",
+      CREDIT_TOP_UP:
+        "Demo credits added for local development and purchase testing.",
       CHAPTER_PURCHASE: "Credits spent to unlock a premium chapter.",
       SUBSCRIPTION_PURCHASE: "Credits spent on subscription access.",
       REFUND: "Credits returned to the wallet.",

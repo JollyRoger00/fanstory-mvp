@@ -17,7 +17,10 @@ type StoryCardProps = {
 };
 
 export async function StoryCard({ story }: StoryCardProps) {
-  const { locale, t } = await getI18n();
+  const { locale, raw, t } = await getI18n();
+  const storyLanguageLabels = raw<Record<string, string>>(
+    "common.enums.storyLanguage",
+  );
 
   return (
     <Card className="border-white/60 bg-white/85 shadow-sm">
@@ -25,6 +28,10 @@ export async function StoryCard({ story }: StoryCardProps) {
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{story.genre}</Badge>
           <Badge variant="outline">{story.tone}</Badge>
+          <Badge variant="outline">
+            {storyLanguageLabels[story.contentLanguage] ??
+              story.contentLanguage}
+          </Badge>
           <Badge variant="outline">
             {t("common.labels.chapter")} {story.currentChapterNumber}
           </Badge>
@@ -49,7 +56,9 @@ export async function StoryCard({ story }: StoryCardProps) {
           asChild
           className="rounded-full bg-slate-950 hover:bg-slate-800"
         >
-          <Link href={`/stories/${story.id}`}>{t("common.actions.openStory")}</Link>
+          <Link href={`/stories/${story.id}`}>
+            {t("common.actions.openStory")}
+          </Link>
         </Button>
         <Button asChild variant="outline" className="rounded-full">
           <Link href={`/stories/${story.id}/read`}>

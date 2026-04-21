@@ -45,6 +45,7 @@ export type StoryMinAggregateOutputType = {
   theme: string | null
   genre: string | null
   tone: string | null
+  contentLanguage: $Enums.StoryContentLanguage | null
   status: $Enums.StoryStatus | null
   accessPrice: number | null
   provider: $Enums.GenerationProvider | null
@@ -63,6 +64,7 @@ export type StoryMaxAggregateOutputType = {
   theme: string | null
   genre: string | null
   tone: string | null
+  contentLanguage: $Enums.StoryContentLanguage | null
   status: $Enums.StoryStatus | null
   accessPrice: number | null
   provider: $Enums.GenerationProvider | null
@@ -81,6 +83,7 @@ export type StoryCountAggregateOutputType = {
   theme: number
   genre: number
   tone: number
+  contentLanguage: number
   status: number
   accessPrice: number
   provider: number
@@ -109,6 +112,7 @@ export type StoryMinAggregateInputType = {
   theme?: true
   genre?: true
   tone?: true
+  contentLanguage?: true
   status?: true
   accessPrice?: true
   provider?: true
@@ -127,6 +131,7 @@ export type StoryMaxAggregateInputType = {
   theme?: true
   genre?: true
   tone?: true
+  contentLanguage?: true
   status?: true
   accessPrice?: true
   provider?: true
@@ -145,6 +150,7 @@ export type StoryCountAggregateInputType = {
   theme?: true
   genre?: true
   tone?: true
+  contentLanguage?: true
   status?: true
   accessPrice?: true
   provider?: true
@@ -250,6 +256,7 @@ export type StoryGroupByOutputType = {
   theme: string
   genre: string
   tone: string
+  contentLanguage: $Enums.StoryContentLanguage
   status: $Enums.StoryStatus
   accessPrice: number
   provider: $Enums.GenerationProvider
@@ -291,6 +298,7 @@ export type StoryWhereInput = {
   theme?: Prisma.StringFilter<"Story"> | string
   genre?: Prisma.StringFilter<"Story"> | string
   tone?: Prisma.StringFilter<"Story"> | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFilter<"Story"> | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFilter<"Story"> | $Enums.StoryStatus
   accessPrice?: Prisma.IntFilter<"Story"> | number
   provider?: Prisma.EnumGenerationProviderFilter<"Story"> | $Enums.GenerationProvider
@@ -317,6 +325,7 @@ export type StoryOrderByWithRelationInput = {
   theme?: Prisma.SortOrder
   genre?: Prisma.SortOrder
   tone?: Prisma.SortOrder
+  contentLanguage?: Prisma.SortOrder
   status?: Prisma.SortOrder
   accessPrice?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -346,6 +355,7 @@ export type StoryWhereUniqueInput = Prisma.AtLeast<{
   theme?: Prisma.StringFilter<"Story"> | string
   genre?: Prisma.StringFilter<"Story"> | string
   tone?: Prisma.StringFilter<"Story"> | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFilter<"Story"> | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFilter<"Story"> | $Enums.StoryStatus
   accessPrice?: Prisma.IntFilter<"Story"> | number
   provider?: Prisma.EnumGenerationProviderFilter<"Story"> | $Enums.GenerationProvider
@@ -372,6 +382,7 @@ export type StoryOrderByWithAggregationInput = {
   theme?: Prisma.SortOrder
   genre?: Prisma.SortOrder
   tone?: Prisma.SortOrder
+  contentLanguage?: Prisma.SortOrder
   status?: Prisma.SortOrder
   accessPrice?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -398,6 +409,7 @@ export type StoryScalarWhereWithAggregatesInput = {
   theme?: Prisma.StringWithAggregatesFilter<"Story"> | string
   genre?: Prisma.StringWithAggregatesFilter<"Story"> | string
   tone?: Prisma.StringWithAggregatesFilter<"Story"> | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageWithAggregatesFilter<"Story"> | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusWithAggregatesFilter<"Story"> | $Enums.StoryStatus
   accessPrice?: Prisma.IntWithAggregatesFilter<"Story"> | number
   provider?: Prisma.EnumGenerationProviderWithAggregatesFilter<"Story"> | $Enums.GenerationProvider
@@ -415,6 +427,7 @@ export type StoryCreateInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -441,6 +454,7 @@ export type StoryUncheckedCreateInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -465,6 +479,7 @@ export type StoryUpdateInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -491,6 +506,7 @@ export type StoryUncheckedUpdateInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -516,6 +532,7 @@ export type StoryCreateManyInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -533,6 +550,7 @@ export type StoryUpdateManyMutationInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -551,6 +569,7 @@ export type StoryUncheckedUpdateManyInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -579,6 +598,7 @@ export type StoryCountOrderByAggregateInput = {
   theme?: Prisma.SortOrder
   genre?: Prisma.SortOrder
   tone?: Prisma.SortOrder
+  contentLanguage?: Prisma.SortOrder
   status?: Prisma.SortOrder
   accessPrice?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -601,6 +621,7 @@ export type StoryMaxOrderByAggregateInput = {
   theme?: Prisma.SortOrder
   genre?: Prisma.SortOrder
   tone?: Prisma.SortOrder
+  contentLanguage?: Prisma.SortOrder
   status?: Prisma.SortOrder
   accessPrice?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -619,6 +640,7 @@ export type StoryMinOrderByAggregateInput = {
   theme?: Prisma.SortOrder
   genre?: Prisma.SortOrder
   tone?: Prisma.SortOrder
+  contentLanguage?: Prisma.SortOrder
   status?: Prisma.SortOrder
   accessPrice?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -680,6 +702,10 @@ export type StoryUncheckedUpdateManyWithoutOwnerNestedInput = {
   update?: Prisma.StoryUpdateWithWhereUniqueWithoutOwnerInput | Prisma.StoryUpdateWithWhereUniqueWithoutOwnerInput[]
   updateMany?: Prisma.StoryUpdateManyWithWhereWithoutOwnerInput | Prisma.StoryUpdateManyWithWhereWithoutOwnerInput[]
   deleteMany?: Prisma.StoryScalarWhereInput | Prisma.StoryScalarWhereInput[]
+}
+
+export type EnumStoryContentLanguageFieldUpdateOperationsInput = {
+  set?: $Enums.StoryContentLanguage
 }
 
 export type EnumStoryStatusFieldUpdateOperationsInput = {
@@ -800,6 +826,7 @@ export type StoryCreateWithoutOwnerInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -824,6 +851,7 @@ export type StoryUncheckedCreateWithoutOwnerInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -878,6 +906,7 @@ export type StoryScalarWhereInput = {
   theme?: Prisma.StringFilter<"Story"> | string
   genre?: Prisma.StringFilter<"Story"> | string
   tone?: Prisma.StringFilter<"Story"> | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFilter<"Story"> | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFilter<"Story"> | $Enums.StoryStatus
   accessPrice?: Prisma.IntFilter<"Story"> | number
   provider?: Prisma.EnumGenerationProviderFilter<"Story"> | $Enums.GenerationProvider
@@ -895,6 +924,7 @@ export type StoryCreateWithoutRunsInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -920,6 +950,7 @@ export type StoryUncheckedCreateWithoutRunsInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -959,6 +990,7 @@ export type StoryUpdateWithoutRunsInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -984,6 +1016,7 @@ export type StoryUncheckedUpdateWithoutRunsInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1007,6 +1040,7 @@ export type StoryCreateWithoutChaptersInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1032,6 +1066,7 @@ export type StoryUncheckedCreateWithoutChaptersInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1071,6 +1106,7 @@ export type StoryUpdateWithoutChaptersInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1096,6 +1132,7 @@ export type StoryUncheckedUpdateWithoutChaptersInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1119,6 +1156,7 @@ export type StoryCreateWithoutDecisionsInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1144,6 +1182,7 @@ export type StoryUncheckedCreateWithoutDecisionsInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1183,6 +1222,7 @@ export type StoryUpdateWithoutDecisionsInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1208,6 +1248,7 @@ export type StoryUncheckedUpdateWithoutDecisionsInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1231,6 +1272,7 @@ export type StoryCreateWithoutSavesInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1256,6 +1298,7 @@ export type StoryUncheckedCreateWithoutSavesInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1295,6 +1338,7 @@ export type StoryUpdateWithoutSavesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1320,6 +1364,7 @@ export type StoryUncheckedUpdateWithoutSavesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1343,6 +1388,7 @@ export type StoryCreateWithoutPurchasesInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1368,6 +1414,7 @@ export type StoryUncheckedCreateWithoutPurchasesInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1407,6 +1454,7 @@ export type StoryUpdateWithoutPurchasesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1432,6 +1480,7 @@ export type StoryUncheckedUpdateWithoutPurchasesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1455,6 +1504,7 @@ export type StoryCreateWithoutPurchasedAccessInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1480,6 +1530,7 @@ export type StoryUncheckedCreateWithoutPurchasedAccessInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1519,6 +1570,7 @@ export type StoryUpdateWithoutPurchasedAccessInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1544,6 +1596,7 @@ export type StoryUncheckedUpdateWithoutPurchasedAccessInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1567,6 +1620,7 @@ export type StoryCreateWithoutGenerationLogsInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1592,6 +1646,7 @@ export type StoryUncheckedCreateWithoutGenerationLogsInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1631,6 +1686,7 @@ export type StoryUpdateWithoutGenerationLogsInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1656,6 +1712,7 @@ export type StoryUncheckedUpdateWithoutGenerationLogsInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1679,6 +1736,7 @@ export type StoryCreateManyOwnerInput = {
   theme: string
   genre: string
   tone: string
+  contentLanguage?: $Enums.StoryContentLanguage
   status?: $Enums.StoryStatus
   accessPrice?: number
   provider?: $Enums.GenerationProvider
@@ -1696,6 +1754,7 @@ export type StoryUpdateWithoutOwnerInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1720,6 +1779,7 @@ export type StoryUncheckedUpdateWithoutOwnerInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1744,6 +1804,7 @@ export type StoryUncheckedUpdateManyWithoutOwnerInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   genre?: Prisma.StringFieldUpdateOperationsInput | string
   tone?: Prisma.StringFieldUpdateOperationsInput | string
+  contentLanguage?: Prisma.EnumStoryContentLanguageFieldUpdateOperationsInput | $Enums.StoryContentLanguage
   status?: Prisma.EnumStoryStatusFieldUpdateOperationsInput | $Enums.StoryStatus
   accessPrice?: Prisma.IntFieldUpdateOperationsInput | number
   provider?: Prisma.EnumGenerationProviderFieldUpdateOperationsInput | $Enums.GenerationProvider
@@ -1847,6 +1908,7 @@ export type StorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   theme?: boolean
   genre?: boolean
   tone?: boolean
+  contentLanguage?: boolean
   status?: boolean
   accessPrice?: boolean
   provider?: boolean
@@ -1874,6 +1936,7 @@ export type StorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   theme?: boolean
   genre?: boolean
   tone?: boolean
+  contentLanguage?: boolean
   status?: boolean
   accessPrice?: boolean
   provider?: boolean
@@ -1893,6 +1956,7 @@ export type StorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   theme?: boolean
   genre?: boolean
   tone?: boolean
+  contentLanguage?: boolean
   status?: boolean
   accessPrice?: boolean
   provider?: boolean
@@ -1912,6 +1976,7 @@ export type StorySelectScalar = {
   theme?: boolean
   genre?: boolean
   tone?: boolean
+  contentLanguage?: boolean
   status?: boolean
   accessPrice?: boolean
   provider?: boolean
@@ -1919,7 +1984,7 @@ export type StorySelectScalar = {
   updatedAt?: boolean
 }
 
-export type StoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "synopsis" | "universe" | "protagonist" | "theme" | "genre" | "tone" | "status" | "accessPrice" | "provider" | "createdAt" | "updatedAt", ExtArgs["result"]["story"]>
+export type StoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "synopsis" | "universe" | "protagonist" | "theme" | "genre" | "tone" | "contentLanguage" | "status" | "accessPrice" | "provider" | "createdAt" | "updatedAt", ExtArgs["result"]["story"]>
 export type StoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   runs?: boolean | Prisma.Story$runsArgs<ExtArgs>
@@ -1961,6 +2026,7 @@ export type $StoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     theme: string
     genre: string
     tone: string
+    contentLanguage: $Enums.StoryContentLanguage
     status: $Enums.StoryStatus
     accessPrice: number
     provider: $Enums.GenerationProvider
@@ -2407,6 +2473,7 @@ export interface StoryFieldRefs {
   readonly theme: Prisma.FieldRef<"Story", 'String'>
   readonly genre: Prisma.FieldRef<"Story", 'String'>
   readonly tone: Prisma.FieldRef<"Story", 'String'>
+  readonly contentLanguage: Prisma.FieldRef<"Story", 'StoryContentLanguage'>
   readonly status: Prisma.FieldRef<"Story", 'StoryStatus'>
   readonly accessPrice: Prisma.FieldRef<"Story", 'Int'>
   readonly provider: Prisma.FieldRef<"Story", 'GenerationProvider'>
