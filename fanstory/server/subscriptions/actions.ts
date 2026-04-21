@@ -8,12 +8,13 @@ import { activateMockSubscription } from "@/server/subscriptions/subscription.se
 export async function activateMockSubscriptionAction(formData: FormData) {
   const user = await requireUser();
   const input = activateSubscriptionSchema.parse({
-    planId: formData.get("planId"),
+    productId: formData.get("productId"),
   });
 
-  await activateMockSubscription(user.id, input.planId);
+  await activateMockSubscription(user.id, input.productId);
 
   revalidatePath("/dashboard");
+  revalidatePath("/wallet");
   revalidatePath("/subscriptions");
   revalidatePath("/stories");
 }

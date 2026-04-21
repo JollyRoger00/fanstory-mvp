@@ -83,6 +83,11 @@ export type StoryDecision = Prisma.StoryDecisionModel
  */
 export type Save = Prisma.SaveModel
 /**
+ * Model MonetizationProduct
+ * 
+ */
+export type MonetizationProduct = Prisma.MonetizationProductModel
+/**
  * Model SubscriptionPlan
  * 
  */
@@ -102,6 +107,16 @@ export type Purchase = Prisma.PurchaseModel
  * 
  */
 export type PurchasedChapterAccess = Prisma.PurchasedChapterAccessModel
+/**
+ * Model RewardedAdGrant
+ * 
+ */
+export type RewardedAdGrant = Prisma.RewardedAdGrantModel
+/**
+ * Model ChapterEntitlementLedger
+ * 
+ */
+export type ChapterEntitlementLedger = Prisma.ChapterEntitlementLedgerModel
 /**
  * Model GenerationLog
  * 

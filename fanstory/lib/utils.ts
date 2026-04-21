@@ -20,6 +20,24 @@ export function formatCredits(value: number, locale: Locale = defaultLocale) {
   return `${value.toLocaleString(getIntlLocale(locale))} cr`;
 }
 
+export function formatRubles(value: number, locale: Locale = defaultLocale) {
+  return new Intl.NumberFormat(getIntlLocale(locale), {
+    style: "currency",
+    currency: "RUB",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+export function formatSignedNumber(
+  value: number,
+  locale: Locale = defaultLocale,
+) {
+  return new Intl.NumberFormat(getIntlLocale(locale), {
+    signDisplay: "exceptZero",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
 export function formatRelativeDate(
   value: Date | string,
   locale: Locale = defaultLocale,

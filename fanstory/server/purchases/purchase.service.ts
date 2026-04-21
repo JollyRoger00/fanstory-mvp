@@ -1,95 +1,59 @@
 import "server-only";
 
+import { FeatureDisabledError } from "@/lib/errors/app-error";
 import { prisma } from "@/lib/db/client";
-import { purchaseChapterSchema } from "@/lib/validations/story";
-import { getChapterAccessState } from "@/server/access/access.service";
-import { ensureWalletRecord } from "@/server/wallet/wallet.service";
+import { devBillingToolsEnabled } from "@/lib/env/server";
+import { purchaseProductSchema } from "@/lib/validations/purchase";
 
-export async function purchaseChapterAccess(userId: string, payload: unknown) {
-  const input = purchaseChapterSchema.parse(payload);
+export async function purchaseChapterPack(userId: string, payload: unknown) {
+  if (!devBillingToolsEnabled()) {
+    throw new FeatureDisabledError(
+      "Mock purchases are disabled in the current environment.",
+    );
+  }
 
-  const story = await prisma.story.findFirstOrThrow({
+  const input = purchaseProductSchema.parse(payload);
+  const product = await prisma.monetizationProduct.findFirstOrThrow({
     where: {
-      id: input.storyId,
-      userId,
-    },
-    include: {
-      runs: {
-        take: 1,
-        orderBy: {
-          createdAt: "desc",
-        },
-      },
+      id: input.productId,
+      type: "CHAPTER_PACK",
+      status: "ACTIVE",
     },
   });
 
-  const accessState = await getChapterAccessState({
-    userId,
-    storyId: story.id,
-    chapterNumber: input.chapterNumber,
-    priceCredits: story.accessPrice,
-  });
+  const chapterAmount = product.chapterAmount;
 
-  if (accessState.allowed) {
-    return accessState;
+  if (!chapterAmount) {
+    throw new Error("Chapter pack configuration is invalid.");
   }
 
   await prisma.$transaction(async (tx) => {
-    const wallet = await ensureWalletRecord(tx, userId);
-
-    if (wallet.balance < accessState.priceCredits) {
-      throw new Error("Not enough credits to unlock this chapter.");
-    }
-
     const purchase = await tx.purchase.create({
       data: {
         userId,
-        walletId: wallet.id,
-        storyId: story.id,
-        type: "CHAPTER",
+        productId: product.id,
+        type: "CHAPTER_PACK",
         status: "COMPLETED",
-        amount: accessState.priceCredits,
-        chapterNumber: input.chapterNumber,
-        description: `Unlocked chapter ${input.chapterNumber} for ${story.title}.`,
-      },
-    });
-
-    const updatedWallet = await tx.wallet.update({
-      where: { id: wallet.id },
-      data: {
-        balance: {
-          decrement: accessState.priceCredits,
+        amount: product.priceRubles,
+        description: `Purchased ${product.name}.`,
+        metadata: {
+          productCode: product.code,
         },
       },
     });
 
-    await tx.walletTransaction.create({
-      data: {
-        walletId: wallet.id,
-        userId,
-        purchaseId: purchase.id,
-        type: "CHAPTER_PURCHASE",
-        amount: -accessState.priceCredits,
-        balanceAfter: updatedWallet.balance,
-        description: `Chapter ${input.chapterNumber} unlocked for ${story.title}.`,
-      },
-    });
-
-    await tx.purchasedChapterAccess.create({
+    await tx.chapterEntitlementLedger.create({
       data: {
         userId,
-        storyId: story.id,
-        storyRunId: story.runs[0]?.id,
         purchaseId: purchase.id,
-        chapterNumber: input.chapterNumber,
+        eventType: "GRANT",
+        source: "PURCHASE_PACK",
+        quantity: chapterAmount,
+        metadata: {
+          productCode: product.code,
+          productName: product.name,
+        },
       },
     });
-  });
-
-  return getChapterAccessState({
-    userId,
-    storyId: story.id,
-    chapterNumber: input.chapterNumber,
-    priceCredits: story.accessPrice,
   });
 }

@@ -1,3 +1,4 @@
+import type { NextChapterAccessView } from "@/entities/monetization/types";
 import type { StoryContentLanguage } from "@/entities/story/language";
 
 export type StoryListItem = {
@@ -16,12 +17,7 @@ export type StoryListItem = {
   updatedAt: Date;
 };
 
-export type StoryAccessState = {
-  allowed: boolean;
-  reason: "FREE" | "PURCHASED" | "SUBSCRIPTION" | "LOCKED";
-  priceCredits: number;
-  nextChapterNumber: number;
-};
+export type StoryAccessState = NextChapterAccessView;
 
 export type StoryChoiceView = {
   id: string;
@@ -36,8 +32,6 @@ export type StoryChapterView = {
   title: string;
   summary: string;
   content: string;
-  accessMode: string;
-  priceCredits: number;
   createdAt: Date;
   choices: StoryChoiceView[];
 };
@@ -62,7 +56,6 @@ export type StoryDetailView = {
   tone: string;
   contentLanguage: StoryContentLanguage;
   status: string;
-  accessPrice: number;
   currentChapterNumber: number;
   currentStateSummary: string;
   activeGoals: string[];

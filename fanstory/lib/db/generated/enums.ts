@@ -71,6 +71,7 @@ export type ChapterAccessMode = (typeof ChapterAccessMode)[keyof typeof ChapterA
 
 export const PurchaseType = {
   CHAPTER: 'CHAPTER',
+  CHAPTER_PACK: 'CHAPTER_PACK',
   SUBSCRIPTION: 'SUBSCRIPTION',
   CREDIT_TOP_UP: 'CREDIT_TOP_UP',
   MANUAL_ADJUSTMENT: 'MANUAL_ADJUSTMENT'
@@ -129,6 +130,58 @@ export const SubscriptionStatus = {
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const MonetizationProductType = {
+  CHAPTER_PACK: 'CHAPTER_PACK',
+  SUBSCRIPTION: 'SUBSCRIPTION'
+} as const
+
+export type MonetizationProductType = (typeof MonetizationProductType)[keyof typeof MonetizationProductType]
+
+
+export const MonetizationProductStatus = {
+  ACTIVE: 'ACTIVE',
+  DRAFT: 'DRAFT',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type MonetizationProductStatus = (typeof MonetizationProductStatus)[keyof typeof MonetizationProductStatus]
+
+
+export const ChapterEntitlementEventType = {
+  GRANT: 'GRANT',
+  CONSUME: 'CONSUME'
+} as const
+
+export type ChapterEntitlementEventType = (typeof ChapterEntitlementEventType)[keyof typeof ChapterEntitlementEventType]
+
+
+export const ChapterEntitlementSource = {
+  WELCOME: 'WELCOME',
+  SUBSCRIPTION_DAILY: 'SUBSCRIPTION_DAILY',
+  PURCHASE_PACK: 'PURCHASE_PACK',
+  REWARDED_AD: 'REWARDED_AD'
+} as const
+
+export type ChapterEntitlementSource = (typeof ChapterEntitlementSource)[keyof typeof ChapterEntitlementSource]
+
+
+export const RewardedAdProvider = {
+  MOCK: 'MOCK'
+} as const
+
+export type RewardedAdProvider = (typeof RewardedAdProvider)[keyof typeof RewardedAdProvider]
+
+
+export const RewardedAdGrantStatus = {
+  GRANTED: 'GRANTED',
+  CONSUMED: 'CONSUMED',
+  EXPIRED: 'EXPIRED',
+  REVOKED: 'REVOKED'
+} as const
+
+export type RewardedAdGrantStatus = (typeof RewardedAdGrantStatus)[keyof typeof RewardedAdGrantStatus]
 
 
 export const GenerationProvider = {

@@ -52,6 +52,7 @@ enum ChapterAccessMode {
 
 enum PurchaseType {
   CHAPTER
+  CHAPTER_PACK
   SUBSCRIPTION
   CREDIT_TOP_UP
   MANUAL_ADJUSTMENT
@@ -94,6 +95,40 @@ enum SubscriptionStatus {
   PAST_DUE
 }
 
+enum MonetizationProductType {
+  CHAPTER_PACK
+  SUBSCRIPTION
+}
+
+enum MonetizationProductStatus {
+  ACTIVE
+  DRAFT
+  INACTIVE
+}
+
+enum ChapterEntitlementEventType {
+  GRANT
+  CONSUME
+}
+
+enum ChapterEntitlementSource {
+  WELCOME
+  SUBSCRIPTION_DAILY
+  PURCHASE_PACK
+  REWARDED_AD
+}
+
+enum RewardedAdProvider {
+  MOCK
+}
+
+enum RewardedAdGrantStatus {
+  GRANTED
+  CONSUMED
+  EXPIRED
+  REVOKED
+}
+
 enum GenerationProvider {
   MOCK
   OPENAI
@@ -124,6 +159,8 @@ model User {
   purchases              Purchase[]
   purchasedChapterAccess PurchasedChapterAccess[]
   subscriptions          Subscription[]
+  chapterEntitlementEntries ChapterEntitlementLedger[]
+  rewardedAdGrants       RewardedAdGrant[]
   generationLogs         GenerationLog[]
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
@@ -342,6 +379,28 @@ model Save {
   @@index([userId, createdAt(sort: Desc)])
 }
 
+model MonetizationProduct {
+  id                String                    @id @default(cuid())
+  code              String                    @unique
+  type              MonetizationProductType
+  status            MonetizationProductStatus @default(ACTIVE)
+  name              String
+  description       String?                   @db.Text
+  priceRubles       Int
+  currency          String                    @default("RUB")
+  interval          SubscriptionInterval?
+  chapterAmount     Int?
+  dailyChapterLimit Int?
+  isPriceFinal      Boolean                   @default(true)
+  metadata          Json?
+  purchases         Purchase[]
+  subscriptions     Subscription[]
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+
+  @@index([type, status, priceRubles])
+}
+
 model SubscriptionPlan {
   id                     String                 @id @default(cuid())
   code                   String                 @unique
@@ -362,7 +421,8 @@ model SubscriptionPlan {
 model Subscription {
   id         String             @id @default(cuid())
   userId     String
-  planId     String
+  planId     String?
+  productId  String?
   status     SubscriptionStatus @default(TRIALING)
   startsAt   DateTime           @default(now())
   endsAt     DateTime?
@@ -370,11 +430,14 @@ model Subscription {
   canceledAt DateTime?
   metadata   Json?
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan       SubscriptionPlan   @relation(fields: [planId], references: [id], onDelete: Restrict)
+  plan       SubscriptionPlan?  @relation(fields: [planId], references: [id], onDelete: SetNull)
+  product    MonetizationProduct? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  chapterEntitlementEntries ChapterEntitlementLedger[]
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
 
   @@index([userId, status])
+  @@index([productId])
 }
 
 model Purchase {
@@ -383,6 +446,7 @@ model Purchase {
   walletId           String?
   storyId            String?
   subscriptionPlanId String?
+  productId          String?
   type               PurchaseType
   status             PurchaseStatus           @default(COMPLETED)
   amount             Int
@@ -393,12 +457,15 @@ model Purchase {
   wallet             Wallet?                  @relation(fields: [walletId], references: [id], onDelete: SetNull)
   story              Story?                   @relation(fields: [storyId], references: [id], onDelete: SetNull)
   subscriptionPlan   SubscriptionPlan?        @relation(fields: [subscriptionPlanId], references: [id], onDelete: SetNull)
+  product            MonetizationProduct?     @relation(fields: [productId], references: [id], onDelete: SetNull)
   chapterAccess      PurchasedChapterAccess[]
+  chapterEntitlementEntries ChapterEntitlementLedger[]
   walletTransactions WalletTransaction[]
   createdAt          DateTime                 @default(now())
   updatedAt          DateTime                 @updatedAt
 
   @@index([userId, createdAt(sort: Desc)])
+  @@index([productId])
 }
 
 model PurchasedChapterAccess {
@@ -417,6 +484,50 @@ model PurchasedChapterAccess {
   purchase       Purchase      @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, storyId, chapterNumber])
+}
+
+model RewardedAdGrant {
+  id              String                 @id @default(cuid())
+  userId          String
+  provider        RewardedAdProvider     @default(MOCK)
+  status          RewardedAdGrantStatus  @default(GRANTED)
+  verificationKey String                 @unique
+  grantQuantity   Int                    @default(1)
+  metadata        Json?
+  consumedAt      DateTime?
+  expiresAt       DateTime?
+  user            User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapterEntitlementEntries ChapterEntitlementLedger[]
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+
+  @@index([userId, status, createdAt(sort: Desc)])
+}
+
+model ChapterEntitlementLedger {
+  id               String                       @id @default(cuid())
+  userId           String
+  purchaseId       String?
+  subscriptionId   String?
+  rewardedAdGrantId String?
+  eventType        ChapterEntitlementEventType
+  source           ChapterEntitlementSource
+  quantity         Int
+  storyId          String?
+  storyRunId       String?
+  chapterNumber    Int?
+  effectiveDate    DateTime?
+  dedupKey         String?                      @unique
+  metadata         Json?
+  user             User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purchase         Purchase?                    @relation(fields: [purchaseId], references: [id], onDelete: SetNull)
+  subscription     Subscription?                @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  rewardedAdGrant  RewardedAdGrant?             @relation(fields: [rewardedAdGrantId], references: [id], onDelete: SetNull)
+  createdAt        DateTime                     @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, source, createdAt(sort: Desc)])
+  @@index([userId, effectiveDate, source])
 }
 
 model GenerationLog {

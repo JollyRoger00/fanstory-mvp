@@ -1,14 +1,14 @@
 import "server-only";
 
 import type {
+  StoryChapterView,
+  StoryChoiceView,
+  StoryDecisionView,
   StoryDetailView,
   StoryListItem,
-  StoryChoiceView,
-  StoryChapterView,
-  StoryDecisionView,
 } from "@/entities/story/types";
+import { Prisma } from "@/lib/db/generated/client";
 import { prisma } from "@/lib/db/client";
-import { getServerEnv } from "@/lib/env/server";
 import { ResourceNotFoundError } from "@/lib/errors/app-error";
 import { slugify } from "@/lib/utils";
 import {
@@ -16,6 +16,7 @@ import {
   createStoryInputSchema,
 } from "@/lib/validations/story";
 import { getChapterAccessState } from "@/server/access/access.service";
+import { consumeNextChapterEntitlement } from "@/server/monetization/entitlement.service";
 import { getStoryGenerationProvider } from "@/server/story-generation/provider";
 
 function mapChoice(choice: {
@@ -38,8 +39,6 @@ function mapChapter(chapter: {
   title: string;
   summary: string;
   content: string;
-  accessMode: string;
-  priceCredits: number;
   createdAt: Date;
   choices: Array<{
     id: string;
@@ -54,8 +53,6 @@ function mapChapter(chapter: {
     title: chapter.title,
     summary: chapter.summary,
     content: chapter.content,
-    accessMode: chapter.accessMode,
-    priceCredits: chapter.priceCredits,
     createdAt: chapter.createdAt,
     choices: chapter.choices.map(mapChoice),
   };
@@ -150,7 +147,6 @@ async function getOwnedStoryRecord(userId: string, storyId: string) {
 }
 
 export async function createStory(userId: string, payload: unknown) {
-  const env = getServerEnv();
   const input = createStoryInputSchema.parse(payload);
   const provider = getStoryGenerationProvider();
   const generated = await provider.generateInitialStory({
@@ -173,7 +169,6 @@ export async function createStory(userId: string, payload: unknown) {
         tone: input.tone,
         contentLanguage: input.contentLanguage,
         provider: generated.provider,
-        accessPrice: env.STORY_DEFAULT_CHAPTER_PRICE,
       },
     });
 
@@ -291,7 +286,6 @@ export async function getStoryDetail(
     userId,
     storyId: story.id,
     chapterNumber: run.currentChapterNumber + 1,
-    priceCredits: story.accessPrice,
   });
 
   return {
@@ -306,7 +300,6 @@ export async function getStoryDetail(
     tone: story.tone,
     contentLanguage: story.contentLanguage,
     status: story.status,
-    accessPrice: story.accessPrice,
     currentChapterNumber: run.currentChapterNumber,
     currentStateSummary: run.currentStateSummary,
     activeGoals: run.activeGoals,
@@ -355,13 +348,10 @@ export async function advanceStory(userId: string, payload: unknown) {
     userId,
     storyId: story.id,
     chapterNumber: nextChapterNumber,
-    priceCredits: story.accessPrice,
   });
 
   if (!accessState.allowed) {
-    throw new Error(
-      "Next chapter is locked. Unlock it with credits or an active subscription.",
-    );
+    throw new Error("Next chapter access is not available yet.");
   }
 
   const transition = await provider.applyChoice({
@@ -409,100 +399,129 @@ export async function advanceStory(userId: string, payload: unknown) {
     transition,
   });
 
-  await prisma.$transaction(async (tx) => {
-    await tx.storyDecision.create({
-      data: {
-        storyRunId: run.id,
-        storyId: story.id,
-        storyChapterId: latestChapter.id,
-        storyChoiceId: selectedChoice.id,
-        chapterNumber: latestChapter.number,
-        selectedLabel: selectedChoice.label,
-        resolutionSummary: transition.resolutionSummary,
-        resultingStateSummary: transition.updatedState.summary,
-      },
-    });
-
-    const chapter = await tx.storyChapter.create({
-      data: {
-        storyId: story.id,
-        storyRunId: run.id,
-        number: nextChapterNumber,
-        title: generatedChapter.title,
-        summary: generatedChapter.summary,
-        content: generatedChapter.text,
-        accessMode: "PAY_PER_CHAPTER",
-        priceCredits: story.accessPrice,
-        generatedBy: generatedChapter.provider,
-        choices: {
-          create: generatedChapter.choices.map((choice, index) => ({
-            key: choice.key,
-            label: choice.label,
-            outcomeHint: choice.outcomeHint,
-            position: index,
-          })),
+  await prisma.$transaction(
+    async (tx) => {
+      const freshRun = await tx.storyRun.findUniqueOrThrow({
+        where: {
+          id: run.id,
         },
-      },
-    });
+        select: {
+          currentChapterNumber: true,
+        },
+      });
 
-    await tx.storyRun.update({
-      where: {
-        id: run.id,
-      },
-      data: {
-        currentChapterNumber: nextChapterNumber,
-        currentStateSummary: transition.updatedState.summary,
-        activeGoals: transition.updatedState.activeGoals,
-        unresolvedTensions: transition.updatedState.unresolvedTensions,
-        knownFacts: transition.updatedState.knownFacts,
-        lastChoiceSummary: transition.resolutionSummary,
-      },
-    });
+      if (freshRun.currentChapterNumber !== run.currentChapterNumber) {
+        throw new Error(
+          "Story state changed while generating the next chapter.",
+        );
+      }
 
-    await tx.purchasedChapterAccess.updateMany({
-      where: {
+      const duplicateDecision = await tx.storyDecision.findFirst({
+        where: {
+          storyRunId: run.id,
+          storyChoiceId: selectedChoice.id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (duplicateDecision) {
+        throw new Error("Choice has already been resolved.");
+      }
+
+      await consumeNextChapterEntitlement(tx, {
         userId,
         storyId: story.id,
-        chapterNumber: nextChapterNumber,
-      },
-      data: {
         storyRunId: run.id,
-        storyChapterId: chapter.id,
-      },
-    });
+        chapterNumber: nextChapterNumber,
+      });
 
-    await tx.generationLog.createMany({
-      data: [
-        {
-          userId,
+      await tx.storyDecision.create({
+        data: {
+          storyRunId: run.id,
+          storyId: story.id,
+          storyChapterId: latestChapter.id,
+          storyChoiceId: selectedChoice.id,
+          chapterNumber: latestChapter.number,
+          selectedLabel: selectedChoice.label,
+          resolutionSummary: transition.resolutionSummary,
+          resultingStateSummary: transition.updatedState.summary,
+        },
+      });
+
+      await tx.storyChapter.create({
+        data: {
           storyId: story.id,
           storyRunId: run.id,
-          provider: story.provider,
-          eventType: "CHOICE_APPLIED",
-          status: "SUCCESS",
-          promptVersion: provider.promptVersion,
-          input: {
-            choiceId: selectedChoice.id,
-            choiceLabel: selectedChoice.label,
+          number: nextChapterNumber,
+          title: generatedChapter.title,
+          summary: generatedChapter.summary,
+          content: generatedChapter.text,
+          accessMode: "FREE",
+          priceCredits: 0,
+          generatedBy: generatedChapter.provider,
+          choices: {
+            create: generatedChapter.choices.map((choice, index) => ({
+              key: choice.key,
+              label: choice.label,
+              outcomeHint: choice.outcomeHint,
+              position: index,
+            })),
           },
-          output: transition,
         },
-        {
-          userId,
-          storyId: story.id,
-          storyRunId: run.id,
-          provider: generatedChapter.provider,
-          eventType: "CHAPTER_GENERATED",
-          status: "SUCCESS",
-          promptVersion: provider.promptVersion,
-          input: {
-            nextChapterNumber,
+      });
+
+      await tx.storyRun.update({
+        where: {
+          id: run.id,
+        },
+        data: {
+          currentChapterNumber: nextChapterNumber,
+          currentStateSummary: transition.updatedState.summary,
+          activeGoals: transition.updatedState.activeGoals,
+          unresolvedTensions: transition.updatedState.unresolvedTensions,
+          knownFacts: transition.updatedState.knownFacts,
+          lastChoiceSummary: transition.resolutionSummary,
+        },
+      });
+
+      await tx.generationLog.createMany({
+        data: [
+          {
+            userId,
+            storyId: story.id,
+            storyRunId: run.id,
+            provider: story.provider,
+            eventType: "CHOICE_APPLIED",
+            status: "SUCCESS",
+            promptVersion: provider.promptVersion,
+            input: {
+              choiceId: selectedChoice.id,
+              choiceLabel: selectedChoice.label,
+            },
+            output: transition,
           },
-          output: generatedChapter,
-        },
-      ],
-    });
-  });
+          {
+            userId,
+            storyId: story.id,
+            storyRunId: run.id,
+            provider: generatedChapter.provider,
+            eventType: "CHAPTER_GENERATED",
+            status: "SUCCESS",
+            promptVersion: provider.promptVersion,
+            input: {
+              nextChapterNumber,
+            },
+            output: generatedChapter,
+          },
+        ],
+      });
+    },
+    {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+    },
+  );
 
   return story.id;
 }

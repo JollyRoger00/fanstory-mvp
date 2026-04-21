@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../lib/db/generated/client";
+import { Prisma, PrismaClient } from "../lib/db/generated/client";
+import { monetizationProductCatalog } from "../server/monetization/catalog";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -15,67 +16,44 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  await prisma.subscriptionPlan.upsert({
-    where: { code: "fanstory-plus-monthly" },
-    update: {
-      name: "FanStory Plus",
-      description:
-        "Unlimited premium chapter access while active, prioritized generation queue, and subscription-based gating foundation.",
-      interval: "MONTHLY",
-      priceCredits: 99,
-      chapterDiscountPercent: 100,
-      unlimitedPremiumAccess: true,
-      status: "ACTIVE",
-      metadata: {
-        highlight: "Best for active readers",
+  for (const product of monetizationProductCatalog) {
+    await prisma.monetizationProduct.upsert({
+      where: {
+        code: product.code,
       },
-    },
-    create: {
-      code: "fanstory-plus-monthly",
-      name: "FanStory Plus",
-      description:
-        "Unlimited premium chapter access while active, prioritized generation queue, and subscription-based gating foundation.",
-      interval: "MONTHLY",
-      priceCredits: 99,
-      chapterDiscountPercent: 100,
-      unlimitedPremiumAccess: true,
-      status: "ACTIVE",
-      metadata: {
-        highlight: "Best for active readers",
+      update: {
+        type: product.type,
+        status: "ACTIVE",
+        name: product.name,
+        description: product.description,
+        priceRubles: product.priceRubles,
+        currency: "RUB",
+        interval: product.interval ?? null,
+        chapterAmount: product.chapterAmount ?? null,
+        dailyChapterLimit: product.dailyChapterLimit ?? null,
+        isPriceFinal: product.isPriceFinal,
+        metadata: (product.metadata ?? undefined) as
+          | Prisma.InputJsonValue
+          | undefined,
       },
-    },
-  });
-
-  await prisma.subscriptionPlan.upsert({
-    where: { code: "fanstory-pro-yearly" },
-    update: {
-      name: "FanStory Pro",
-      description:
-        "Long-term plan for heavy users with yearly billing placeholder and room for future payment provider integration.",
-      interval: "YEARLY",
-      priceCredits: 999,
-      chapterDiscountPercent: 100,
-      unlimitedPremiumAccess: true,
-      status: "ACTIVE",
-      metadata: {
-        highlight: "Best annual value",
+      create: {
+        code: product.code,
+        type: product.type,
+        status: "ACTIVE",
+        name: product.name,
+        description: product.description,
+        priceRubles: product.priceRubles,
+        currency: "RUB",
+        interval: product.interval ?? null,
+        chapterAmount: product.chapterAmount ?? null,
+        dailyChapterLimit: product.dailyChapterLimit ?? null,
+        isPriceFinal: product.isPriceFinal,
+        metadata: (product.metadata ?? undefined) as
+          | Prisma.InputJsonValue
+          | undefined,
       },
-    },
-    create: {
-      code: "fanstory-pro-yearly",
-      name: "FanStory Pro",
-      description:
-        "Long-term plan for heavy users with yearly billing placeholder and room for future payment provider integration.",
-      interval: "YEARLY",
-      priceCredits: 999,
-      chapterDiscountPercent: 100,
-      unlimitedPremiumAccess: true,
-      status: "ACTIVE",
-      metadata: {
-        highlight: "Best annual value",
-      },
-    },
-  });
+    });
+  }
 }
 
 main()

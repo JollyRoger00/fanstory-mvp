@@ -1,6 +1,7 @@
+import Link from "next/link";
 import type { ReaderView as ReaderViewModel } from "@/entities/story/types";
+import { claimRewardedAdChapterAction } from "@/server/monetization/actions";
 import { createSaveAction } from "@/server/saves/actions";
-import { purchaseChapterAction } from "@/server/purchases/actions";
 import { chooseStoryPathAction } from "@/server/stories/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { InfoHint } from "@/components/shared/info-hint";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { getI18n } from "@/lib/i18n/server";
-import { formatCredits } from "@/lib/utils";
+import { formatCalendarDate } from "@/lib/utils";
 
 type ReaderViewProps = {
   data: ReaderViewModel;
@@ -17,11 +18,8 @@ type ReaderViewProps = {
 
 export async function ReaderView({ data }: ReaderViewProps) {
   const { locale, raw, t } = await getI18n();
-  const accessReasonLabels = raw<Record<string, string>>(
-    "common.enums.accessReason",
-  );
-  const chapterAccessModeLabels = raw<Record<string, string>>(
-    "common.enums.chapterAccessMode",
+  const entitlementSourceLabels = raw<Record<string, string>>(
+    "common.enums.entitlementSource",
   );
   const storyLanguageLabels = raw<Record<string, string>>(
     "common.enums.storyLanguage",
@@ -47,26 +45,16 @@ export async function ReaderView({ data }: ReaderViewProps) {
       {data.visibleChapters.map((chapter) => (
         <Card key={chapter.id} className="border-white/60 bg-white/90">
           <CardHeader className="space-y-3">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">
-                  {t("stories.reader.chapterBadge", {
-                    chapterLabel: t("common.labels.chapter"),
-                    chapterNumber: chapter.number,
-                  })}
-                </p>
-                <CardTitle className="font-heading text-3xl">
-                  {chapter.title}
-                </CardTitle>
-              </div>
-              <Badge
-                variant={
-                  chapter.accessMode === "FREE" ? "secondary" : "outline"
-                }
-              >
-                {chapterAccessModeLabels[chapter.accessMode] ??
-                  chapter.accessMode}
-              </Badge>
+            <div>
+              <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">
+                {t("stories.reader.chapterBadge", {
+                  chapterLabel: t("common.labels.chapter"),
+                  chapterNumber: chapter.number,
+                })}
+              </p>
+              <CardTitle className="font-heading text-3xl">
+                {chapter.title}
+              </CardTitle>
             </div>
             <p className="text-sm text-slate-500">{chapter.summary}</p>
           </CardHeader>
@@ -132,7 +120,7 @@ export async function ReaderView({ data }: ReaderViewProps) {
         </Card>
       ))}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
         <Card className="border-white/60 bg-white/85">
           <CardHeader>
             <CardTitle className="font-heading text-2xl">
@@ -180,42 +168,82 @@ export async function ReaderView({ data }: ReaderViewProps) {
           <CardContent className="space-y-4">
             <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
               {data.nextAccess.allowed ? (
-                <p className="text-sm text-emerald-300">
-                  {t("stories.reader.accessAllowed", {
-                    reason:
-                      accessReasonLabels[data.nextAccess.reason] ??
-                      data.nextAccess.reason.toLowerCase(),
-                  })}
-                </p>
-              ) : (
                 <div className="space-y-3">
+                  <p className="text-sm text-emerald-300">
+                    {t("stories.reader.accessAllowed", {
+                      source: data.nextAccess.nextSource
+                        ? (entitlementSourceLabels[
+                            data.nextAccess.nextSource
+                          ] ?? data.nextAccess.nextSource)
+                        : t("stories.reader.accessAvailable"),
+                    })}
+                  </p>
+                  <div className="grid gap-2 text-sm text-slate-200 sm:grid-cols-2">
+                    <p>
+                      {t("stories.reader.balanceWelcome", {
+                        count: data.nextAccess.balances.welcome,
+                      })}
+                    </p>
+                    <p>
+                      {t("stories.reader.balanceSubscription", {
+                        count: data.nextAccess.balances.subscriptionDaily,
+                      })}
+                    </p>
+                    <p>
+                      {t("stories.reader.balancePurchased", {
+                        count: data.nextAccess.balances.purchased,
+                      })}
+                    </p>
+                    <p>
+                      {t("stories.reader.balanceAd", {
+                        count: data.nextAccess.balances.rewardedAd,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
                   <p className="text-sm text-slate-200">
                     {t("stories.reader.accessLocked", {
                       chapterLabel: t("common.labels.chapter"),
                       chapterNumber: data.nextAccess.nextChapterNumber,
-                      price: formatCredits(
-                        data.nextAccess.priceCredits,
-                        locale,
-                      ),
                     })}
                   </p>
-                  <form action={purchaseChapterAction}>
-                    <input type="hidden" name="storyId" value={data.story.id} />
-                    <input
-                      type="hidden"
-                      name="chapterNumber"
-                      value={data.nextAccess.nextChapterNumber}
-                    />
-                    <Button
-                      type="submit"
-                      className="rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
-                    >
-                      {t("common.actions.unlockNextChapter")}
+                  {data.nextAccess.canClaimRewardedAd ? (
+                    <form action={claimRewardedAdChapterAction}>
+                      <input
+                        type="hidden"
+                        name="storyId"
+                        value={data.story.id}
+                      />
+                      <Button
+                        type="submit"
+                        className="w-full rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
+                      >
+                        {t("common.actions.getChapterFromAd")}
+                      </Button>
+                    </form>
+                  ) : null}
+                  <div className="flex flex-wrap gap-3">
+                    <Button asChild variant="outline" className="rounded-full">
+                      <Link href="/wallet">
+                        {t("common.actions.viewPacks")}
+                      </Link>
                     </Button>
-                  </form>
+                    <Button asChild variant="outline" className="rounded-full">
+                      <Link href="/subscriptions">
+                        {t("common.actions.viewPlans")}
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
+            <p className="text-xs text-slate-400">
+              {t("stories.reader.dailyReset", {
+                date: formatCalendarDate(data.nextAccess.dailyResetAt, locale),
+              })}
+            </p>
           </CardContent>
         </Card>
       </div>

@@ -23,6 +23,7 @@ fanstory/
     shared/
     ui/
   entities/
+    monetization/
     story/
     save/
     wallet/
@@ -49,6 +50,7 @@ fanstory/
   server/
     access/
     auth/
+    monetization/
     profile/
     purchases/
     saves/
@@ -84,12 +86,14 @@ fanstory/
 - Story detail page
 - Reader / play mode
 - Save creation and save listing
-- Wallet balance + transaction ledger
-- Premium chapter purchase flow
-- Subscription foundation with mock activation
+- Chapter entitlement economy with a server-side ledger
+- Welcome grant on first protected access
+- Chapter pack purchase flow
+- Subscription daily quota flow
+- Rewarded ad mock/dev unlock flow
 - Provider abstraction for AI generation with both mock and OpenAI providers
-- Prisma schema for users, auth, stories, runs, chapters, choices, saves, wallet, purchases, subscriptions, and generation logs
-- Seed script for subscription plans
+- Prisma schema for users, auth, stories, runs, chapters, saves, purchases, products, entitlements, subscriptions, rewarded ads, and generation logs
+- Seed script for monetization products
 
 ## Domain Model
 
@@ -106,10 +110,12 @@ Core persisted models:
 - `StoryChoice`
 - `StoryDecision`
 - `Save`
+- `MonetizationProduct`
+- `ChapterEntitlementLedger`
+- `RewardedAdGrant`
 - `Wallet`
 - `WalletTransaction`
 - `Purchase`
-- `PurchasedChapterAccess`
 - `SubscriptionPlan`
 - `Subscription`
 - `GenerationLog`
@@ -119,9 +125,10 @@ Important product rules already encoded in the server layer:
 - unauthenticated users do not reach dashboard/product routes
 - Google login creates a persisted account through the Auth.js Prisma adapter
 - the profile is the center of user operations
-- premium chapter access is evaluated outside UI in `server/access`
-- wallet balance and purchase ledger are handled in dedicated services
-- subscriptions are a separate entitlement layer, not a UI flag
+- chapter access is evaluated outside UI in `server/access`
+- monetization is sourced from the entitlement ledger, not from React state
+- subscriptions are a separate access layer, not a UI flag
+- rereading existing chapters and opening saves never consumes chapter access
 
 ## Architecture
 
@@ -155,14 +162,23 @@ The UI remains provider-agnostic. All provider selection, prompting, structured 
 
 ### 3. Access and monetization
 
-Premium chapter access is not hardcoded in React components.
+Chapter access is not hardcoded in React components.
 
 Instead:
 
-- `server/access/access.service.ts` decides whether a chapter is available
-- `server/purchases/purchase.service.ts` handles chapter unlocking
-- `server/wallet/wallet.service.ts` maintains balance and ledger entries
-- `server/subscriptions/subscription.service.ts` handles subscription coverage
+- `server/monetization/catalog.ts` defines the product catalog and shared constants
+- `server/monetization/entitlement.service.ts` owns welcome grants, daily subscription grants, balance calculation, and consumption order
+- `server/purchases/purchase.service.ts` grants pack-based chapter credits
+- `server/subscriptions/subscription.service.ts` activates subscription products and daily quota coverage
+- `server/monetization/rewarded-ad.service.ts` grants one-chapter ad unlocks through a provider abstraction
+- `server/access/access.service.ts` exposes reader-friendly next-chapter access state
+
+Consumption order:
+
+1. Welcome grant
+2. Daily subscription quota
+3. Purchased chapter packs
+4. Rewarded ad unlocks
 
 ### 4. Story state
 
@@ -229,11 +245,7 @@ Required envs:
 - `STORY_PROVIDER`
 - `OPENAI_API_KEY` when `STORY_PROVIDER=openai`
 - `OPENAI_MODEL` when `STORY_PROVIDER=openai`
-- `ENABLE_DEV_BILLING_TOOLS` for local-only wallet/subscription mock actions
-- `STORY_FREE_CHAPTERS`
-- `STORY_DEFAULT_CHAPTER_PRICE`
-- `STORY_DEMO_TOP_UP_AMOUNT`
-- `STORY_STARTER_CREDITS`
+- `ENABLE_DEV_BILLING_TOOLS` for local-only mock purchases and mock subscription activation
 
 ### 3. Generate Prisma client
 
@@ -276,25 +288,30 @@ npm run db:studio
 ## Production Notes
 
 - `STORY_PROVIDER=mock` is intentionally rejected in `NODE_ENV=production`.
-- Mock wallet top-up and mock subscription activation are disabled by default and require `ENABLE_DEV_BILLING_TOOLS=true` in non-production environments.
+- Mock chapter pack purchases and mock subscription activation are disabled by default and require `ENABLE_DEV_BILLING_TOOLS=true` in non-production environments.
+- Rewarded ads currently run through a mock provider in non-production environments only.
+- Subscription daily quota resets on UTC midnight in v1.
 - Sign-in callback redirects are sanitized to internal paths only.
 - The app ships with baseline security headers via `next.config.ts`.
 - `.github/workflows/ci.yml` runs `npm run check` on pushes and pull requests.
 
 ## Seed Data
 
-`prisma/seed.ts` creates subscription plans:
+`prisma/seed.ts` creates the monetization catalog:
 
-- `FanStory Plus`
-- `FanStory Pro`
+- `chapter-pack-10` for 200 RUB
+- `chapter-pack-50` with temporary linear placeholder pricing
+- `chapter-pack-100` with temporary linear placeholder pricing
+- `subscription-monthly` for 1499 RUB
+- `subscription-yearly` for 5999 RUB
 
-These are enough to exercise subscription activation and access coverage during development.
+These are enough to exercise pack purchases, subscription activation, and access coverage during development.
 
 ## Current Product Flow
 
 1. User signs in with Google.
 2. Auth.js persists `User` + `Account` data.
-3. Dashboard ensures a wallet exists and shows profile metrics.
+3. The first protected request ensures a one-time welcome grant of 10 chapters.
 4. User creates a story.
 5. Story service calls the active generation provider and persists:
    - `Story`
@@ -303,9 +320,9 @@ These are enough to exercise subscription activation and access coverage during 
    - first `StoryChoice[]`
    - `GenerationLog`
 6. Reader shows the latest chapter and the next choices.
-7. Access service decides whether the next chapter is free, purchased, subscription-covered, or locked.
-8. If locked, the user can unlock it through wallet-backed purchase flow or activate a subscription placeholder.
-9. Reader progression stores `StoryDecision` and appends new chapters.
+7. Access service decides whether the next chapter will consume welcome chapters, daily subscription quota, purchased pack chapters, or a rewarded ad unlock.
+8. If no access is left, the user can buy a chapter pack, activate a subscription, or claim one ad unlock.
+9. Reader progression stores `StoryDecision`, consumes one chapter entitlement only after successful generation, and appends the new chapter.
 10. Save flow persists checkpoints in `Save`.
 
 ## Extension Points
@@ -324,14 +341,25 @@ The mock provider remains available for local development or offline work.
 
 ### Real payments
 
-Replace demo top-up and mock subscription activation with:
+Replace mock pack purchases and mock subscription activation with:
 
 - payment intent creation
 - provider webhooks
-- ledger reconciliation
+- purchase reconciliation against `ChapterEntitlementLedger`
 - subscription renewal / expiration sync
 
 The current architecture already separates these concerns from the UI.
+
+### Real rewarded ads
+
+Replace the mock rewarded ad provider with:
+
+- client ad SDK callbacks
+- server-side verification tokens
+- provider-specific fraud checks
+- durable verification references on `RewardedAdGrant`
+
+The reader flow and entitlement service do not need to change for that swap.
 
 ### Richer save/branch mechanics
 
@@ -352,5 +380,5 @@ Verified locally in this workspace:
 - `npm run lint`
 - `npm run typecheck`
 - `npm run build`
-
-Database push/seed still require a running PostgreSQL instance and valid local env values.
+- `npm run db:push`
+- `npm run db:seed`

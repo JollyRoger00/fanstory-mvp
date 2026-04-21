@@ -1,5 +1,5 @@
 import { z } from "zod";
 
-export const activateSubscriptionSchema = z.object({
+export const purchaseProductSchema = z.object({
   productId: z.string().min(1),
 });

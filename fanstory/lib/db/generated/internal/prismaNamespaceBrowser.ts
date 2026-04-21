@@ -64,10 +64,13 @@ export const ModelName = {
   StoryChoice: 'StoryChoice',
   StoryDecision: 'StoryDecision',
   Save: 'Save',
+  MonetizationProduct: 'MonetizationProduct',
   SubscriptionPlan: 'SubscriptionPlan',
   Subscription: 'Subscription',
   Purchase: 'Purchase',
   PurchasedChapterAccess: 'PurchasedChapterAccess',
+  RewardedAdGrant: 'RewardedAdGrant',
+  ChapterEntitlementLedger: 'ChapterEntitlementLedger',
   GenerationLog: 'GenerationLog'
 } as const
 
@@ -287,6 +290,27 @@ export const SaveScalarFieldEnum = {
 export type SaveScalarFieldEnum = (typeof SaveScalarFieldEnum)[keyof typeof SaveScalarFieldEnum]
 
 
+export const MonetizationProductScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  type: 'type',
+  status: 'status',
+  name: 'name',
+  description: 'description',
+  priceRubles: 'priceRubles',
+  currency: 'currency',
+  interval: 'interval',
+  chapterAmount: 'chapterAmount',
+  dailyChapterLimit: 'dailyChapterLimit',
+  isPriceFinal: 'isPriceFinal',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MonetizationProductScalarFieldEnum = (typeof MonetizationProductScalarFieldEnum)[keyof typeof MonetizationProductScalarFieldEnum]
+
+
 export const SubscriptionPlanScalarFieldEnum = {
   id: 'id',
   code: 'code',
@@ -309,6 +333,7 @@ export const SubscriptionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   planId: 'planId',
+  productId: 'productId',
   status: 'status',
   startsAt: 'startsAt',
   endsAt: 'endsAt',
@@ -328,6 +353,7 @@ export const PurchaseScalarFieldEnum = {
   walletId: 'walletId',
   storyId: 'storyId',
   subscriptionPlanId: 'subscriptionPlanId',
+  productId: 'productId',
   type: 'type',
   status: 'status',
   amount: 'amount',
@@ -353,6 +379,44 @@ export const PurchasedChapterAccessScalarFieldEnum = {
 } as const
 
 export type PurchasedChapterAccessScalarFieldEnum = (typeof PurchasedChapterAccessScalarFieldEnum)[keyof typeof PurchasedChapterAccessScalarFieldEnum]
+
+
+export const RewardedAdGrantScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  status: 'status',
+  verificationKey: 'verificationKey',
+  grantQuantity: 'grantQuantity',
+  metadata: 'metadata',
+  consumedAt: 'consumedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RewardedAdGrantScalarFieldEnum = (typeof RewardedAdGrantScalarFieldEnum)[keyof typeof RewardedAdGrantScalarFieldEnum]
+
+
+export const ChapterEntitlementLedgerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purchaseId: 'purchaseId',
+  subscriptionId: 'subscriptionId',
+  rewardedAdGrantId: 'rewardedAdGrantId',
+  eventType: 'eventType',
+  source: 'source',
+  quantity: 'quantity',
+  storyId: 'storyId',
+  storyRunId: 'storyRunId',
+  chapterNumber: 'chapterNumber',
+  effectiveDate: 'effectiveDate',
+  dedupKey: 'dedupKey',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ChapterEntitlementLedgerScalarFieldEnum = (typeof ChapterEntitlementLedgerScalarFieldEnum)[keyof typeof ChapterEntitlementLedgerScalarFieldEnum]
 
 
 export const GenerationLogScalarFieldEnum = {

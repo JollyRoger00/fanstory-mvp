@@ -42,6 +42,7 @@ export type PurchaseMinAggregateOutputType = {
   walletId: string | null
   storyId: string | null
   subscriptionPlanId: string | null
+  productId: string | null
   type: $Enums.PurchaseType | null
   status: $Enums.PurchaseStatus | null
   amount: number | null
@@ -57,6 +58,7 @@ export type PurchaseMaxAggregateOutputType = {
   walletId: string | null
   storyId: string | null
   subscriptionPlanId: string | null
+  productId: string | null
   type: $Enums.PurchaseType | null
   status: $Enums.PurchaseStatus | null
   amount: number | null
@@ -72,6 +74,7 @@ export type PurchaseCountAggregateOutputType = {
   walletId: number
   storyId: number
   subscriptionPlanId: number
+  productId: number
   type: number
   status: number
   amount: number
@@ -100,6 +103,7 @@ export type PurchaseMinAggregateInputType = {
   walletId?: true
   storyId?: true
   subscriptionPlanId?: true
+  productId?: true
   type?: true
   status?: true
   amount?: true
@@ -115,6 +119,7 @@ export type PurchaseMaxAggregateInputType = {
   walletId?: true
   storyId?: true
   subscriptionPlanId?: true
+  productId?: true
   type?: true
   status?: true
   amount?: true
@@ -130,6 +135,7 @@ export type PurchaseCountAggregateInputType = {
   walletId?: true
   storyId?: true
   subscriptionPlanId?: true
+  productId?: true
   type?: true
   status?: true
   amount?: true
@@ -233,6 +239,7 @@ export type PurchaseGroupByOutputType = {
   walletId: string | null
   storyId: string | null
   subscriptionPlanId: string | null
+  productId: string | null
   type: $Enums.PurchaseType
   status: $Enums.PurchaseStatus
   amount: number
@@ -272,6 +279,7 @@ export type PurchaseWhereInput = {
   walletId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   storyId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   subscriptionPlanId?: Prisma.StringNullableFilter<"Purchase"> | string | null
+  productId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   type?: Prisma.EnumPurchaseTypeFilter<"Purchase"> | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFilter<"Purchase"> | $Enums.PurchaseStatus
   amount?: Prisma.IntFilter<"Purchase"> | number
@@ -284,7 +292,9 @@ export type PurchaseWhereInput = {
   wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
   story?: Prisma.XOR<Prisma.StoryNullableScalarRelationFilter, Prisma.StoryWhereInput> | null
   subscriptionPlan?: Prisma.XOR<Prisma.SubscriptionPlanNullableScalarRelationFilter, Prisma.SubscriptionPlanWhereInput> | null
+  product?: Prisma.XOR<Prisma.MonetizationProductNullableScalarRelationFilter, Prisma.MonetizationProductWhereInput> | null
   chapterAccess?: Prisma.PurchasedChapterAccessListRelationFilter
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerListRelationFilter
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
 }
 
@@ -294,6 +304,7 @@ export type PurchaseOrderByWithRelationInput = {
   walletId?: Prisma.SortOrderInput | Prisma.SortOrder
   storyId?: Prisma.SortOrderInput | Prisma.SortOrder
   subscriptionPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  productId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -306,7 +317,9 @@ export type PurchaseOrderByWithRelationInput = {
   wallet?: Prisma.WalletOrderByWithRelationInput
   story?: Prisma.StoryOrderByWithRelationInput
   subscriptionPlan?: Prisma.SubscriptionPlanOrderByWithRelationInput
+  product?: Prisma.MonetizationProductOrderByWithRelationInput
   chapterAccess?: Prisma.PurchasedChapterAccessOrderByRelationAggregateInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerOrderByRelationAggregateInput
   walletTransactions?: Prisma.WalletTransactionOrderByRelationAggregateInput
 }
 
@@ -319,6 +332,7 @@ export type PurchaseWhereUniqueInput = Prisma.AtLeast<{
   walletId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   storyId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   subscriptionPlanId?: Prisma.StringNullableFilter<"Purchase"> | string | null
+  productId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   type?: Prisma.EnumPurchaseTypeFilter<"Purchase"> | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFilter<"Purchase"> | $Enums.PurchaseStatus
   amount?: Prisma.IntFilter<"Purchase"> | number
@@ -331,7 +345,9 @@ export type PurchaseWhereUniqueInput = Prisma.AtLeast<{
   wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
   story?: Prisma.XOR<Prisma.StoryNullableScalarRelationFilter, Prisma.StoryWhereInput> | null
   subscriptionPlan?: Prisma.XOR<Prisma.SubscriptionPlanNullableScalarRelationFilter, Prisma.SubscriptionPlanWhereInput> | null
+  product?: Prisma.XOR<Prisma.MonetizationProductNullableScalarRelationFilter, Prisma.MonetizationProductWhereInput> | null
   chapterAccess?: Prisma.PurchasedChapterAccessListRelationFilter
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerListRelationFilter
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
 }, "id">
 
@@ -341,6 +357,7 @@ export type PurchaseOrderByWithAggregationInput = {
   walletId?: Prisma.SortOrderInput | Prisma.SortOrder
   storyId?: Prisma.SortOrderInput | Prisma.SortOrder
   subscriptionPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  productId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -365,6 +382,7 @@ export type PurchaseScalarWhereWithAggregatesInput = {
   walletId?: Prisma.StringNullableWithAggregatesFilter<"Purchase"> | string | null
   storyId?: Prisma.StringNullableWithAggregatesFilter<"Purchase"> | string | null
   subscriptionPlanId?: Prisma.StringNullableWithAggregatesFilter<"Purchase"> | string | null
+  productId?: Prisma.StringNullableWithAggregatesFilter<"Purchase"> | string | null
   type?: Prisma.EnumPurchaseTypeWithAggregatesFilter<"Purchase"> | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusWithAggregatesFilter<"Purchase"> | $Enums.PurchaseStatus
   amount?: Prisma.IntWithAggregatesFilter<"Purchase"> | number
@@ -389,7 +407,9 @@ export type PurchaseCreateInput = {
   wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
   story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
   subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
   chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
 }
 
@@ -399,6 +419,7 @@ export type PurchaseUncheckedCreateInput = {
   walletId?: string | null
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -408,6 +429,7 @@ export type PurchaseUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
@@ -425,7 +447,9 @@ export type PurchaseUpdateInput = {
   wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
   story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
   subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
   chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -435,6 +459,7 @@ export type PurchaseUncheckedUpdateInput = {
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -444,6 +469,7 @@ export type PurchaseUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -453,6 +479,7 @@ export type PurchaseCreateManyInput = {
   walletId?: string | null
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -481,6 +508,7 @@ export type PurchaseUncheckedUpdateManyInput = {
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -512,6 +540,7 @@ export type PurchaseCountOrderByAggregateInput = {
   walletId?: Prisma.SortOrder
   storyId?: Prisma.SortOrder
   subscriptionPlanId?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -533,6 +562,7 @@ export type PurchaseMaxOrderByAggregateInput = {
   walletId?: Prisma.SortOrder
   storyId?: Prisma.SortOrder
   subscriptionPlanId?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -548,6 +578,7 @@ export type PurchaseMinOrderByAggregateInput = {
   walletId?: Prisma.SortOrder
   storyId?: Prisma.SortOrder
   subscriptionPlanId?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -709,6 +740,48 @@ export type PurchaseUncheckedUpdateManyWithoutStoryNestedInput = {
   deleteMany?: Prisma.PurchaseScalarWhereInput | Prisma.PurchaseScalarWhereInput[]
 }
 
+export type PurchaseCreateNestedManyWithoutProductInput = {
+  create?: Prisma.XOR<Prisma.PurchaseCreateWithoutProductInput, Prisma.PurchaseUncheckedCreateWithoutProductInput> | Prisma.PurchaseCreateWithoutProductInput[] | Prisma.PurchaseUncheckedCreateWithoutProductInput[]
+  connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutProductInput | Prisma.PurchaseCreateOrConnectWithoutProductInput[]
+  createMany?: Prisma.PurchaseCreateManyProductInputEnvelope
+  connect?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+}
+
+export type PurchaseUncheckedCreateNestedManyWithoutProductInput = {
+  create?: Prisma.XOR<Prisma.PurchaseCreateWithoutProductInput, Prisma.PurchaseUncheckedCreateWithoutProductInput> | Prisma.PurchaseCreateWithoutProductInput[] | Prisma.PurchaseUncheckedCreateWithoutProductInput[]
+  connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutProductInput | Prisma.PurchaseCreateOrConnectWithoutProductInput[]
+  createMany?: Prisma.PurchaseCreateManyProductInputEnvelope
+  connect?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+}
+
+export type PurchaseUpdateManyWithoutProductNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseCreateWithoutProductInput, Prisma.PurchaseUncheckedCreateWithoutProductInput> | Prisma.PurchaseCreateWithoutProductInput[] | Prisma.PurchaseUncheckedCreateWithoutProductInput[]
+  connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutProductInput | Prisma.PurchaseCreateOrConnectWithoutProductInput[]
+  upsert?: Prisma.PurchaseUpsertWithWhereUniqueWithoutProductInput | Prisma.PurchaseUpsertWithWhereUniqueWithoutProductInput[]
+  createMany?: Prisma.PurchaseCreateManyProductInputEnvelope
+  set?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  delete?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  connect?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  update?: Prisma.PurchaseUpdateWithWhereUniqueWithoutProductInput | Prisma.PurchaseUpdateWithWhereUniqueWithoutProductInput[]
+  updateMany?: Prisma.PurchaseUpdateManyWithWhereWithoutProductInput | Prisma.PurchaseUpdateManyWithWhereWithoutProductInput[]
+  deleteMany?: Prisma.PurchaseScalarWhereInput | Prisma.PurchaseScalarWhereInput[]
+}
+
+export type PurchaseUncheckedUpdateManyWithoutProductNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseCreateWithoutProductInput, Prisma.PurchaseUncheckedCreateWithoutProductInput> | Prisma.PurchaseCreateWithoutProductInput[] | Prisma.PurchaseUncheckedCreateWithoutProductInput[]
+  connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutProductInput | Prisma.PurchaseCreateOrConnectWithoutProductInput[]
+  upsert?: Prisma.PurchaseUpsertWithWhereUniqueWithoutProductInput | Prisma.PurchaseUpsertWithWhereUniqueWithoutProductInput[]
+  createMany?: Prisma.PurchaseCreateManyProductInputEnvelope
+  set?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  delete?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  connect?: Prisma.PurchaseWhereUniqueInput | Prisma.PurchaseWhereUniqueInput[]
+  update?: Prisma.PurchaseUpdateWithWhereUniqueWithoutProductInput | Prisma.PurchaseUpdateWithWhereUniqueWithoutProductInput[]
+  updateMany?: Prisma.PurchaseUpdateManyWithWhereWithoutProductInput | Prisma.PurchaseUpdateManyWithWhereWithoutProductInput[]
+  deleteMany?: Prisma.PurchaseScalarWhereInput | Prisma.PurchaseScalarWhereInput[]
+}
+
 export type PurchaseCreateNestedManyWithoutSubscriptionPlanInput = {
   create?: Prisma.XOR<Prisma.PurchaseCreateWithoutSubscriptionPlanInput, Prisma.PurchaseUncheckedCreateWithoutSubscriptionPlanInput> | Prisma.PurchaseCreateWithoutSubscriptionPlanInput[] | Prisma.PurchaseUncheckedCreateWithoutSubscriptionPlanInput[]
   connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutSubscriptionPlanInput | Prisma.PurchaseCreateOrConnectWithoutSubscriptionPlanInput[]
@@ -773,6 +846,22 @@ export type PurchaseUpdateOneRequiredWithoutChapterAccessNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseUpdateToOneWithWhereWithoutChapterAccessInput, Prisma.PurchaseUpdateWithoutChapterAccessInput>, Prisma.PurchaseUncheckedUpdateWithoutChapterAccessInput>
 }
 
+export type PurchaseCreateNestedOneWithoutChapterEntitlementEntriesInput = {
+  create?: Prisma.XOR<Prisma.PurchaseCreateWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUncheckedCreateWithoutChapterEntitlementEntriesInput>
+  connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutChapterEntitlementEntriesInput
+  connect?: Prisma.PurchaseWhereUniqueInput
+}
+
+export type PurchaseUpdateOneWithoutChapterEntitlementEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseCreateWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUncheckedCreateWithoutChapterEntitlementEntriesInput>
+  connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutChapterEntitlementEntriesInput
+  upsert?: Prisma.PurchaseUpsertWithoutChapterEntitlementEntriesInput
+  disconnect?: Prisma.PurchaseWhereInput | boolean
+  delete?: Prisma.PurchaseWhereInput | boolean
+  connect?: Prisma.PurchaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseUpdateToOneWithWhereWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUpdateWithoutChapterEntitlementEntriesInput>, Prisma.PurchaseUncheckedUpdateWithoutChapterEntitlementEntriesInput>
+}
+
 export type PurchaseCreateWithoutUserInput = {
   id?: string
   type: $Enums.PurchaseType
@@ -786,7 +875,9 @@ export type PurchaseCreateWithoutUserInput = {
   wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
   story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
   subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
   chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
 }
 
@@ -795,6 +886,7 @@ export type PurchaseUncheckedCreateWithoutUserInput = {
   walletId?: string | null
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -804,6 +896,7 @@ export type PurchaseUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
@@ -842,6 +935,7 @@ export type PurchaseScalarWhereInput = {
   walletId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   storyId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   subscriptionPlanId?: Prisma.StringNullableFilter<"Purchase"> | string | null
+  productId?: Prisma.StringNullableFilter<"Purchase"> | string | null
   type?: Prisma.EnumPurchaseTypeFilter<"Purchase"> | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFilter<"Purchase"> | $Enums.PurchaseStatus
   amount?: Prisma.IntFilter<"Purchase"> | number
@@ -865,7 +959,9 @@ export type PurchaseCreateWithoutWalletInput = {
   user: Prisma.UserCreateNestedOneWithoutPurchasesInput
   story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
   subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
   chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
 }
 
@@ -874,6 +970,7 @@ export type PurchaseUncheckedCreateWithoutWalletInput = {
   userId: string
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -883,6 +980,7 @@ export type PurchaseUncheckedCreateWithoutWalletInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
@@ -926,7 +1024,9 @@ export type PurchaseCreateWithoutWalletTransactionsInput = {
   wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
   story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
   subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
   chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
 }
 
 export type PurchaseUncheckedCreateWithoutWalletTransactionsInput = {
@@ -935,6 +1035,7 @@ export type PurchaseUncheckedCreateWithoutWalletTransactionsInput = {
   walletId?: string | null
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -944,6 +1045,7 @@ export type PurchaseUncheckedCreateWithoutWalletTransactionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
 export type PurchaseCreateOrConnectWithoutWalletTransactionsInput = {
@@ -976,7 +1078,9 @@ export type PurchaseUpdateWithoutWalletTransactionsInput = {
   wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
   story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
   subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
   chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
 }
 
 export type PurchaseUncheckedUpdateWithoutWalletTransactionsInput = {
@@ -985,6 +1089,7 @@ export type PurchaseUncheckedUpdateWithoutWalletTransactionsInput = {
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -994,6 +1099,7 @@ export type PurchaseUncheckedUpdateWithoutWalletTransactionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
 export type PurchaseCreateWithoutStoryInput = {
@@ -1009,7 +1115,9 @@ export type PurchaseCreateWithoutStoryInput = {
   user: Prisma.UserCreateNestedOneWithoutPurchasesInput
   wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
   subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
   chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
 }
 
@@ -1018,6 +1126,7 @@ export type PurchaseUncheckedCreateWithoutStoryInput = {
   userId: string
   walletId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1027,6 +1136,7 @@ export type PurchaseUncheckedCreateWithoutStoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
@@ -1056,6 +1166,70 @@ export type PurchaseUpdateManyWithWhereWithoutStoryInput = {
   data: Prisma.XOR<Prisma.PurchaseUpdateManyMutationInput, Prisma.PurchaseUncheckedUpdateManyWithoutStoryInput>
 }
 
+export type PurchaseCreateWithoutProductInput = {
+  id?: string
+  type: $Enums.PurchaseType
+  status?: $Enums.PurchaseStatus
+  amount: number
+  chapterNumber?: number | null
+  description?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPurchasesInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
+  story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
+  subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
+}
+
+export type PurchaseUncheckedCreateWithoutProductInput = {
+  id?: string
+  userId: string
+  walletId?: string | null
+  storyId?: string | null
+  subscriptionPlanId?: string | null
+  type: $Enums.PurchaseType
+  status?: $Enums.PurchaseStatus
+  amount: number
+  chapterNumber?: number | null
+  description?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
+}
+
+export type PurchaseCreateOrConnectWithoutProductInput = {
+  where: Prisma.PurchaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseCreateWithoutProductInput, Prisma.PurchaseUncheckedCreateWithoutProductInput>
+}
+
+export type PurchaseCreateManyProductInputEnvelope = {
+  data: Prisma.PurchaseCreateManyProductInput | Prisma.PurchaseCreateManyProductInput[]
+  skipDuplicates?: boolean
+}
+
+export type PurchaseUpsertWithWhereUniqueWithoutProductInput = {
+  where: Prisma.PurchaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.PurchaseUpdateWithoutProductInput, Prisma.PurchaseUncheckedUpdateWithoutProductInput>
+  create: Prisma.XOR<Prisma.PurchaseCreateWithoutProductInput, Prisma.PurchaseUncheckedCreateWithoutProductInput>
+}
+
+export type PurchaseUpdateWithWhereUniqueWithoutProductInput = {
+  where: Prisma.PurchaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.PurchaseUpdateWithoutProductInput, Prisma.PurchaseUncheckedUpdateWithoutProductInput>
+}
+
+export type PurchaseUpdateManyWithWhereWithoutProductInput = {
+  where: Prisma.PurchaseScalarWhereInput
+  data: Prisma.XOR<Prisma.PurchaseUpdateManyMutationInput, Prisma.PurchaseUncheckedUpdateManyWithoutProductInput>
+}
+
 export type PurchaseCreateWithoutSubscriptionPlanInput = {
   id?: string
   type: $Enums.PurchaseType
@@ -1069,7 +1243,9 @@ export type PurchaseCreateWithoutSubscriptionPlanInput = {
   user: Prisma.UserCreateNestedOneWithoutPurchasesInput
   wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
   story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
   chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
 }
 
@@ -1078,6 +1254,7 @@ export type PurchaseUncheckedCreateWithoutSubscriptionPlanInput = {
   userId: string
   walletId?: string | null
   storyId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1087,6 +1264,7 @@ export type PurchaseUncheckedCreateWithoutSubscriptionPlanInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
@@ -1130,6 +1308,8 @@ export type PurchaseCreateWithoutChapterAccessInput = {
   wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
   story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
   subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
 }
 
@@ -1139,6 +1319,7 @@ export type PurchaseUncheckedCreateWithoutChapterAccessInput = {
   walletId?: string | null
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1147,6 +1328,7 @@ export type PurchaseUncheckedCreateWithoutChapterAccessInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutPurchaseInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
 }
 
@@ -1180,6 +1362,8 @@ export type PurchaseUpdateWithoutChapterAccessInput = {
   wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
   story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
   subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1189,6 +1373,7 @@ export type PurchaseUncheckedUpdateWithoutChapterAccessInput = {
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1197,6 +1382,99 @@ export type PurchaseUncheckedUpdateWithoutChapterAccessInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
+}
+
+export type PurchaseCreateWithoutChapterEntitlementEntriesInput = {
+  id?: string
+  type: $Enums.PurchaseType
+  status?: $Enums.PurchaseStatus
+  amount: number
+  chapterNumber?: number | null
+  description?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPurchasesInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutPurchasesInput
+  story?: Prisma.StoryCreateNestedOneWithoutPurchasesInput
+  subscriptionPlan?: Prisma.SubscriptionPlanCreateNestedOneWithoutPurchasesInput
+  product?: Prisma.MonetizationProductCreateNestedOneWithoutPurchasesInput
+  chapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutPurchaseInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutPurchaseInput
+}
+
+export type PurchaseUncheckedCreateWithoutChapterEntitlementEntriesInput = {
+  id?: string
+  userId: string
+  walletId?: string | null
+  storyId?: string | null
+  subscriptionPlanId?: string | null
+  productId?: string | null
+  type: $Enums.PurchaseType
+  status?: $Enums.PurchaseStatus
+  amount: number
+  chapterNumber?: number | null
+  description?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  chapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutPurchaseInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutPurchaseInput
+}
+
+export type PurchaseCreateOrConnectWithoutChapterEntitlementEntriesInput = {
+  where: Prisma.PurchaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseCreateWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUncheckedCreateWithoutChapterEntitlementEntriesInput>
+}
+
+export type PurchaseUpsertWithoutChapterEntitlementEntriesInput = {
+  update: Prisma.XOR<Prisma.PurchaseUpdateWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUncheckedUpdateWithoutChapterEntitlementEntriesInput>
+  create: Prisma.XOR<Prisma.PurchaseCreateWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUncheckedCreateWithoutChapterEntitlementEntriesInput>
+  where?: Prisma.PurchaseWhereInput
+}
+
+export type PurchaseUpdateToOneWithWhereWithoutChapterEntitlementEntriesInput = {
+  where?: Prisma.PurchaseWhereInput
+  data: Prisma.XOR<Prisma.PurchaseUpdateWithoutChapterEntitlementEntriesInput, Prisma.PurchaseUncheckedUpdateWithoutChapterEntitlementEntriesInput>
+}
+
+export type PurchaseUpdateWithoutChapterEntitlementEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  chapterNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
+  story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
+  subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
+  chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
+}
+
+export type PurchaseUncheckedUpdateWithoutChapterEntitlementEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  chapterNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1205,6 +1483,7 @@ export type PurchaseCreateManyUserInput = {
   walletId?: string | null
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1228,7 +1507,9 @@ export type PurchaseUpdateWithoutUserInput = {
   wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
   story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
   subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
   chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1237,6 +1518,7 @@ export type PurchaseUncheckedUpdateWithoutUserInput = {
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1246,6 +1528,7 @@ export type PurchaseUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1254,6 +1537,7 @@ export type PurchaseUncheckedUpdateManyWithoutUserInput = {
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1269,6 +1553,7 @@ export type PurchaseCreateManyWalletInput = {
   userId: string
   storyId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1292,7 +1577,9 @@ export type PurchaseUpdateWithoutWalletInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
   story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
   subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
   chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1301,6 +1588,7 @@ export type PurchaseUncheckedUpdateWithoutWalletInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1310,6 +1598,7 @@ export type PurchaseUncheckedUpdateWithoutWalletInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1318,6 +1607,7 @@ export type PurchaseUncheckedUpdateManyWithoutWalletInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1333,6 +1623,7 @@ export type PurchaseCreateManyStoryInput = {
   userId: string
   walletId?: string | null
   subscriptionPlanId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1356,7 +1647,9 @@ export type PurchaseUpdateWithoutStoryInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
   subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
   chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1364,6 +1657,77 @@ export type PurchaseUncheckedUpdateWithoutStoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  chapterNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
+}
+
+export type PurchaseUncheckedUpdateManyWithoutStoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  chapterNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PurchaseCreateManyProductInput = {
+  id?: string
+  userId: string
+  walletId?: string | null
+  storyId?: string | null
+  subscriptionPlanId?: string | null
+  type: $Enums.PurchaseType
+  status?: $Enums.PurchaseStatus
+  amount: number
+  chapterNumber?: number | null
+  description?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PurchaseUpdateWithoutProductInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
+  status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  chapterNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
+  story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
+  subscriptionPlan?: Prisma.SubscriptionPlanUpdateOneWithoutPurchasesNestedInput
+  chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
+}
+
+export type PurchaseUncheckedUpdateWithoutProductInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
@@ -1374,13 +1738,15 @@ export type PurchaseUncheckedUpdateWithoutStoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
-export type PurchaseUncheckedUpdateManyWithoutStoryInput = {
+export type PurchaseUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
@@ -1397,6 +1763,7 @@ export type PurchaseCreateManySubscriptionPlanInput = {
   userId: string
   walletId?: string | null
   storyId?: string | null
+  productId?: string | null
   type: $Enums.PurchaseType
   status?: $Enums.PurchaseStatus
   amount: number
@@ -1420,7 +1787,9 @@ export type PurchaseUpdateWithoutSubscriptionPlanInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutPurchasesNestedInput
   story?: Prisma.StoryUpdateOneWithoutPurchasesNestedInput
+  product?: Prisma.MonetizationProductUpdateOneWithoutPurchasesNestedInput
   chapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1429,6 +1798,7 @@ export type PurchaseUncheckedUpdateWithoutSubscriptionPlanInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1438,6 +1808,7 @@ export type PurchaseUncheckedUpdateWithoutSubscriptionPlanInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutPurchaseNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutPurchaseNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutPurchaseNestedInput
 }
 
@@ -1446,6 +1817,7 @@ export type PurchaseUncheckedUpdateManyWithoutSubscriptionPlanInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   storyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumPurchaseTypeFieldUpdateOperationsInput | $Enums.PurchaseType
   status?: Prisma.EnumPurchaseStatusFieldUpdateOperationsInput | $Enums.PurchaseStatus
   amount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1463,11 +1835,13 @@ export type PurchaseUncheckedUpdateManyWithoutSubscriptionPlanInput = {
 
 export type PurchaseCountOutputType = {
   chapterAccess: number
+  chapterEntitlementEntries: number
   walletTransactions: number
 }
 
 export type PurchaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chapterAccess?: boolean | PurchaseCountOutputTypeCountChapterAccessArgs
+  chapterEntitlementEntries?: boolean | PurchaseCountOutputTypeCountChapterEntitlementEntriesArgs
   walletTransactions?: boolean | PurchaseCountOutputTypeCountWalletTransactionsArgs
 }
 
@@ -1491,6 +1865,13 @@ export type PurchaseCountOutputTypeCountChapterAccessArgs<ExtArgs extends runtim
 /**
  * PurchaseCountOutputType without action
  */
+export type PurchaseCountOutputTypeCountChapterEntitlementEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChapterEntitlementLedgerWhereInput
+}
+
+/**
+ * PurchaseCountOutputType without action
+ */
 export type PurchaseCountOutputTypeCountWalletTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WalletTransactionWhereInput
 }
@@ -1502,6 +1883,7 @@ export type PurchaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   walletId?: boolean
   storyId?: boolean
   subscriptionPlanId?: boolean
+  productId?: boolean
   type?: boolean
   status?: boolean
   amount?: boolean
@@ -1514,7 +1896,9 @@ export type PurchaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   wallet?: boolean | Prisma.Purchase$walletArgs<ExtArgs>
   story?: boolean | Prisma.Purchase$storyArgs<ExtArgs>
   subscriptionPlan?: boolean | Prisma.Purchase$subscriptionPlanArgs<ExtArgs>
+  product?: boolean | Prisma.Purchase$productArgs<ExtArgs>
   chapterAccess?: boolean | Prisma.Purchase$chapterAccessArgs<ExtArgs>
+  chapterEntitlementEntries?: boolean | Prisma.Purchase$chapterEntitlementEntriesArgs<ExtArgs>
   walletTransactions?: boolean | Prisma.Purchase$walletTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.PurchaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["purchase"]>
@@ -1525,6 +1909,7 @@ export type PurchaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   walletId?: boolean
   storyId?: boolean
   subscriptionPlanId?: boolean
+  productId?: boolean
   type?: boolean
   status?: boolean
   amount?: boolean
@@ -1537,6 +1922,7 @@ export type PurchaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   wallet?: boolean | Prisma.Purchase$walletArgs<ExtArgs>
   story?: boolean | Prisma.Purchase$storyArgs<ExtArgs>
   subscriptionPlan?: boolean | Prisma.Purchase$subscriptionPlanArgs<ExtArgs>
+  product?: boolean | Prisma.Purchase$productArgs<ExtArgs>
 }, ExtArgs["result"]["purchase"]>
 
 export type PurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1545,6 +1931,7 @@ export type PurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   walletId?: boolean
   storyId?: boolean
   subscriptionPlanId?: boolean
+  productId?: boolean
   type?: boolean
   status?: boolean
   amount?: boolean
@@ -1557,6 +1944,7 @@ export type PurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   wallet?: boolean | Prisma.Purchase$walletArgs<ExtArgs>
   story?: boolean | Prisma.Purchase$storyArgs<ExtArgs>
   subscriptionPlan?: boolean | Prisma.Purchase$subscriptionPlanArgs<ExtArgs>
+  product?: boolean | Prisma.Purchase$productArgs<ExtArgs>
 }, ExtArgs["result"]["purchase"]>
 
 export type PurchaseSelectScalar = {
@@ -1565,6 +1953,7 @@ export type PurchaseSelectScalar = {
   walletId?: boolean
   storyId?: boolean
   subscriptionPlanId?: boolean
+  productId?: boolean
   type?: boolean
   status?: boolean
   amount?: boolean
@@ -1575,13 +1964,15 @@ export type PurchaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "walletId" | "storyId" | "subscriptionPlanId" | "type" | "status" | "amount" | "chapterNumber" | "description" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["purchase"]>
+export type PurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "walletId" | "storyId" | "subscriptionPlanId" | "productId" | "type" | "status" | "amount" | "chapterNumber" | "description" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["purchase"]>
 export type PurchaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   wallet?: boolean | Prisma.Purchase$walletArgs<ExtArgs>
   story?: boolean | Prisma.Purchase$storyArgs<ExtArgs>
   subscriptionPlan?: boolean | Prisma.Purchase$subscriptionPlanArgs<ExtArgs>
+  product?: boolean | Prisma.Purchase$productArgs<ExtArgs>
   chapterAccess?: boolean | Prisma.Purchase$chapterAccessArgs<ExtArgs>
+  chapterEntitlementEntries?: boolean | Prisma.Purchase$chapterEntitlementEntriesArgs<ExtArgs>
   walletTransactions?: boolean | Prisma.Purchase$walletTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.PurchaseCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1590,12 +1981,14 @@ export type PurchaseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   wallet?: boolean | Prisma.Purchase$walletArgs<ExtArgs>
   story?: boolean | Prisma.Purchase$storyArgs<ExtArgs>
   subscriptionPlan?: boolean | Prisma.Purchase$subscriptionPlanArgs<ExtArgs>
+  product?: boolean | Prisma.Purchase$productArgs<ExtArgs>
 }
 export type PurchaseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   wallet?: boolean | Prisma.Purchase$walletArgs<ExtArgs>
   story?: boolean | Prisma.Purchase$storyArgs<ExtArgs>
   subscriptionPlan?: boolean | Prisma.Purchase$subscriptionPlanArgs<ExtArgs>
+  product?: boolean | Prisma.Purchase$productArgs<ExtArgs>
 }
 
 export type $PurchasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1605,7 +1998,9 @@ export type $PurchasePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     wallet: Prisma.$WalletPayload<ExtArgs> | null
     story: Prisma.$StoryPayload<ExtArgs> | null
     subscriptionPlan: Prisma.$SubscriptionPlanPayload<ExtArgs> | null
+    product: Prisma.$MonetizationProductPayload<ExtArgs> | null
     chapterAccess: Prisma.$PurchasedChapterAccessPayload<ExtArgs>[]
+    chapterEntitlementEntries: Prisma.$ChapterEntitlementLedgerPayload<ExtArgs>[]
     walletTransactions: Prisma.$WalletTransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1614,6 +2009,7 @@ export type $PurchasePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     walletId: string | null
     storyId: string | null
     subscriptionPlanId: string | null
+    productId: string | null
     type: $Enums.PurchaseType
     status: $Enums.PurchaseStatus
     amount: number
@@ -2020,7 +2416,9 @@ export interface Prisma__PurchaseClient<T, Null = never, ExtArgs extends runtime
   wallet<T extends Prisma.Purchase$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$walletArgs<ExtArgs>>): Prisma.Prisma__WalletClient<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   story<T extends Prisma.Purchase$storyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$storyArgs<ExtArgs>>): Prisma.Prisma__StoryClient<runtime.Types.Result.GetResult<Prisma.$StoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   subscriptionPlan<T extends Prisma.Purchase$subscriptionPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$subscriptionPlanArgs<ExtArgs>>): Prisma.Prisma__SubscriptionPlanClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  product<T extends Prisma.Purchase$productArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$productArgs<ExtArgs>>): Prisma.Prisma__MonetizationProductClient<runtime.Types.Result.GetResult<Prisma.$MonetizationProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   chapterAccess<T extends Prisma.Purchase$chapterAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$chapterAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasedChapterAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chapterEntitlementEntries<T extends Prisma.Purchase$chapterEntitlementEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$chapterEntitlementEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChapterEntitlementLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   walletTransactions<T extends Prisma.Purchase$walletTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$walletTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2056,6 +2454,7 @@ export interface PurchaseFieldRefs {
   readonly walletId: Prisma.FieldRef<"Purchase", 'String'>
   readonly storyId: Prisma.FieldRef<"Purchase", 'String'>
   readonly subscriptionPlanId: Prisma.FieldRef<"Purchase", 'String'>
+  readonly productId: Prisma.FieldRef<"Purchase", 'String'>
   readonly type: Prisma.FieldRef<"Purchase", 'PurchaseType'>
   readonly status: Prisma.FieldRef<"Purchase", 'PurchaseStatus'>
   readonly amount: Prisma.FieldRef<"Purchase", 'Int'>
@@ -2522,6 +2921,25 @@ export type Purchase$subscriptionPlanArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * Purchase.product
+ */
+export type Purchase$productArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MonetizationProduct
+   */
+  select?: Prisma.MonetizationProductSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MonetizationProduct
+   */
+  omit?: Prisma.MonetizationProductOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MonetizationProductInclude<ExtArgs> | null
+  where?: Prisma.MonetizationProductWhereInput
+}
+
+/**
  * Purchase.chapterAccess
  */
 export type Purchase$chapterAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2543,6 +2961,30 @@ export type Purchase$chapterAccessArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PurchasedChapterAccessScalarFieldEnum | Prisma.PurchasedChapterAccessScalarFieldEnum[]
+}
+
+/**
+ * Purchase.chapterEntitlementEntries
+ */
+export type Purchase$chapterEntitlementEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChapterEntitlementLedger
+   */
+  select?: Prisma.ChapterEntitlementLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChapterEntitlementLedger
+   */
+  omit?: Prisma.ChapterEntitlementLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChapterEntitlementLedgerInclude<ExtArgs> | null
+  where?: Prisma.ChapterEntitlementLedgerWhereInput
+  orderBy?: Prisma.ChapterEntitlementLedgerOrderByWithRelationInput | Prisma.ChapterEntitlementLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.ChapterEntitlementLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChapterEntitlementLedgerScalarFieldEnum | Prisma.ChapterEntitlementLedgerScalarFieldEnum[]
 }
 
 /**

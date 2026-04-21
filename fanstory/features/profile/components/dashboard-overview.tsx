@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpenText, Coins, LockKeyhole, Save } from "lucide-react";
+import { BookOpenText, Coins, Save, Sparkles } from "lucide-react";
 import type { DashboardView } from "@/entities/user/types";
 import { EmptyState } from "@/components/shared/empty-state";
 import { MetricCard } from "@/components/shared/metric-card";
@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getI18n } from "@/lib/i18n/server";
-import { formatCredits, formatRelativeDate } from "@/lib/utils";
+import { formatCalendarDate, formatRelativeDate } from "@/lib/utils";
 
 type DashboardOverviewProps = {
   data: DashboardView;
@@ -49,19 +49,19 @@ export async function DashboardOverview({ data }: DashboardOverviewProps) {
           icon={<Save className="size-4 text-slate-500" />}
         />
         <MetricCard
-          label={t("dashboard.metrics.balance.label")}
-          value={formatCredits(data.balance, locale)}
-          hint={t("dashboard.metrics.balance.hint")}
+          label={t("dashboard.metrics.availableChapters.label")}
+          value={data.availableChapters.toString()}
+          hint={t("dashboard.metrics.availableChapters.hint")}
           icon={<Coins className="size-4 text-slate-500" />}
         />
         <MetricCard
-          label={t("dashboard.metrics.premiumAccess.label")}
-          value={data.purchasedChapterCount.toString()}
+          label={t("dashboard.metrics.subscriptionToday.label")}
+          value={data.subscriptionRemainingToday.toString()}
           hint={
             data.activeSubscriptionName ??
             t("common.states.noActiveSubscription")
           }
-          icon={<LockKeyhole className="size-4 text-slate-500" />}
+          icon={<Sparkles className="size-4 text-slate-500" />}
         />
       </div>
 
@@ -139,19 +139,39 @@ export async function DashboardOverview({ data }: DashboardOverviewProps) {
                 {data.userEmail ?? t("common.states.noEmail")}
               </p>
             </div>
-            <div className="space-y-1">
-              <p className="text-xs font-semibold tracking-[0.22em] text-slate-500 uppercase">
-                {t("common.labels.subscription")}
-              </p>
-              {data.activeSubscriptionName ? (
-                <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
-                  {data.activeSubscriptionName}
-                </Badge>
-              ) : (
-                <Badge variant="secondary">
-                  {t("common.states.noActivePlan")}
-                </Badge>
-              )}
+            <div className="rounded-3xl border border-slate-200/80 p-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-xs font-semibold tracking-[0.22em] text-slate-500 uppercase">
+                  {t("common.labels.subscription")}
+                </p>
+                {data.activeSubscriptionName ? (
+                  <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
+                    {data.activeSubscriptionName}
+                  </Badge>
+                ) : (
+                  <Badge variant="secondary">
+                    {t("common.states.noActivePlan")}
+                  </Badge>
+                )}
+              </div>
+              <div className="mt-4 grid gap-3 text-sm text-slate-600">
+                <p>
+                  {t("dashboard.profileStatus.welcomeBalance", {
+                    count: data.welcomeChapterBalance,
+                  })}
+                </p>
+                <p>
+                  {t("dashboard.profileStatus.purchasedBalance", {
+                    count: data.purchasedChapterBalance,
+                  })}
+                </p>
+                <p>
+                  {t("dashboard.profileStatus.subscriptionBalance", {
+                    count: data.subscriptionRemainingToday,
+                    date: formatCalendarDate(data.dailyResetAt, locale),
+                  })}
+                </p>
+              </div>
             </div>
             <div className="space-y-3">
               <p className="text-xs font-semibold tracking-[0.22em] text-slate-500 uppercase">

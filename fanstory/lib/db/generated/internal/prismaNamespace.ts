@@ -397,10 +397,13 @@ export const ModelName = {
   StoryChoice: 'StoryChoice',
   StoryDecision: 'StoryDecision',
   Save: 'Save',
+  MonetizationProduct: 'MonetizationProduct',
   SubscriptionPlan: 'SubscriptionPlan',
   Subscription: 'Subscription',
   Purchase: 'Purchase',
   PurchasedChapterAccess: 'PurchasedChapterAccess',
+  RewardedAdGrant: 'RewardedAdGrant',
+  ChapterEntitlementLedger: 'ChapterEntitlementLedger',
   GenerationLog: 'GenerationLog'
 } as const
 
@@ -417,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "wallet" | "walletTransaction" | "story" | "storyRun" | "storyChapter" | "storyChoice" | "storyDecision" | "save" | "subscriptionPlan" | "subscription" | "purchase" | "purchasedChapterAccess" | "generationLog"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "wallet" | "walletTransaction" | "story" | "storyRun" | "storyChapter" | "storyChoice" | "storyDecision" | "save" | "monetizationProduct" | "subscriptionPlan" | "subscription" | "purchase" | "purchasedChapterAccess" | "rewardedAdGrant" | "chapterEntitlementLedger" | "generationLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1383,6 +1386,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MonetizationProduct: {
+      payload: Prisma.$MonetizationProductPayload<ExtArgs>
+      fields: Prisma.MonetizationProductFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MonetizationProductFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MonetizationProductFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>
+        }
+        findFirst: {
+          args: Prisma.MonetizationProductFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MonetizationProductFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>
+        }
+        findMany: {
+          args: Prisma.MonetizationProductFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>[]
+        }
+        create: {
+          args: Prisma.MonetizationProductCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>
+        }
+        createMany: {
+          args: Prisma.MonetizationProductCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MonetizationProductCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>[]
+        }
+        delete: {
+          args: Prisma.MonetizationProductDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>
+        }
+        update: {
+          args: Prisma.MonetizationProductUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>
+        }
+        deleteMany: {
+          args: Prisma.MonetizationProductDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MonetizationProductUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MonetizationProductUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>[]
+        }
+        upsert: {
+          args: Prisma.MonetizationProductUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonetizationProductPayload>
+        }
+        aggregate: {
+          args: Prisma.MonetizationProductAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMonetizationProduct>
+        }
+        groupBy: {
+          args: Prisma.MonetizationProductGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MonetizationProductGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MonetizationProductCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MonetizationProductCountAggregateOutputType> | number
+        }
+      }
+    }
     SubscriptionPlan: {
       payload: Prisma.$SubscriptionPlanPayload<ExtArgs>
       fields: Prisma.SubscriptionPlanFieldRefs
@@ -1676,6 +1753,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PurchasedChapterAccessCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PurchasedChapterAccessCountAggregateOutputType> | number
+        }
+      }
+    }
+    RewardedAdGrant: {
+      payload: Prisma.$RewardedAdGrantPayload<ExtArgs>
+      fields: Prisma.RewardedAdGrantFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RewardedAdGrantFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RewardedAdGrantFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>
+        }
+        findFirst: {
+          args: Prisma.RewardedAdGrantFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RewardedAdGrantFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>
+        }
+        findMany: {
+          args: Prisma.RewardedAdGrantFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>[]
+        }
+        create: {
+          args: Prisma.RewardedAdGrantCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>
+        }
+        createMany: {
+          args: Prisma.RewardedAdGrantCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RewardedAdGrantCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>[]
+        }
+        delete: {
+          args: Prisma.RewardedAdGrantDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>
+        }
+        update: {
+          args: Prisma.RewardedAdGrantUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>
+        }
+        deleteMany: {
+          args: Prisma.RewardedAdGrantDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RewardedAdGrantUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RewardedAdGrantUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>[]
+        }
+        upsert: {
+          args: Prisma.RewardedAdGrantUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardedAdGrantPayload>
+        }
+        aggregate: {
+          args: Prisma.RewardedAdGrantAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRewardedAdGrant>
+        }
+        groupBy: {
+          args: Prisma.RewardedAdGrantGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewardedAdGrantGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RewardedAdGrantCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewardedAdGrantCountAggregateOutputType> | number
+        }
+      }
+    }
+    ChapterEntitlementLedger: {
+      payload: Prisma.$ChapterEntitlementLedgerPayload<ExtArgs>
+      fields: Prisma.ChapterEntitlementLedgerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChapterEntitlementLedgerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChapterEntitlementLedgerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>
+        }
+        findFirst: {
+          args: Prisma.ChapterEntitlementLedgerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChapterEntitlementLedgerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>
+        }
+        findMany: {
+          args: Prisma.ChapterEntitlementLedgerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>[]
+        }
+        create: {
+          args: Prisma.ChapterEntitlementLedgerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>
+        }
+        createMany: {
+          args: Prisma.ChapterEntitlementLedgerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChapterEntitlementLedgerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>[]
+        }
+        delete: {
+          args: Prisma.ChapterEntitlementLedgerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>
+        }
+        update: {
+          args: Prisma.ChapterEntitlementLedgerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChapterEntitlementLedgerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChapterEntitlementLedgerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChapterEntitlementLedgerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>[]
+        }
+        upsert: {
+          args: Prisma.ChapterEntitlementLedgerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChapterEntitlementLedgerPayload>
+        }
+        aggregate: {
+          args: Prisma.ChapterEntitlementLedgerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChapterEntitlementLedger>
+        }
+        groupBy: {
+          args: Prisma.ChapterEntitlementLedgerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChapterEntitlementLedgerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChapterEntitlementLedgerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChapterEntitlementLedgerCountAggregateOutputType> | number
         }
       }
     }
@@ -1992,6 +2217,27 @@ export const SaveScalarFieldEnum = {
 export type SaveScalarFieldEnum = (typeof SaveScalarFieldEnum)[keyof typeof SaveScalarFieldEnum]
 
 
+export const MonetizationProductScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  type: 'type',
+  status: 'status',
+  name: 'name',
+  description: 'description',
+  priceRubles: 'priceRubles',
+  currency: 'currency',
+  interval: 'interval',
+  chapterAmount: 'chapterAmount',
+  dailyChapterLimit: 'dailyChapterLimit',
+  isPriceFinal: 'isPriceFinal',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MonetizationProductScalarFieldEnum = (typeof MonetizationProductScalarFieldEnum)[keyof typeof MonetizationProductScalarFieldEnum]
+
+
 export const SubscriptionPlanScalarFieldEnum = {
   id: 'id',
   code: 'code',
@@ -2014,6 +2260,7 @@ export const SubscriptionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   planId: 'planId',
+  productId: 'productId',
   status: 'status',
   startsAt: 'startsAt',
   endsAt: 'endsAt',
@@ -2033,6 +2280,7 @@ export const PurchaseScalarFieldEnum = {
   walletId: 'walletId',
   storyId: 'storyId',
   subscriptionPlanId: 'subscriptionPlanId',
+  productId: 'productId',
   type: 'type',
   status: 'status',
   amount: 'amount',
@@ -2058,6 +2306,44 @@ export const PurchasedChapterAccessScalarFieldEnum = {
 } as const
 
 export type PurchasedChapterAccessScalarFieldEnum = (typeof PurchasedChapterAccessScalarFieldEnum)[keyof typeof PurchasedChapterAccessScalarFieldEnum]
+
+
+export const RewardedAdGrantScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  status: 'status',
+  verificationKey: 'verificationKey',
+  grantQuantity: 'grantQuantity',
+  metadata: 'metadata',
+  consumedAt: 'consumedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RewardedAdGrantScalarFieldEnum = (typeof RewardedAdGrantScalarFieldEnum)[keyof typeof RewardedAdGrantScalarFieldEnum]
+
+
+export const ChapterEntitlementLedgerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purchaseId: 'purchaseId',
+  subscriptionId: 'subscriptionId',
+  rewardedAdGrantId: 'rewardedAdGrantId',
+  eventType: 'eventType',
+  source: 'source',
+  quantity: 'quantity',
+  storyId: 'storyId',
+  storyRunId: 'storyRunId',
+  chapterNumber: 'chapterNumber',
+  effectiveDate: 'effectiveDate',
+  dedupKey: 'dedupKey',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ChapterEntitlementLedgerScalarFieldEnum = (typeof ChapterEntitlementLedgerScalarFieldEnum)[keyof typeof ChapterEntitlementLedgerScalarFieldEnum]
 
 
 export const GenerationLogScalarFieldEnum = {
@@ -2316,16 +2602,30 @@ export type ListEnumChapterAccessModeFieldRefInput<$PrismaModel> = FieldRefInput
 
 
 /**
- * Reference to a field of type 'SubscriptionPlanStatus'
+ * Reference to a field of type 'MonetizationProductType'
  */
-export type EnumSubscriptionPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionPlanStatus'>
+export type EnumMonetizationProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonetizationProductType'>
     
 
 
 /**
- * Reference to a field of type 'SubscriptionPlanStatus[]'
+ * Reference to a field of type 'MonetizationProductType[]'
  */
-export type ListEnumSubscriptionPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionPlanStatus[]'>
+export type ListEnumMonetizationProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonetizationProductType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MonetizationProductStatus'
+ */
+export type EnumMonetizationProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonetizationProductStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MonetizationProductStatus[]'
+ */
+export type ListEnumMonetizationProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonetizationProductStatus[]'>
     
 
 
@@ -2340,6 +2640,20 @@ export type EnumSubscriptionIntervalFieldRefInput<$PrismaModel> = FieldRefInputT
  * Reference to a field of type 'SubscriptionInterval[]'
  */
 export type ListEnumSubscriptionIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionInterval[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SubscriptionPlanStatus'
+ */
+export type EnumSubscriptionPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionPlanStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SubscriptionPlanStatus[]'
+ */
+export type ListEnumSubscriptionPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionPlanStatus[]'>
     
 
 
@@ -2382,6 +2696,62 @@ export type EnumPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'PurchaseStatus[]'
  */
 export type ListEnumPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RewardedAdProvider'
+ */
+export type EnumRewardedAdProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardedAdProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'RewardedAdProvider[]'
+ */
+export type ListEnumRewardedAdProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardedAdProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RewardedAdGrantStatus'
+ */
+export type EnumRewardedAdGrantStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardedAdGrantStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RewardedAdGrantStatus[]'
+ */
+export type ListEnumRewardedAdGrantStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardedAdGrantStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ChapterEntitlementEventType'
+ */
+export type EnumChapterEntitlementEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChapterEntitlementEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'ChapterEntitlementEventType[]'
+ */
+export type ListEnumChapterEntitlementEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChapterEntitlementEventType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ChapterEntitlementSource'
+ */
+export type EnumChapterEntitlementSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChapterEntitlementSource'>
+    
+
+
+/**
+ * Reference to a field of type 'ChapterEntitlementSource[]'
+ */
+export type ListEnumChapterEntitlementSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChapterEntitlementSource[]'>
     
 
 
@@ -2520,10 +2890,13 @@ export type GlobalOmitConfig = {
   storyChoice?: Prisma.StoryChoiceOmit
   storyDecision?: Prisma.StoryDecisionOmit
   save?: Prisma.SaveOmit
+  monetizationProduct?: Prisma.MonetizationProductOmit
   subscriptionPlan?: Prisma.SubscriptionPlanOmit
   subscription?: Prisma.SubscriptionOmit
   purchase?: Prisma.PurchaseOmit
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessOmit
+  rewardedAdGrant?: Prisma.RewardedAdGrantOmit
+  chapterEntitlementLedger?: Prisma.ChapterEntitlementLedgerOmit
   generationLog?: Prisma.GenerationLogOmit
 }
 

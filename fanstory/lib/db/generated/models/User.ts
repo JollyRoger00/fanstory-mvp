@@ -225,6 +225,8 @@ export type UserWhereInput = {
   purchases?: Prisma.PurchaseListRelationFilter
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerListRelationFilter
+  rewardedAdGrants?: Prisma.RewardedAdGrantListRelationFilter
   generationLogs?: Prisma.GenerationLogListRelationFilter
 }
 
@@ -249,6 +251,8 @@ export type UserOrderByWithRelationInput = {
   purchases?: Prisma.PurchaseOrderByRelationAggregateInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerOrderByRelationAggregateInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantOrderByRelationAggregateInput
   generationLogs?: Prisma.GenerationLogOrderByRelationAggregateInput
 }
 
@@ -276,6 +280,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   purchases?: Prisma.PurchaseListRelationFilter
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerListRelationFilter
+  rewardedAdGrants?: Prisma.RewardedAdGrantListRelationFilter
   generationLogs?: Prisma.GenerationLogListRelationFilter
 }, "id" | "email">
 
@@ -330,6 +336,8 @@ export type UserCreateInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -354,6 +362,8 @@ export type UserUncheckedCreateInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -378,6 +388,8 @@ export type UserUpdateInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -402,6 +414,8 @@ export type UserUncheckedUpdateInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -660,6 +674,34 @@ export type UserUpdateOneRequiredWithoutPurchasedChapterAccessNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPurchasedChapterAccessInput, Prisma.UserUpdateWithoutPurchasedChapterAccessInput>, Prisma.UserUncheckedUpdateWithoutPurchasedChapterAccessInput>
 }
 
+export type UserCreateNestedOneWithoutRewardedAdGrantsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRewardedAdGrantsInput, Prisma.UserUncheckedCreateWithoutRewardedAdGrantsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRewardedAdGrantsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRewardedAdGrantsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRewardedAdGrantsInput, Prisma.UserUncheckedCreateWithoutRewardedAdGrantsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRewardedAdGrantsInput
+  upsert?: Prisma.UserUpsertWithoutRewardedAdGrantsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRewardedAdGrantsInput, Prisma.UserUpdateWithoutRewardedAdGrantsInput>, Prisma.UserUncheckedUpdateWithoutRewardedAdGrantsInput>
+}
+
+export type UserCreateNestedOneWithoutChapterEntitlementEntriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChapterEntitlementEntriesInput, Prisma.UserUncheckedCreateWithoutChapterEntitlementEntriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChapterEntitlementEntriesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutChapterEntitlementEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChapterEntitlementEntriesInput, Prisma.UserUncheckedCreateWithoutChapterEntitlementEntriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChapterEntitlementEntriesInput
+  upsert?: Prisma.UserUpsertWithoutChapterEntitlementEntriesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChapterEntitlementEntriesInput, Prisma.UserUpdateWithoutChapterEntitlementEntriesInput>, Prisma.UserUncheckedUpdateWithoutChapterEntitlementEntriesInput>
+}
+
 export type UserCreateNestedOneWithoutGenerationLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutGenerationLogsInput, Prisma.UserUncheckedCreateWithoutGenerationLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutGenerationLogsInput
@@ -694,6 +736,8 @@ export type UserCreateWithoutAccountsInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -717,6 +761,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -756,6 +802,8 @@ export type UserUpdateWithoutAccountsInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -779,6 +827,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -802,6 +852,8 @@ export type UserCreateWithoutSessionsInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -825,6 +877,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -864,6 +918,8 @@ export type UserUpdateWithoutSessionsInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -887,6 +943,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -910,6 +968,8 @@ export type UserCreateWithoutAuthenticatorsInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -933,6 +993,8 @@ export type UserUncheckedCreateWithoutAuthenticatorsInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -972,6 +1034,8 @@ export type UserUpdateWithoutAuthenticatorsInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -995,6 +1059,8 @@ export type UserUncheckedUpdateWithoutAuthenticatorsInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1018,6 +1084,8 @@ export type UserCreateWithoutWalletInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1041,6 +1109,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1080,6 +1150,8 @@ export type UserUpdateWithoutWalletInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1103,6 +1175,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1126,6 +1200,8 @@ export type UserCreateWithoutWalletTransactionsInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1149,6 +1225,8 @@ export type UserUncheckedCreateWithoutWalletTransactionsInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1188,6 +1266,8 @@ export type UserUpdateWithoutWalletTransactionsInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1211,6 +1291,8 @@ export type UserUncheckedUpdateWithoutWalletTransactionsInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1234,6 +1316,8 @@ export type UserCreateWithoutStoriesInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1257,6 +1341,8 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1296,6 +1382,8 @@ export type UserUpdateWithoutStoriesInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1319,6 +1407,8 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1342,6 +1432,8 @@ export type UserCreateWithoutStoryRunsInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1365,6 +1457,8 @@ export type UserUncheckedCreateWithoutStoryRunsInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1404,6 +1498,8 @@ export type UserUpdateWithoutStoryRunsInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1427,6 +1523,8 @@ export type UserUncheckedUpdateWithoutStoryRunsInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1450,6 +1548,8 @@ export type UserCreateWithoutSavesInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1473,6 +1573,8 @@ export type UserUncheckedCreateWithoutSavesInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1512,6 +1614,8 @@ export type UserUpdateWithoutSavesInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1535,6 +1639,8 @@ export type UserUncheckedUpdateWithoutSavesInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1558,6 +1664,8 @@ export type UserCreateWithoutSubscriptionsInput = {
   saves?: Prisma.SaveCreateNestedManyWithoutUserInput
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1581,6 +1689,8 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1620,6 +1730,8 @@ export type UserUpdateWithoutSubscriptionsInput = {
   saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1643,6 +1755,8 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1666,6 +1780,8 @@ export type UserCreateWithoutPurchasesInput = {
   saves?: Prisma.SaveCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1689,6 +1805,8 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1728,6 +1846,8 @@ export type UserUpdateWithoutPurchasesInput = {
   saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1751,6 +1871,8 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1774,6 +1896,8 @@ export type UserCreateWithoutPurchasedChapterAccessInput = {
   saves?: Prisma.SaveCreateNestedManyWithoutUserInput
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
 }
 
@@ -1797,6 +1921,8 @@ export type UserUncheckedCreateWithoutPurchasedChapterAccessInput = {
   saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1836,6 +1962,8 @@ export type UserUpdateWithoutPurchasedChapterAccessInput = {
   saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1859,6 +1987,240 @@ export type UserUncheckedUpdateWithoutPurchasedChapterAccessInput = {
   saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRewardedAdGrantsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRewardedAdGrantsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunUncheckedCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRewardedAdGrantsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRewardedAdGrantsInput, Prisma.UserUncheckedCreateWithoutRewardedAdGrantsInput>
+}
+
+export type UserUpsertWithoutRewardedAdGrantsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRewardedAdGrantsInput, Prisma.UserUncheckedUpdateWithoutRewardedAdGrantsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRewardedAdGrantsInput, Prisma.UserUncheckedCreateWithoutRewardedAdGrantsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRewardedAdGrantsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRewardedAdGrantsInput, Prisma.UserUncheckedUpdateWithoutRewardedAdGrantsInput>
+}
+
+export type UserUpdateWithoutRewardedAdGrantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRewardedAdGrantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUncheckedUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutChapterEntitlementEntriesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutChapterEntitlementEntriesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunUncheckedCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutChapterEntitlementEntriesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutChapterEntitlementEntriesInput, Prisma.UserUncheckedCreateWithoutChapterEntitlementEntriesInput>
+}
+
+export type UserUpsertWithoutChapterEntitlementEntriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutChapterEntitlementEntriesInput, Prisma.UserUncheckedUpdateWithoutChapterEntitlementEntriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutChapterEntitlementEntriesInput, Prisma.UserUncheckedCreateWithoutChapterEntitlementEntriesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutChapterEntitlementEntriesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutChapterEntitlementEntriesInput, Prisma.UserUncheckedUpdateWithoutChapterEntitlementEntriesInput>
+}
+
+export type UserUpdateWithoutChapterEntitlementEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutChapterEntitlementEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUncheckedUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1883,6 +2245,8 @@ export type UserCreateWithoutGenerationLogsInput = {
   purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGenerationLogsInput = {
@@ -1906,6 +2270,8 @@ export type UserUncheckedCreateWithoutGenerationLogsInput = {
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGenerationLogsInput = {
@@ -1945,6 +2311,8 @@ export type UserUpdateWithoutGenerationLogsInput = {
   purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGenerationLogsInput = {
@@ -1968,6 +2336,8 @@ export type UserUncheckedUpdateWithoutGenerationLogsInput = {
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1986,6 +2356,8 @@ export type UserCountOutputType = {
   purchases: number
   purchasedChapterAccess: number
   subscriptions: number
+  chapterEntitlementEntries: number
+  rewardedAdGrants: number
   generationLogs: number
 }
 
@@ -2000,6 +2372,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   purchases?: boolean | UserCountOutputTypeCountPurchasesArgs
   purchasedChapterAccess?: boolean | UserCountOutputTypeCountPurchasedChapterAccessArgs
   subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
+  chapterEntitlementEntries?: boolean | UserCountOutputTypeCountChapterEntitlementEntriesArgs
+  rewardedAdGrants?: boolean | UserCountOutputTypeCountRewardedAdGrantsArgs
   generationLogs?: boolean | UserCountOutputTypeCountGenerationLogsArgs
 }
 
@@ -2086,6 +2460,20 @@ export type UserCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountChapterEntitlementEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChapterEntitlementLedgerWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRewardedAdGrantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RewardedAdGrantWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountGenerationLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.GenerationLogWhereInput
 }
@@ -2112,6 +2500,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>
   purchasedChapterAccess?: boolean | Prisma.User$purchasedChapterAccessArgs<ExtArgs>
   subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
+  chapterEntitlementEntries?: boolean | Prisma.User$chapterEntitlementEntriesArgs<ExtArgs>
+  rewardedAdGrants?: boolean | Prisma.User$rewardedAdGrantsArgs<ExtArgs>
   generationLogs?: boolean | Prisma.User$generationLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -2165,6 +2555,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>
   purchasedChapterAccess?: boolean | Prisma.User$purchasedChapterAccessArgs<ExtArgs>
   subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
+  chapterEntitlementEntries?: boolean | Prisma.User$chapterEntitlementEntriesArgs<ExtArgs>
+  rewardedAdGrants?: boolean | Prisma.User$rewardedAdGrantsArgs<ExtArgs>
   generationLogs?: boolean | Prisma.User$generationLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2185,6 +2577,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     purchases: Prisma.$PurchasePayload<ExtArgs>[]
     purchasedChapterAccess: Prisma.$PurchasedChapterAccessPayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    chapterEntitlementEntries: Prisma.$ChapterEntitlementLedgerPayload<ExtArgs>[]
+    rewardedAdGrants: Prisma.$RewardedAdGrantPayload<ExtArgs>[]
     generationLogs: Prisma.$GenerationLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2602,6 +2996,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   purchases<T extends Prisma.User$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchasedChapterAccess<T extends Prisma.User$purchasedChapterAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchasedChapterAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasedChapterAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.User$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chapterEntitlementEntries<T extends Prisma.User$chapterEntitlementEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chapterEntitlementEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChapterEntitlementLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rewardedAdGrants<T extends Prisma.User$rewardedAdGrantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rewardedAdGrantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RewardedAdGrantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   generationLogs<T extends Prisma.User$generationLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$generationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GenerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3290,6 +3686,54 @@ export type User$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.chapterEntitlementEntries
+ */
+export type User$chapterEntitlementEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChapterEntitlementLedger
+   */
+  select?: Prisma.ChapterEntitlementLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChapterEntitlementLedger
+   */
+  omit?: Prisma.ChapterEntitlementLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChapterEntitlementLedgerInclude<ExtArgs> | null
+  where?: Prisma.ChapterEntitlementLedgerWhereInput
+  orderBy?: Prisma.ChapterEntitlementLedgerOrderByWithRelationInput | Prisma.ChapterEntitlementLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.ChapterEntitlementLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChapterEntitlementLedgerScalarFieldEnum | Prisma.ChapterEntitlementLedgerScalarFieldEnum[]
+}
+
+/**
+ * User.rewardedAdGrants
+ */
+export type User$rewardedAdGrantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RewardedAdGrant
+   */
+  select?: Prisma.RewardedAdGrantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RewardedAdGrant
+   */
+  omit?: Prisma.RewardedAdGrantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RewardedAdGrantInclude<ExtArgs> | null
+  where?: Prisma.RewardedAdGrantWhereInput
+  orderBy?: Prisma.RewardedAdGrantOrderByWithRelationInput | Prisma.RewardedAdGrantOrderByWithRelationInput[]
+  cursor?: Prisma.RewardedAdGrantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RewardedAdGrantScalarFieldEnum | Prisma.RewardedAdGrantScalarFieldEnum[]
 }
 
 /**

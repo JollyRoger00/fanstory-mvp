@@ -14,7 +14,7 @@ Route composition, server components, layouts and top-level page assembly.
 
 Rules:
 
-- no direct wallet math
+- no direct entitlement math
 - no entitlement decisions
 - no provider-specific generation logic
 
@@ -51,8 +51,9 @@ This is where the real product logic lives:
 - story creation
 - story continuation
 - chapter access evaluation
-- chapter purchase flow
-- wallet ledger updates
+- chapter pack purchase flow
+- entitlement ledger updates
+- rewarded ad grants
 - subscription coverage
 - dashboard aggregation
 - save creation
@@ -104,8 +105,8 @@ Stores:
 - title
 - summary
 - full content
-- access mode
-- price
+
+Generated chapters are rereadable for free. Monetization gates the next generation step, not the already-persisted chapter content.
 
 ### `StoryChoice`
 
@@ -121,33 +122,49 @@ This is the history spine for future analytics, recap and branching support.
 
 ## Monetization Design
 
-### Wallet
+### Product catalog
 
-`Wallet` and `WalletTransaction` form a ledger-driven balance model.
+`MonetizationProduct` is the server-owned catalog for:
 
-UI pages never mutate balances directly.
+- chapter packs
+- subscription plans
+
+Prices and quotas are seeded centrally and never hardcoded inside UI components.
+
+### Entitlements
+
+`ChapterEntitlementLedger` is the auditable source of truth for chapter access.
+
+It stores append-only grants and consumes for:
+
+- welcome access
+- daily subscription access
+- purchased packs
+- rewarded ads
+
+The access service uses one predictable order:
+
+1. welcome grant
+2. daily subscription quota
+3. purchased chapter packs
+4. rewarded ad unlocks
 
 ### Purchases
 
-`Purchase` is the commerce event.
+`Purchase` is the commerce event. It can point to either a chapter pack or a subscription product.
 
-`PurchasedChapterAccess` is the entitlement outcome for premium chapter unlocks.
-
-This separation is deliberate:
-
-- payments/providers produce purchases
-- purchases grant entitlements
-- access service consumes entitlements
+Purchases grant ledger entries. The reader never mutates balances or grants access directly.
 
 ### Subscriptions
 
-`SubscriptionPlan` and `Subscription` are modeled separately from the chapter UI.
+`Subscription` is modeled separately from the chapter UI.
 
-The reader only asks the access service whether the next chapter is available. It does not know whether the reason is:
+The reader only asks the access service whether the next chapter is available. It does not know whether the source is:
 
-- free tier
-- direct purchase
-- active subscription
+- welcome chapters
+- daily subscription chapters
+- chapter packs
+- rewarded ad unlocks
 
 ## AI Provider Abstraction
 

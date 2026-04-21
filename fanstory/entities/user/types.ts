@@ -3,9 +3,12 @@ export type DashboardView = {
   userEmail: string | null;
   storyCount: number;
   saveCount: number;
-  balance: number;
-  purchasedChapterCount: number;
+  availableChapters: number;
+  purchasedChapterBalance: number;
+  welcomeChapterBalance: number;
+  subscriptionRemainingToday: number;
   activeSubscriptionName: string | null;
+  dailyResetAt: Date;
   recentStories: {
     id: string;
     title: string;

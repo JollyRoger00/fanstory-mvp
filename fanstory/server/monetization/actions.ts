@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/server/auth/session";
-import { purchaseChapterPack } from "@/server/purchases/purchase.service";
+import { claimRewardedAdChapter } from "@/server/monetization/rewarded-ad.service";
 
 function revalidateMonetizationViews(storyId?: string) {
   revalidatePath("/dashboard");
@@ -18,13 +18,11 @@ function revalidateMonetizationViews(storyId?: string) {
   revalidatePath(`/stories/${storyId}/read`);
 }
 
-export async function purchaseChapterPackAction(formData: FormData) {
+export async function claimRewardedAdChapterAction(formData: FormData) {
   const user = await requireUser();
   const storyId = formData.get("storyId")?.toString();
 
-  await purchaseChapterPack(user.id, {
-    productId: formData.get("productId"),
-  });
+  await claimRewardedAdChapter(user.id);
 
   revalidateMonetizationViews(storyId);
 }

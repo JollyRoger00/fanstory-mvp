@@ -517,11 +517,6 @@ export type SubscriptionPlanSumOrderByAggregateInput = {
   chapterDiscountPercent?: Prisma.SortOrder
 }
 
-export type SubscriptionPlanScalarRelationFilter = {
-  is?: Prisma.SubscriptionPlanWhereInput
-  isNot?: Prisma.SubscriptionPlanWhereInput
-}
-
 export type SubscriptionPlanNullableScalarRelationFilter = {
   is?: Prisma.SubscriptionPlanWhereInput | null
   isNot?: Prisma.SubscriptionPlanWhereInput | null
@@ -541,10 +536,12 @@ export type SubscriptionPlanCreateNestedOneWithoutSubscriptionsInput = {
   connect?: Prisma.SubscriptionPlanWhereUniqueInput
 }
 
-export type SubscriptionPlanUpdateOneRequiredWithoutSubscriptionsNestedInput = {
+export type SubscriptionPlanUpdateOneWithoutSubscriptionsNestedInput = {
   create?: Prisma.XOR<Prisma.SubscriptionPlanCreateWithoutSubscriptionsInput, Prisma.SubscriptionPlanUncheckedCreateWithoutSubscriptionsInput>
   connectOrCreate?: Prisma.SubscriptionPlanCreateOrConnectWithoutSubscriptionsInput
   upsert?: Prisma.SubscriptionPlanUpsertWithoutSubscriptionsInput
+  disconnect?: Prisma.SubscriptionPlanWhereInput | boolean
+  delete?: Prisma.SubscriptionPlanWhereInput | boolean
   connect?: Prisma.SubscriptionPlanWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionPlanUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.SubscriptionPlanUpdateWithoutSubscriptionsInput>, Prisma.SubscriptionPlanUncheckedUpdateWithoutSubscriptionsInput>
 }

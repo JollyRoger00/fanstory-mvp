@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InfoHint } from "@/components/shared/info-hint";
 import { getI18n } from "@/lib/i18n/server";
-import { formatCalendarDate, formatCredits } from "@/lib/utils";
+import { formatCalendarDate, formatRubles } from "@/lib/utils";
 
 type SubscriptionPlansProps = {
   data: SubscriptionOverview;
@@ -23,9 +23,6 @@ export async function SubscriptionPlans({
   const statusLabels = raw<Record<string, string>>(
     "common.enums.subscriptionStatus",
   );
-  const planDescriptions = raw<Record<string, string>>(
-    "subscriptions.planDescriptions",
-  );
 
   return (
     <div className="space-y-6">
@@ -38,22 +35,35 @@ export async function SubscriptionPlans({
             <InfoHint label={t("subscriptions.tooltips.currentPlan")} />
           </div>
         </CardHeader>
-        <CardContent className="space-y-2">
-          {data.activePlanName ? (
+        <CardContent className="space-y-3">
+          {data.activeSubscription ? (
             <>
               <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
-                {data.activePlanName}
+                {data.activeSubscription.name}
               </Badge>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-600">
                 {t("subscriptions.statusLine", {
-                  status: data.status
-                    ? (statusLabels[data.status] ?? data.status)
-                    : t("common.states.active"),
-                  endsAt: data.endsAt
+                  status:
+                    statusLabels[data.activeSubscription.status] ??
+                    data.activeSubscription.status,
+                  endsAt: data.activeSubscription.endsAt
                     ? t("subscriptions.statusEndsAt", {
-                        date: formatCalendarDate(data.endsAt, locale),
+                        date: formatCalendarDate(
+                          data.activeSubscription.endsAt,
+                          locale,
+                        ),
                       })
                     : "",
+                })}
+              </p>
+              <p className="text-sm text-slate-600">
+                {t("subscriptions.dailyRemaining", {
+                  count: data.activeSubscription.remainingToday,
+                })}
+              </p>
+              <p className="text-xs text-slate-500">
+                {t("subscriptions.dailyReset", {
+                  date: formatCalendarDate(data.dailyResetAt, locale),
                 })}
               </p>
             </>
@@ -77,43 +87,40 @@ export async function SubscriptionPlans({
                   {plan.name}
                 </CardTitle>
                 <Badge className="bg-amber-400 text-slate-950 hover:bg-amber-400">
-                  {intervalLabels[plan.interval] ?? plan.interval}
+                  {intervalLabels[plan.interval ?? ""] ?? plan.interval}
                 </Badge>
               </div>
               <p className="text-sm leading-7 text-slate-300">
-                {planDescriptions[plan.code] ?? plan.description}
+                {plan.description}
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-4xl font-semibold text-amber-300">
-                {formatCredits(plan.priceCredits, locale)}
+                {formatRubles(plan.priceRubles, locale)}
               </div>
               <ul className="space-y-2 text-sm text-slate-200">
                 <li>
-                  {t("subscriptions.unlimitedPremiumAccess", {
-                    value: plan.unlimitedPremiumAccess
-                      ? t("common.states.yes")
-                      : t("common.states.no"),
+                  {t("subscriptions.dailyLimit", {
+                    count: plan.dailyChapterLimit ?? 0,
                   })}
                 </li>
-                <li>
-                  {t("subscriptions.chapterDiscount", {
-                    value: plan.chapterDiscountPercent,
-                  })}
-                </li>
-                <li>{t("subscriptions.integrationReady")}</li>
+                <li>{t("subscriptions.dailyQuotaHint")}</li>
               </ul>
               {developmentBillingEnabled ? (
                 <form action={activateMockSubscriptionAction}>
-                  <input type="hidden" name="planId" value={plan.id} />
+                  <input type="hidden" name="productId" value={plan.id} />
                   <Button
                     type="submit"
                     className="rounded-full bg-white text-slate-950 hover:bg-slate-100"
                   >
-                    {t("common.actions.activateMockPlan")}
+                    {t("common.actions.startSubscription")}
                   </Button>
                 </form>
-              ) : null}
+              ) : (
+                <p className="text-xs text-slate-400">
+                  {t("subscriptions.paymentsPending")}
+                </p>
+              )}
             </CardContent>
           </Card>
         ))}
