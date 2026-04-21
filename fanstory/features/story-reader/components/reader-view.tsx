@@ -5,6 +5,7 @@ import { chooseStoryPathAction } from "@/server/stories/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { InfoHint } from "@/components/shared/info-hint";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { getI18n } from "@/lib/i18n/server";
@@ -166,14 +167,17 @@ export async function ReaderView({ data }: ReaderViewProps) {
 
         <Card className="border-white/60 bg-slate-950 text-white">
           <CardHeader>
-            <CardTitle className="font-heading text-2xl">
-              {t("common.labels.nextChapterAccess")}
-            </CardTitle>
+            <div className="flex items-center gap-2">
+              <CardTitle className="font-heading text-2xl">
+                {t("common.labels.nextChapterAccess")}
+              </CardTitle>
+              <InfoHint
+                label={t("stories.reader.tooltips.nextChapterAccess")}
+                className="text-slate-300"
+              />
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm leading-7 text-slate-300">
-              {t("stories.reader.accessDescription")}
-            </p>
             <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
               {data.nextAccess.allowed ? (
                 <p className="text-sm text-emerald-300">

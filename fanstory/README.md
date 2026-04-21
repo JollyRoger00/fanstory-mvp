@@ -229,6 +229,7 @@ Required envs:
 - `STORY_PROVIDER`
 - `OPENAI_API_KEY` when `STORY_PROVIDER=openai`
 - `OPENAI_MODEL` when `STORY_PROVIDER=openai`
+- `ENABLE_DEV_BILLING_TOOLS` for local-only wallet/subscription mock actions
 - `STORY_FREE_CHAPTERS`
 - `STORY_DEFAULT_CHAPTER_PRICE`
 - `STORY_DEMO_TOP_UP_AMOUNT`
@@ -264,12 +265,21 @@ http://localhost:3000
 ## Useful Commands
 
 ```bash
+npm run check
 npm run lint
 npm run typecheck
 npm run build
 npm run format
 npm run db:studio
 ```
+
+## Production Notes
+
+- `STORY_PROVIDER=mock` is intentionally rejected in `NODE_ENV=production`.
+- Mock wallet top-up and mock subscription activation are disabled by default and require `ENABLE_DEV_BILLING_TOOLS=true` in non-production environments.
+- Sign-in callback redirects are sanitized to internal paths only.
+- The app ships with baseline security headers via `next.config.ts`.
+- `.github/workflows/ci.yml` runs `npm run check` on pushes and pull requests.
 
 ## Seed Data
 

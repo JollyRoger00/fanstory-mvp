@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { isResourceNotFoundError } from "@/lib/errors/app-error";
 import { getI18n } from "@/lib/i18n/server";
 import { requireUser } from "@/server/auth/session";
 import { getStoryDetail } from "@/server/stories/story.service";
@@ -16,7 +18,13 @@ type StoryPageProps = {
 export default async function StoryPage({ params }: StoryPageProps) {
   const user = await requireUser();
   const { storyId } = await params;
-  const story = await getStoryDetail(user.id, storyId);
+  const story = await getStoryDetail(user.id, storyId).catch((error) => {
+    if (isResourceNotFoundError(error)) {
+      notFound();
+    }
+
+    throw error;
+  });
   const { raw, t } = await getI18n();
   const chapterAccessModeLabels = raw<Record<string, string>>(
     "common.enums.chapterAccessMode",

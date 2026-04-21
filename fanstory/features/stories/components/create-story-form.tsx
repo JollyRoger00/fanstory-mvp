@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { InfoHint } from "@/components/shared/info-hint";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,9 +30,12 @@ export async function CreateStoryForm() {
       <CardContent>
         <form action={createStoryAction} className="grid gap-6">
           <div className="grid gap-2">
-            <Label htmlFor="contentLanguage">
-              {t("stories.create.fields.contentLanguage")}
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="contentLanguage">
+                {t("stories.create.fields.contentLanguage")}
+              </Label>
+              <InfoHint label={t("stories.create.tooltips.contentLanguage")} />
+            </div>
             <select
               id="contentLanguage"
               name="contentLanguage"
@@ -41,9 +45,6 @@ export async function CreateStoryForm() {
               <option value="en">{storyLanguageLabels.en ?? "English"}</option>
               <option value="ru">{storyLanguageLabels.ru ?? "Russian"}</option>
             </select>
-            <p className="text-sm leading-6 text-slate-500">
-              {t("stories.create.hints.contentLanguage")}
-            </p>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="title">{t("stories.create.fields.title")}</Label>

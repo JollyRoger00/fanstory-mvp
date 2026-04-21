@@ -3,14 +3,19 @@ import { activateMockSubscriptionAction } from "@/server/subscriptions/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { InfoHint } from "@/components/shared/info-hint";
 import { getI18n } from "@/lib/i18n/server";
 import { formatCalendarDate, formatCredits } from "@/lib/utils";
 
 type SubscriptionPlansProps = {
   data: SubscriptionOverview;
+  developmentBillingEnabled: boolean;
 };
 
-export async function SubscriptionPlans({ data }: SubscriptionPlansProps) {
+export async function SubscriptionPlans({
+  data,
+  developmentBillingEnabled,
+}: SubscriptionPlansProps) {
   const { locale, raw, t } = await getI18n();
   const intervalLabels = raw<Record<string, string>>(
     "common.enums.subscriptionInterval",
@@ -26,9 +31,12 @@ export async function SubscriptionPlans({ data }: SubscriptionPlansProps) {
     <div className="space-y-6">
       <Card className="border-white/60 bg-white/85">
         <CardHeader>
-          <CardTitle className="font-heading text-3xl">
-            {t("subscriptions.currentTitle")}
-          </CardTitle>
+          <div className="flex items-center gap-2">
+            <CardTitle className="font-heading text-3xl">
+              {t("subscriptions.currentTitle")}
+            </CardTitle>
+            <InfoHint label={t("subscriptions.tooltips.currentPlan")} />
+          </div>
         </CardHeader>
         <CardContent className="space-y-2">
           {data.activePlanName ? (
@@ -95,15 +103,17 @@ export async function SubscriptionPlans({ data }: SubscriptionPlansProps) {
                 </li>
                 <li>{t("subscriptions.integrationReady")}</li>
               </ul>
-              <form action={activateMockSubscriptionAction}>
-                <input type="hidden" name="planId" value={plan.id} />
-                <Button
-                  type="submit"
-                  className="rounded-full bg-white text-slate-950 hover:bg-slate-100"
-                >
-                  {t("common.actions.activateMockPlan")}
-                </Button>
-              </form>
+              {developmentBillingEnabled ? (
+                <form action={activateMockSubscriptionAction}>
+                  <input type="hidden" name="planId" value={plan.id} />
+                  <Button
+                    type="submit"
+                    className="rounded-full bg-white text-slate-950 hover:bg-slate-100"
+                  >
+                    {t("common.actions.activateMockPlan")}
+                  </Button>
+                </form>
+              ) : null}
             </CardContent>
           </Card>
         ))}

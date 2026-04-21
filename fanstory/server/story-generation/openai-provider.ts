@@ -175,14 +175,11 @@ async function generateStructuredOutput<T>({
         details: response.error,
       });
 
-      throw new StoryGenerationError(
-        getStoryGenerationFailureMessage(stage),
-        {
-          stage,
-          provider: "openai",
-          requestId,
-        },
-      );
+      throw new StoryGenerationError(getStoryGenerationFailureMessage(stage), {
+        stage,
+        provider: "openai",
+        requestId,
+      });
     }
 
     if (response.status !== "completed") {
@@ -204,14 +201,11 @@ async function generateStructuredOutput<T>({
         },
       });
 
-      throw new StoryGenerationError(
-        getStoryGenerationFailureMessage(stage),
-        {
-          stage,
-          provider: "openai",
-          requestId,
-        },
-      );
+      throw new StoryGenerationError(getStoryGenerationFailureMessage(stage), {
+        stage,
+        provider: "openai",
+        requestId,
+      });
     }
 
     if (refusal) {
@@ -230,14 +224,11 @@ async function generateStructuredOutput<T>({
         details: refusal,
       });
 
-      throw new StoryGenerationError(
-        getStoryGenerationFailureMessage(stage),
-        {
-          stage,
-          provider: "openai",
-          requestId,
-        },
-      );
+      throw new StoryGenerationError(getStoryGenerationFailureMessage(stage), {
+        stage,
+        provider: "openai",
+        requestId,
+      });
     }
 
     if (!response.output_parsed) {
@@ -255,14 +246,11 @@ async function generateStructuredOutput<T>({
         reason: "missing_parsed_output",
       });
 
-      throw new StoryGenerationError(
-        getStoryGenerationFailureMessage(stage),
-        {
-          stage,
-          provider: "openai",
-          requestId,
-        },
-      );
+      throw new StoryGenerationError(getStoryGenerationFailureMessage(stage), {
+        stage,
+        provider: "openai",
+        requestId,
+      });
     }
 
     const parsed = schema.parse(response.output_parsed);
@@ -332,17 +320,19 @@ export class OpenAIStoryGenerationProvider implements StoryGenerationProvider {
     input: InitialStoryRequest,
   ): Promise<GeneratedInitialStory> {
     const prompt = buildInitialStoryPrompt(input);
-    const payload = await generateStructuredOutput<InitialStoryResponsePayload>({
-      stage: "initial_story",
-      schema: initialStoryResponseSchema,
-      schemaName: "fanstory_initial_story",
-      instructions: prompt.instructions,
-      userPrompt: prompt.userPrompt,
-      userId: input.userId,
-      maxOutputTokens: 2400,
-      promptVersion: this.promptVersion,
-      model: this.model,
-    });
+    const payload = await generateStructuredOutput<InitialStoryResponsePayload>(
+      {
+        stage: "initial_story",
+        schema: initialStoryResponseSchema,
+        schemaName: "fanstory_initial_story",
+        instructions: prompt.instructions,
+        userPrompt: prompt.userPrompt,
+        userId: input.userId,
+        maxOutputTokens: 2400,
+        promptVersion: this.promptVersion,
+        model: this.model,
+      },
+    );
 
     return {
       title: input.title,

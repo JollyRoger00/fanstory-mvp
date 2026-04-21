@@ -1,5 +1,7 @@
+import { notFound } from "next/navigation";
 import { ReaderView } from "@/features/story-reader/components/reader-view";
 import { PageHeader } from "@/components/shared/page-header";
+import { isResourceNotFoundError } from "@/lib/errors/app-error";
 import { getI18n } from "@/lib/i18n/server";
 import { requireUser } from "@/server/auth/session";
 import { getReaderView } from "@/server/story-reader/reader.service";
@@ -21,7 +23,15 @@ export default async function ReaderPage({
   const { storyId } = await params;
   const query = await searchParams;
   const requestedChapter = query.chapter ? Number(query.chapter) : undefined;
-  const reader = await getReaderView(user.id, storyId, requestedChapter);
+  const reader = await getReaderView(user.id, storyId, requestedChapter).catch(
+    (error) => {
+      if (isResourceNotFoundError(error)) {
+        notFound();
+      }
+
+      throw error;
+    },
+  );
   const { t } = await getI18n();
 
   return (

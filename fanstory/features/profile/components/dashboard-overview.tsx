@@ -21,7 +21,9 @@ export async function DashboardOverview({ data }: DashboardOverviewProps) {
     <div className="space-y-8">
       <PageHeader
         eyebrow={t("dashboard.eyebrow")}
-        title={t("dashboard.title", { name: data.userName })}
+        title={t("dashboard.title", {
+          name: data.userName ?? t("userMenu.fallbackName"),
+        })}
         description={t("dashboard.description")}
         actions={
           <Button
@@ -56,7 +58,8 @@ export async function DashboardOverview({ data }: DashboardOverviewProps) {
           label={t("dashboard.metrics.premiumAccess.label")}
           value={data.purchasedChapterCount.toString()}
           hint={
-            data.activeSubscriptionName ?? t("common.states.noActiveSubscription")
+            data.activeSubscriptionName ??
+            t("common.states.noActiveSubscription")
           }
           icon={<LockKeyhole className="size-4 text-slate-500" />}
         />
@@ -133,7 +136,7 @@ export async function DashboardOverview({ data }: DashboardOverviewProps) {
                 {t("common.labels.account")}
               </p>
               <p className="text-sm font-medium text-slate-950">
-                {data.userEmail}
+                {data.userEmail ?? t("common.states.noEmail")}
               </p>
             </div>
             <div className="space-y-1">
@@ -145,7 +148,9 @@ export async function DashboardOverview({ data }: DashboardOverviewProps) {
                   {data.activeSubscriptionName}
                 </Badge>
               ) : (
-                <Badge variant="secondary">{t("common.states.noActivePlan")}</Badge>
+                <Badge variant="secondary">
+                  {t("common.states.noActivePlan")}
+                </Badge>
               )}
             </div>
             <div className="space-y-3">

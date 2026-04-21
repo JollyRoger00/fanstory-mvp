@@ -2,11 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import {
-  defaultLocale,
-  isLocale,
-  localeCookieName,
-} from "@/lib/i18n/config";
+import { defaultLocale, isLocale, localeCookieName } from "@/lib/i18n/config";
 
 export async function setLocaleAction(formData: FormData) {
   const locale = formData.get("locale")?.toString();

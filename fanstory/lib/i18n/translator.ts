@@ -1,8 +1,5 @@
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
-import {
-  messagesByLocale,
-  type Messages,
-} from "@/lib/i18n/messages";
+import { messagesByLocale, type Messages } from "@/lib/i18n/messages";
 
 export type MessageKey = string;
 export type TranslationValues = Record<string, string | number | boolean>;
@@ -20,10 +17,7 @@ function getNestedValue(
   }, object);
 }
 
-function formatTemplate(
-  template: string,
-  values?: TranslationValues,
-) {
+function formatTemplate(template: string, values?: TranslationValues) {
   if (!values) {
     return template;
   }
@@ -51,7 +45,9 @@ export function createTranslator(locale: Locale) {
       const resolved = getNestedValue(messages, key);
 
       if (typeof resolved !== "string") {
-        throw new Error(`Translation key "${key}" does not resolve to a string.`);
+        throw new Error(
+          `Translation key "${key}" does not resolve to a string.`,
+        );
       }
 
       return formatTemplate(resolved, values);

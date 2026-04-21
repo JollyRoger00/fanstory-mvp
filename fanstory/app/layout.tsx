@@ -5,6 +5,7 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import { Toaster } from "sonner";
+import { getServerEnv } from "@/lib/env/server";
 import { getI18n } from "@/lib/i18n/server";
 import "./globals.css";
 
@@ -27,10 +28,38 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getI18n();
+  const env = getServerEnv();
+  const title = t("metadata.title");
+  const description = t("metadata.description");
+  const metadataBase = new URL(env.NEXT_PUBLIC_APP_URL);
+  const production = env.NODE_ENV === "production";
 
   return {
-    title: t("metadata.title"),
-    description: t("metadata.description"),
+    metadataBase,
+    applicationName: "FanStory",
+    title,
+    description,
+    robots: production
+      ? {
+          index: true,
+          follow: true,
+        }
+      : {
+          index: false,
+          follow: false,
+        },
+    openGraph: {
+      type: "website",
+      siteName: "FanStory",
+      url: metadataBase,
+      title,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

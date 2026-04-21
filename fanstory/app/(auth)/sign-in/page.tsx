@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { GoogleSignInButton } from "@/features/auth/components/google-sign-in-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/server/auth/session";
 
@@ -15,9 +16,10 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const user = await getCurrentUser();
   const params = await searchParams;
   const { t } = await getI18n();
+  const callbackUrl = sanitizeCallbackUrl(params.callbackUrl);
 
   if (user) {
-    redirect("/dashboard");
+    redirect(callbackUrl);
   }
 
   return (
@@ -34,11 +36,8 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             {t("signIn.description")}
           </p>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <GoogleSignInButton callbackUrl={params.callbackUrl} />
-          <p className="text-center text-xs tracking-[0.22em] text-slate-400 uppercase">
-            {t("signIn.foundation")}
-          </p>
+        <CardContent>
+          <GoogleSignInButton callbackUrl={callbackUrl} />
         </CardContent>
       </Card>
     </div>

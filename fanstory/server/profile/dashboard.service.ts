@@ -75,8 +75,8 @@ export async function getDashboardView(user: {
   ]);
 
   return {
-    userName: user.name ?? "FanStory User",
-    userEmail: user.email ?? "No email available",
+    userName: user.name ?? null,
+    userEmail: user.email ?? null,
     storyCount,
     saveCount,
     balance: wallet.balance,

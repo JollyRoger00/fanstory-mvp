@@ -2,7 +2,7 @@ const ruMessages = {
   metadata: {
     title: "FanStory",
     description:
-      "Интерактивные AI-истории с кошельком, сохранениями, доступом к главам, подписками и авторизацией только через Google.",
+      "Интерактивные истории с сохранениями, кредитами и доступом к главам.",
   },
   common: {
     appName: "FanStory",
@@ -16,15 +16,15 @@ const ruMessages = {
       createStory: "Создать историю",
       startStory: "Начать историю",
       openDashboard: "Открыть кабинет",
-      openReader: "Открыть ридер",
-      openStory: "Открыть историю",
-      viewAll: "Смотреть все",
+      openReader: "Читать",
+      openStory: "Открыть",
+      viewAll: "Все",
       browseStories: "К историям",
-      backToStories: "Назад к историям",
-      saveProgress: "Сохранить прогресс",
+      backToStories: "Назад",
+      saveProgress: "Сохранить",
       unlockNextChapter: "Открыть следующую главу",
-      addDemoCredits: "Начислить демо-кредиты",
-      activateMockPlan: "Активировать mock-план",
+      addDemoCredits: "Добавить кредиты",
+      activateMockPlan: "Активировать план",
       continueWithGoogle: "Продолжить через Google",
       signIn: "Войти",
       signOut: "Выйти",
@@ -34,6 +34,7 @@ const ruMessages = {
     states: {
       noActiveSubscription: "Нет активной подписки",
       noActivePlan: "Нет активного плана",
+      noEmail: "Email недоступен",
       free: "Бесплатно",
       premium: "Премиум",
       active: "Активна",
@@ -42,10 +43,10 @@ const ruMessages = {
     },
     enums: {
       accessReason: {
-        FREE: "бесплатный",
-        PURCHASED: "купленный",
-        SUBSCRIPTION: "по подписке",
-        LOCKED: "заблокированный",
+        FREE: "бесплатно",
+        PURCHASED: "покупка",
+        SUBSCRIPTION: "подписка",
+        LOCKED: "закрыто",
       },
       chapterAccessMode: {
         FREE: "Бесплатно",
@@ -62,10 +63,10 @@ const ruMessages = {
         LIFETIME: "Навсегда",
       },
       walletTransactionType: {
-        STARTER_GRANT: "Стартовое начисление",
-        CREDIT_TOP_UP: "Пополнение кредитов",
-        CHAPTER_PURCHASE: "Покупка главы",
-        SUBSCRIPTION_PURCHASE: "Покупка подписки",
+        STARTER_GRANT: "Бонус",
+        CREDIT_TOP_UP: "Пополнение",
+        CHAPTER_PURCHASE: "Глава",
+        SUBSCRIPTION_PURCHASE: "Подписка",
         REFUND: "Возврат",
         ADJUSTMENT: "Корректировка",
       },
@@ -78,20 +79,20 @@ const ruMessages = {
       },
     },
     loading: {
-      title: "Загрузка FanStory",
-      description:
-        "Подготавливаем следующий экран, текущий язык и рабочее пространство продукта.",
+      title: "Загрузка",
+      description: "Подготавливаем экран.",
     },
     errors: {
       title: "Что-то пошло не так",
-      description:
-        "Не удалось завершить запрос. Попробуйте обновить страницу или вернуться на главную.",
+      description: "Попробуйте еще раз или вернитесь на главную.",
+      notFoundTitle: "Страница не найдена",
+      notFoundDescription: "Страница или история не найдена.",
       reset: "Повторить",
       goHome: "На главную",
     },
     empty: {
       title: "Пока пусто",
-      description: "Раздел заполнится по мере появления данных в продукте.",
+      description: "Здесь пока ничего нет.",
     },
     labels: {
       chapter: "Глава",
@@ -103,18 +104,18 @@ const ruMessages = {
       recentStories: "Последние истории",
       recentSaves: "Последние сохранения",
       wallet: "Кошелек",
-      ledger: "Леджер",
+      ledger: "Операции",
       profile: "Профиль",
       stories: "Истории",
       saves: "Сохранения",
       balance: "Баланс",
       premiumAccess: "Премиум-доступ",
-      currentStoryState: "Текущее состояние истории",
-      decisionHistory: "История выборов",
-      chapterTimeline: "Лента глав",
-      currentSubscription: "Текущая подписка",
-      saveCheckpoint: "Создать сохранение",
-      nextChapterAccess: "Доступ к следующей главе",
+      currentStoryState: "Текущее состояние",
+      decisionHistory: "Выборы",
+      chapterTimeline: "Главы",
+      currentSubscription: "Текущий план",
+      saveCheckpoint: "Точка сохранения",
+      nextChapterAccess: "Следующая глава",
       chooseNextMove: "Выберите следующий ход",
       storyLibrary: "Библиотека историй",
       storyLanguage: "Язык истории",
@@ -128,80 +129,71 @@ const ruMessages = {
     stories: "Истории",
     saves: "Сохранения",
     wallet: "Кошелек",
-    subscriptions: "Подписки",
-    productNote: "Заметка по продукту",
-    productNoteDescription:
-      "Главы, подписки, кошелек и генерация уже разделены на серверном слое, поэтому платежные и AI-провайдеры можно развивать без переписывания UI-маршрутов.",
-    workspaceEyebrow: "Интерактивные AI-истории",
-    workspaceTitle: "Центр управления",
+    subscriptions: "Планы",
+    workspaceEyebrow: "Рабочее пространство",
+    workspaceTitle: "Ваши истории",
   },
   landing: {
-    badge: "Foundation финальной версии для интерактивной AI-фантастики",
-    title:
-      "FanStory превращает ветвящиеся AI-истории в полноценный продуктовый интерфейс.",
+    badge: "Интерактивные AI-истории",
+    title: "Истории, которые меняются от ваших выборов",
     description:
-      "Google-вход, профиль как центр управления, кошелек и доступ к главам, сохранения историй, подписочные entitlement-механики и provider layer под OpenAI или другой генератор.",
-    heroPrimary: "Начать собирать истории",
+      "Создавайте историю, проходите ее по главам, сохраняйте прогресс и открывайте продолжение.",
+    heroPrimary: "Начать историю",
     heroSecondary: "Открыть кабинет",
-    architectureTitle: "Архитектура под продукт, а не одноразовый прототип",
+    architectureTitle: "Почему FanStory",
     architectureCards: [
       {
-        title: "Отдельный сервис доступа",
-        description:
-          "Премиальный доступ к главам вычисляется в отдельном access service.",
+        title: "Истории",
+        description: "Все ваши истории в одном месте.",
       },
       {
-        title: "Разделение кошелька и леджера",
-        description: "Кошелек и журнал покупок отделены от компонентов и форм.",
+        title: "Сохранения",
+        description: "Сохраняйте прогресс в любой момент.",
       },
       {
-        title: "Абстракция провайдера",
-        description:
-          "Provider abstraction готова к замене mock-генерации на живую модель.",
+        title: "Доступ",
+        description: "Открывайте новые главы, когда будете готовы.",
       },
     ],
     pillars: [
       {
-        title: "Интерактивный story engine",
-        description:
-          "Главы генерируются как цельный run со структурированным состоянием, историей выборов и абстракцией провайдера для реальных AI-бэкендов.",
+        title: "Ветвящиеся истории",
+        description: "Каждый выбор ведет историю в новом направлении.",
       },
       {
-        title: "Профиль как control center",
+        title: "Прогресс сохраняется",
         description:
-          "Истории, сохранения, баланс, покупки и статус подписки живут в одном кабинете, а не разбросаны по временным страницам.",
+          "Истории, сохранения и баланс привязаны к вашему аккаунту.",
       },
       {
-        title: "Фундамент монетизации",
-        description:
-          "Кошелек, покупки и доступ по подписке моделируются на сервере, поэтому платежного провайдера можно подключать без переписывания core UI.",
+        title: "Гибкий доступ",
+        description: "Покупайте главы по одной или используйте план.",
       },
     ],
   },
   signIn: {
-    badge: "Доступ только через Google",
+    badge: "Вход через Google",
     title: "Войти в FanStory",
     description:
-      "Авторизация намеренно ограничена Google. После создания аккаунта пользователь попадает в рабочее пространство с историями, сохранениями, балансом и данными доступа.",
-    foundation: "Auth.js + Prisma adapter + protected routes",
+      "Войдите через Google, чтобы открыть истории, сохранения и баланс.",
+    foundation: "Безопасный вход",
   },
   dashboard: {
     eyebrow: "Профиль",
     title: "С возвращением, {name}",
-    description:
-      "Ваш профиль — это центр управления историями, сохранениями, покупками, балансом и статусом подписки.",
+    description: "Продолжайте с того места, где остановились.",
     metrics: {
       stories: {
         label: "Истории",
-        hint: "Интерактивные повествования, принадлежащие этому аккаунту.",
+        hint: "В вашей библиотеке.",
       },
       saves: {
         label: "Сохранения",
-        hint: "Точки возврата для продолжения чтения и будущего ветвления.",
+        hint: "Точки возврата.",
       },
       balance: {
         label: "Баланс",
-        hint: "Кошелек управляется на сервере и отделен от UI-действий.",
+        hint: "Доступные кредиты.",
       },
       premiumAccess: {
         label: "Премиум-доступ",
@@ -209,59 +201,49 @@ const ruMessages = {
     },
     recentStories: {
       title: "Последние истории",
-      description:
-        "Последняя активность по историям и текущий прогресс по главам.",
-      item: "{chapterLabel} {chapterNumber} • {updatedLabel} {updatedAt}",
+      description: "Откройте историю и продолжайте.",
+      item: "{chapterLabel} {chapterNumber} - {updatedLabel} {updatedAt}",
       emptyTitle: "Историй пока нет",
-      emptyDescription:
-        "Создайте первую историю, чтобы заполнить кабинет, сценарии кошелька и reader mode.",
+      emptyDescription: "Создайте первую историю.",
     },
     profileStatus: {
-      title: "Статус профиля",
-      recentSavesEmpty:
-        "Сохранения появятся после создания первого чекпоинта в ридере.",
-      recentSaveItem: "{storyTitle} • {chapterLabel} {chapterNumber}",
+      title: "Аккаунт",
+      recentSavesEmpty: "Сохранений пока нет.",
+      recentSaveItem: "{storyTitle} - {chapterLabel} {chapterNumber}",
     },
   },
   stories: {
     list: {
       eyebrow: "Истории",
       title: "Библиотека историй",
-      description:
-        "Все сгенерированные истории текущего пользователя. Каждая история владеет своими главами, run state и проверками доступа.",
+      description: "Все ваши истории в одном месте.",
       synopsisFallback: "История во вселенной {universe}.",
-      emptyTitle: "Истории еще не созданы",
-      emptyDescription:
-        "Используйте flow создания истории, чтобы собрать story aggregate, первую главу и первый набор выборов.",
-      cardUpdated:
-        "{updatedLabel} {updatedAt} • сгенерировано глав: {chapterCount}",
+      emptyTitle: "Историй пока нет",
+      emptyDescription: "Создайте историю, чтобы начать.",
+      cardUpdated: "{updatedLabel} {updatedAt} - глав: {chapterCount}",
     },
     create: {
-      eyebrow: "Генерация истории",
-      title: "Создать новую историю",
-      description:
-        "Новая история создает persisted aggregate с конфигом, первой главой, выбором и снимком состояния run.",
-      formTitle: "Создание новой интерактивной истории",
-      formDescription:
-        "Эта форма пишет в story-generation service, а не в локальное состояние UI. Первая глава генерируется сразу через provider abstraction.",
+      eyebrow: "Новая история",
+      title: "Создать историю",
+      description: "Задайте основу и сгенерируйте первую главу.",
+      formTitle: "Новая интерактивная история",
+      formDescription: "Опишите мир, героя и тон истории.",
       fields: {
         contentLanguage: "Язык истории",
-        title: "Название истории",
+        title: "Название",
         synopsis: "Синопсис",
         universe: "Вселенная",
         protagonist: "Главный герой",
         theme: "Тема",
         genre: "Жанр",
-        tone: "Тональность",
+        tone: "Тон",
       },
-      hints: {
-        contentLanguage:
-          "Определяет язык глав, описаний состояния и выборов. Это отдельная настройка и не зависит от языка интерфейса.",
+      tooltips: {
+        contentLanguage: "Определяет язык глав и вариантов выбора.",
       },
       placeholders: {
         title: "Дом за сигналом",
-        synopsis:
-          "Краткое обещание мира, конфликта и эмоционального направления.",
+        synopsis: "О чем будет история?",
         universe: "Нео-викторианский мегаполис",
         protagonist: "Опальный архивариус",
         theme: "Манипуляция памятью",
@@ -270,94 +252,87 @@ const ruMessages = {
       },
     },
     detail: {
-      eyebrow: "Детали истории",
-      descriptionFallback:
-        "Метаданные интерактивной истории и текущее состояние run.",
-      currentStateTitle: "Текущее состояние истории",
-      activeGoals: "Активные цели",
-      tensions: "Напряжения",
-      knownFacts: "Известные факты",
+      eyebrow: "История",
+      descriptionFallback: "Обзор истории.",
+      currentStateTitle: "Текущее состояние",
+      activeGoals: "Цели",
+      tensions: "Напряжение",
+      knownFacts: "Факты",
       decisionHistory: "История выборов",
-      noDecisions:
-        "Пока нет зафиксированных выборов. Первая глава уже доступна в reader mode.",
+      noDecisions: "Выборов пока нет.",
       decisionItem: "{chapterLabel} {chapterNumber}: {selectedLabel}",
-      chapterTimeline: "Лента глав",
+      chapterTimeline: "Главы",
     },
     reader: {
       eyebrow: "Ридер",
-      description:
-        "Режим прохождения текущего story run с проверкой прав доступа и чекпоинтами сохранений.",
+      description: "Читайте, выбирайте и продолжайте.",
       chapterBadge: "{chapterLabel} {chapterNumber}",
       chooseTitle: "Выберите следующий ход",
-      chooseDescription:
-        "Выборы сохраняются на сервере, а следующая глава генерируется только после подтверждения прав доступа.",
-      lockedChoices:
-        "Сначала откройте следующую главу. Формы выбора остаются заблокированными, пока доступ не будет выдан покупкой главы или активной подпиской.",
-      checkpointPlaceholder: "Название чекпоинта",
-      saveDescription:
-        "Сохранений: {count}. Сейвы хранят snapshot run и указатель главы для будущего восстановления и ветвления.",
-      accessDescription:
-        "Доступ вычисляется в отдельном сервисном слое. UI только отображает результат.",
-      accessAllowed: "Следующая глава уже доступна по схеме доступа: {reason}.",
+      chooseDescription: "Решите, что будет дальше.",
+      lockedChoices: "Откройте следующую главу, чтобы продолжить.",
+      checkpointPlaceholder: "Название сохранения",
+      saveDescription: "Сохранений для этой истории: {count}.",
+      accessAllowed: "Следующая глава уже доступна: {reason}.",
       accessLocked:
-        "{chapterLabel} {chapterNumber} закрыта. Откройте за {price} или покройте доступ подпиской.",
+        "{chapterLabel} {chapterNumber} закрыта. Откройте ее за {price}.",
+      tooltips: {
+        nextChapterAccess:
+          "Откройте следующую главу за кредиты или используйте активный план.",
+      },
     },
   },
   saves: {
     eyebrow: "Сохранения",
-    title: "Сохраненные чекпоинты",
-    description:
-      "Сейвы — это persisted snapshots, которые позже можно развить в более богатое восстановление и ветвление.",
+    title: "Точки сохранения",
+    description: "Возвращайтесь к истории в любой момент.",
     emptyTitle: "Сохранений пока нет",
-    emptyDescription:
-      "Откройте ридер и создайте чекпоинт. Снимки уже готовы для будущего restore и более сложной механики ветвлений.",
-    cardMeta: "{storyTitle} • {chapterLabel} {chapterNumber}",
-    button: "Открыть сейв",
+    emptyDescription: "Создайте сохранение во время чтения.",
+    cardMeta: "{storyTitle} - {chapterLabel} {chapterNumber}",
+    button: "Открыть",
   },
   wallet: {
     eyebrow: "Кошелек",
-    title: "Баланс и леджер",
-    description:
-      "Кредиты, история операций и placeholder flow пополнения живут в отдельном wallet service.",
-    descriptionCard:
-      "Баланс кошелька обновляется через отдельный сервис и transaction ledger, а не локальным UI-состоянием. Реальную платежную интеграцию можно будет добавить без изменения page components.",
-    ledgerTitle: "Леджер",
+    title: "Кредиты",
+    description: "Ваши кредиты и последние операции.",
+    descriptionCard: "Кредиты нужны для открытия платных глав.",
+    ledgerTitle: "Операции",
     table: {
       type: "Тип",
       description: "Описание",
       amount: "Сумма",
-      balanceAfter: "Баланс после",
+      balanceAfter: "Баланс",
       when: "Когда",
     },
+    tooltips: {
+      balance: "Используйте кредиты для открытия платных глав.",
+    },
     transactionDescriptions: {
-      STARTER_GRANT: "Стартовые кредиты начислены при первом входе.",
-      CREDIT_TOP_UP:
-        "Демо-кредиты добавлены для локальной разработки и проверки покупок.",
-      CHAPTER_PURCHASE: "Кредиты списаны за открытие премиальной главы.",
-      SUBSCRIPTION_PURCHASE: "Кредиты списаны за доступ по подписке.",
-      REFUND: "Кредиты возвращены в кошелек.",
-      ADJUSTMENT: "Ручная корректировка кошелька.",
+      STARTER_GRANT: "Стартовые кредиты",
+      CREDIT_TOP_UP: "Кредиты добавлены",
+      CHAPTER_PURCHASE: "Глава открыта",
+      SUBSCRIPTION_PURCHASE: "Оплата подписки",
+      REFUND: "Возврат",
+      ADJUSTMENT: "Обновление баланса",
     },
   },
   subscriptions: {
-    eyebrow: "Подписки",
-    title: "Слой доступа по подписке",
-    description:
-      "Подписочная логика моделируется отдельно от UI, чтобы в будущем премиальный доступ можно было связать с billing provider, webhook-ами и entitlement sync.",
-    currentTitle: "Текущая подписка",
-    noActive:
-      "Активного плана нет. Архитектура подписки уже встроена в доступ к главам, покупки и reader gating.",
+    eyebrow: "Планы",
+    title: "Подписки",
+    description: "Выберите удобный способ открыть премиум-главы.",
+    currentTitle: "Текущий план",
+    noActive: "Активного плана нет.",
     statusLine: "Статус: {status}{endsAt}",
-    statusEndsAt: " • действует до {date}",
-    unlimitedPremiumAccess: "Безлимитный премиум-доступ: {value}",
+    statusEndsAt: " - до {date}",
+    unlimitedPremiumAccess: "Премиум-главы: {value}",
     chapterDiscount: "Скидка на главы: {value}%",
-    integrationReady:
-      "Foundation готова для будущей платежной и webhook-интеграции",
+    integrationReady: "Доступ к премиум-главам, пока план активен.",
+    tooltips: {
+      currentPlan: "Активный план открывает премиум-главы, пока он действует.",
+    },
     planDescriptions: {
       "fanstory-plus-monthly":
-        "Безлимитный доступ к премиальным главам на время активности, приоритет в очереди генерации и foundation под подписочное ограничение доступа.",
-      "fanstory-pro-yearly":
-        "План для активных пользователей с годовым биллингом-заглушкой и местом для будущей интеграции платежного провайдера.",
+        "Безлимитный доступ к премиум-главам, пока план активен.",
+      "fanstory-pro-yearly": "Долгосрочный доступ с ежегодной оплатой.",
     },
   },
   userMenu: {

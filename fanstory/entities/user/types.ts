@@ -1,6 +1,6 @@
 export type DashboardView = {
-  userName: string;
-  userEmail: string;
+  userName: string | null;
+  userEmail: string | null;
   storyCount: number;
   saveCount: number;
   balance: number;

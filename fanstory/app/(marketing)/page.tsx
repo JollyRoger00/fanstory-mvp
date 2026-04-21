@@ -20,9 +20,8 @@ const architectureIcons = [LockKeyhole, Coins, Waypoints];
 export default async function LandingPage() {
   const user = await getCurrentUser();
   const { t, raw } = await getI18n();
-  const pillars = raw<Array<{ title: string; description: string }>>(
-    "landing.pillars",
-  );
+  const pillars =
+    raw<Array<{ title: string; description: string }>>("landing.pillars");
   const architectureCards = raw<Array<{ title: string; description: string }>>(
     "landing.architectureCards",
   );

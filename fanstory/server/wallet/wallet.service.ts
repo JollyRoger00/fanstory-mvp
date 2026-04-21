@@ -1,8 +1,9 @@
 import "server-only";
 
 import type { WalletOverview } from "@/entities/wallet/types";
+import { FeatureDisabledError } from "@/lib/errors/app-error";
 import { prisma } from "@/lib/db/client";
-import { getServerEnv } from "@/lib/env/server";
+import { devBillingToolsEnabled, getServerEnv } from "@/lib/env/server";
 
 type WalletExecutor = Pick<
   typeof prisma,
@@ -59,6 +60,12 @@ export async function getWalletOverview(
 }
 
 export async function grantDemoCredits(userId: string) {
+  if (!devBillingToolsEnabled()) {
+    throw new FeatureDisabledError(
+      "Development billing tools are disabled in the current environment.",
+    );
+  }
+
   const env = getServerEnv();
 
   await prisma.$transaction(async (tx) => {

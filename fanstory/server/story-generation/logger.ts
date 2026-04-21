@@ -28,7 +28,11 @@ export function logStoryGeneration(
   error?: unknown,
 ) {
   const logger =
-    level === "error" ? console.error : level === "warn" ? console.warn : console.info;
+    level === "error"
+      ? console.error
+      : level === "warn"
+        ? console.warn
+        : console.info;
 
   if (error) {
     logger(createLogPrefix(level), payload, error);

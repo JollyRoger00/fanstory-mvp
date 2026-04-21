@@ -24,7 +24,11 @@ type AppShellProps = {
 export async function AppShell({ children, user }: AppShellProps) {
   const { locale, t } = await getI18n();
   const navigation = [
-    { href: "/dashboard", label: t("navigation.dashboard"), icon: LayoutDashboard },
+    {
+      href: "/dashboard",
+      label: t("navigation.dashboard"),
+      icon: LayoutDashboard,
+    },
     { href: "/stories", label: t("navigation.stories"), icon: LibraryBig },
     { href: "/saves", label: t("navigation.saves"), icon: BookMarked },
     { href: "/wallet", label: t("navigation.wallet"), icon: CreditCard },
@@ -63,14 +67,6 @@ export async function AppShell({ children, user }: AppShellProps) {
                 </Link>
               );
             })}
-          </div>
-          <div className="mt-10 rounded-[1.75rem] border border-white/10 bg-white/8 p-4">
-            <p className="text-xs font-semibold tracking-[0.24em] text-amber-300 uppercase">
-              {t("navigation.productNote")}
-            </p>
-            <p className="mt-3 text-sm leading-7 text-slate-300">
-              {t("navigation.productNoteDescription")}
-            </p>
           </div>
         </aside>
         <main className="flex min-h-screen flex-col gap-6 rounded-[2rem] border border-white/60 bg-white/70 p-4 shadow-xl shadow-amber-950/5 backdrop-blur lg:p-8">

@@ -29,7 +29,10 @@ export function LanguageSwitcher({
     : pathname;
 
   return (
-    <form action={setLocaleAction} className={cn("flex items-center gap-2", className)}>
+    <form
+      action={setLocaleAction}
+      className={cn("flex items-center gap-2", className)}
+    >
       <input type="hidden" name="pathname" value={currentPath} />
       <span className="sr-only">{label}</span>
       <div className="inline-flex items-center rounded-full border border-slate-200 bg-white/80 p-1 text-slate-600 shadow-xs">

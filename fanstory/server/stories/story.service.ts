@@ -9,6 +9,7 @@ import type {
 } from "@/entities/story/types";
 import { prisma } from "@/lib/db/client";
 import { getServerEnv } from "@/lib/env/server";
+import { ResourceNotFoundError } from "@/lib/errors/app-error";
 import { slugify } from "@/lib/utils";
 import {
   chooseStoryPathSchema,
@@ -107,7 +108,7 @@ async function createUniqueStorySlug(title: string) {
 }
 
 async function getOwnedStoryRecord(userId: string, storyId: string) {
-  return prisma.story.findFirstOrThrow({
+  const story = await prisma.story.findFirst({
     where: {
       id: storyId,
       userId,
@@ -140,6 +141,12 @@ async function getOwnedStoryRecord(userId: string, storyId: string) {
       },
     },
   });
+
+  if (!story) {
+    throw new ResourceNotFoundError("Story not found.");
+  }
+
+  return story;
 }
 
 export async function createStory(userId: string, payload: unknown) {

@@ -2,7 +2,9 @@ import "server-only";
 
 import { addDays, addYears } from "date-fns";
 import type { SubscriptionOverview } from "@/entities/subscription/types";
+import { FeatureDisabledError } from "@/lib/errors/app-error";
 import { prisma } from "@/lib/db/client";
+import { devBillingToolsEnabled } from "@/lib/env/server";
 
 export async function getActiveSubscription(userId: string) {
   return prisma.subscription.findFirst({
@@ -52,6 +54,12 @@ export async function getSubscriptionOverview(
 }
 
 export async function activateMockSubscription(userId: string, planId: string) {
+  if (!devBillingToolsEnabled()) {
+    throw new FeatureDisabledError(
+      "Development billing tools are disabled in the current environment.",
+    );
+  }
+
   const plan = await prisma.subscriptionPlan.findUniqueOrThrow({
     where: { id: planId },
   });

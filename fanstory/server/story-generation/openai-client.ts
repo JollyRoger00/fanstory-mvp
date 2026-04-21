@@ -13,9 +13,7 @@ export function getOpenAIClient() {
   const env = getServerEnv();
 
   if (!env.OPENAI_API_KEY) {
-    throw new Error(
-      "OPENAI_API_KEY is required when STORY_PROVIDER=openai.",
-    );
+    throw new Error("OPENAI_API_KEY is required when STORY_PROVIDER=openai.");
   }
 
   openAIClient = new OpenAI({

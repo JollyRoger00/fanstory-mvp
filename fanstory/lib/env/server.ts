@@ -18,12 +18,25 @@ const serverEnvSchema = z
     STORY_PROVIDER: z.enum(["mock", "openai"]).default("mock"),
     OPENAI_API_KEY: z.string().min(1).optional(),
     OPENAI_MODEL: z.string().min(1).optional(),
+    ENABLE_DEV_BILLING_TOOLS: z
+      .string()
+      .optional()
+      .transform((value) => value === "true"),
     STORY_FREE_CHAPTERS: z.coerce.number().int().positive().default(1),
     STORY_DEFAULT_CHAPTER_PRICE: z.coerce.number().int().positive().default(15),
     STORY_DEMO_TOP_UP_AMOUNT: z.coerce.number().int().positive().default(100),
     STORY_STARTER_CREDITS: z.coerce.number().int().nonnegative().default(60),
   })
   .superRefine((value, ctx) => {
+    if (value.NODE_ENV === "production" && value.STORY_PROVIDER === "mock") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["STORY_PROVIDER"],
+        message:
+          "STORY_PROVIDER=mock is not allowed in production. Use STORY_PROVIDER=openai.",
+      });
+    }
+
     if (value.STORY_PROVIDER !== "openai") {
       return;
     }
@@ -66,4 +79,9 @@ export function getServerEnv(): ServerEnv {
 
   cachedEnv = parsed.data;
   return cachedEnv;
+}
+
+export function devBillingToolsEnabled() {
+  const env = getServerEnv();
+  return env.NODE_ENV !== "production" && env.ENABLE_DEV_BILLING_TOOLS;
 }

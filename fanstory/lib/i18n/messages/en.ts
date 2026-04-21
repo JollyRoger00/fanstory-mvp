@@ -1,8 +1,7 @@
 const enMessages = {
   metadata: {
     title: "FanStory",
-    description:
-      "Interactive AI stories with wallet, saves, chapter access, subscriptions and Google-only authentication.",
+    description: "Interactive stories with saves, credits, and chapter access.",
   },
   common: {
     appName: "FanStory",
@@ -14,17 +13,17 @@ const enMessages = {
     },
     actions: {
       createStory: "Create story",
-      startStory: "Start a story",
+      startStory: "Start story",
       openDashboard: "Open dashboard",
-      openReader: "Open reader",
-      openStory: "Open story",
+      openReader: "Read",
+      openStory: "Open",
       viewAll: "View all",
       browseStories: "Browse stories",
-      backToStories: "Back to stories",
-      saveProgress: "Save progress",
+      backToStories: "Back",
+      saveProgress: "Save",
       unlockNextChapter: "Unlock next chapter",
-      addDemoCredits: "Add demo credits",
-      activateMockPlan: "Activate mock plan",
+      addDemoCredits: "Add credits",
+      activateMockPlan: "Activate plan",
       continueWithGoogle: "Continue with Google",
       signIn: "Sign in",
       signOut: "Sign out",
@@ -34,6 +33,7 @@ const enMessages = {
     states: {
       noActiveSubscription: "No active subscription",
       noActivePlan: "No active plan",
+      noEmail: "No email",
       free: "Free",
       premium: "Premium",
       active: "Active",
@@ -43,7 +43,7 @@ const enMessages = {
     enums: {
       accessReason: {
         FREE: "free",
-        PURCHASED: "purchased",
+        PURCHASED: "purchase",
         SUBSCRIPTION: "subscription",
         LOCKED: "locked",
       },
@@ -62,10 +62,10 @@ const enMessages = {
         LIFETIME: "Lifetime",
       },
       walletTransactionType: {
-        STARTER_GRANT: "Starter grant",
-        CREDIT_TOP_UP: "Credit top-up",
-        CHAPTER_PURCHASE: "Chapter purchase",
-        SUBSCRIPTION_PURCHASE: "Subscription purchase",
+        STARTER_GRANT: "Welcome",
+        CREDIT_TOP_UP: "Top-up",
+        CHAPTER_PURCHASE: "Chapter",
+        SUBSCRIPTION_PURCHASE: "Subscription",
         REFUND: "Refund",
         ADJUSTMENT: "Adjustment",
       },
@@ -73,25 +73,25 @@ const enMessages = {
         ACTIVE: "Active",
         CANCELED: "Canceled",
         EXPIRED: "Expired",
-        TRIALING: "Trialing",
+        TRIALING: "Trial",
         PAST_DUE: "Past due",
       },
     },
     loading: {
-      title: "Loading FanStory",
-      description:
-        "Preparing the next screen, current language and product workspace.",
+      title: "Loading",
+      description: "Getting things ready.",
     },
     errors: {
       title: "Something went wrong",
-      description:
-        "The request could not be completed. Try refreshing the page or return to the dashboard.",
+      description: "Please try again or go back home.",
+      notFoundTitle: "Page not found",
+      notFoundDescription: "The page or story could not be found.",
       reset: "Try again",
-      goHome: "Go to home",
+      goHome: "Go home",
     },
     empty: {
       title: "Nothing here yet",
-      description: "This section will populate as the product data grows.",
+      description: "This section is still empty.",
     },
     labels: {
       chapter: "Chapter",
@@ -103,18 +103,18 @@ const enMessages = {
       recentStories: "Recent stories",
       recentSaves: "Recent saves",
       wallet: "Wallet",
-      ledger: "Ledger",
+      ledger: "Activity",
       profile: "Profile",
       stories: "Stories",
       saves: "Saves",
       balance: "Balance",
       premiumAccess: "Premium access",
-      currentStoryState: "Current story state",
-      decisionHistory: "Decision history",
-      chapterTimeline: "Chapter timeline",
-      currentSubscription: "Current subscription",
-      saveCheckpoint: "Create a save",
-      nextChapterAccess: "Next chapter access",
+      currentStoryState: "Current state",
+      decisionHistory: "Choices",
+      chapterTimeline: "Chapters",
+      currentSubscription: "Current plan",
+      saveCheckpoint: "Save point",
+      nextChapterAccess: "Next chapter",
       chooseNextMove: "Choose the next move",
       storyLibrary: "Story library",
       storyLanguage: "Story language",
@@ -128,80 +128,70 @@ const enMessages = {
     stories: "Stories",
     saves: "Saves",
     wallet: "Wallet",
-    subscriptions: "Subscriptions",
-    productNote: "Product note",
-    productNoteDescription:
-      "Chapters, subscriptions, wallet and generation are already separated in the server layer, so payment and AI providers can evolve without rewriting UI routes.",
-    workspaceEyebrow: "Interactive AI storytelling",
-    workspaceTitle: "Command center",
+    subscriptions: "Plans",
+    workspaceEyebrow: "Workspace",
+    workspaceTitle: "Your stories",
   },
   landing: {
-    badge: "Final-product foundation for interactive AI fiction",
-    title: "FanStory turns branching AI fiction into a real product surface.",
+    badge: "Interactive AI stories",
+    title: "Stories that change with your choices",
     description:
-      "Google sign-in, profile-centric UX, wallet and chapter access, story saves, subscription-ready entitlements, and a provider layer prepared for OpenAI or another generation backend.",
-    heroPrimary: "Start building stories",
+      "Create a story, read chapter by chapter, save your progress, and unlock what comes next.",
+    heroPrimary: "Start story",
     heroSecondary: "Open dashboard",
-    architectureTitle: "Product-ready architecture, not a one-shot demo",
+    architectureTitle: "Why FanStory",
     architectureCards: [
       {
-        title: "Dedicated access service",
-        description:
-          "Premium chapter gating is evaluated in a dedicated access service.",
+        title: "Stories",
+        description: "Keep every story in one place.",
       },
       {
-        title: "Wallet-ledger split",
-        description:
-          "Wallet and purchase ledger are separate from components and forms.",
+        title: "Saves",
+        description: "Save your spot anytime.",
       },
       {
-        title: "Provider abstraction",
-        description:
-          "Provider abstraction is ready to swap mock generation for a live model.",
+        title: "Access",
+        description: "Unlock new chapters when you are ready.",
       },
     ],
     pillars: [
       {
-        title: "Interactive story engine",
-        description:
-          "Chapters are generated as a coherent run with structured state, choice history and a provider abstraction ready for real AI backends.",
+        title: "Branching stories",
+        description: "Each choice leads the story forward in a new direction.",
       },
       {
-        title: "Profile as control center",
-        description:
-          "Stories, saves, balance, purchases and subscription status live under one dashboard instead of being scattered across temporary pages.",
+        title: "Progress you keep",
+        description: "Your stories, saves, and balance stay with your account.",
       },
       {
-        title: "Monetization foundations",
-        description:
-          "Wallet, purchase and subscription access are modeled server-side, so future payment providers can be integrated without rewriting core UI flows.",
+        title: "Flexible access",
+        description: "Buy chapters one by one or use a plan.",
       },
     ],
   },
   signIn: {
-    badge: "Google-only access",
+    badge: "Google sign-in",
     title: "Enter FanStory",
     description:
-      "Authentication is intentionally constrained to Google. Once the account is created, the user lands in a profile-driven workspace with stories, saves, balance and access data.",
-    foundation: "Auth.js + Prisma adapter + protected routes",
+      "Sign in with Google to open your stories, saves, and balance.",
+    foundation: "Secure sign-in",
   },
   dashboard: {
     eyebrow: "Profile",
     title: "Welcome back, {name}",
-    description:
-      "Your profile is the operational center for stories, saves, purchases, balance and subscription status.",
+    description: "Pick up where you left off.",
     metrics: {
       stories: {
         label: "Stories",
-        hint: "Interactive narratives currently owned by this account.",
+        hint: "In your library.",
       },
       saves: {
         label: "Saves",
-        hint: "Checkpoints available for reader resume and future branching.",
+        hint: "Saved points.",
       },
       balance: {
         label: "Balance",
-        hint: "Wallet is managed server-side, separate from UI actions.",
+        hint: "Available credits.",
       },
       premiumAccess: {
         label: "Premium access",
@@ -209,43 +199,36 @@ const enMessages = {
     },
     recentStories: {
       title: "Recent stories",
-      description: "Latest story activity and current chapter progress.",
-      item: "{chapterLabel} {chapterNumber} • {updatedLabel} {updatedAt}",
+      description: "Open a story and keep going.",
+      item: "{chapterLabel} {chapterNumber} - {updatedLabel} {updatedAt}",
       emptyTitle: "No stories yet",
-      emptyDescription:
-        "Create the first story to populate the dashboard, wallet flows and reader mode.",
+      emptyDescription: "Create your first story to get started.",
     },
     profileStatus: {
-      title: "Profile status",
-      recentSavesEmpty:
-        "Saves will appear after the first reader checkpoint is created.",
-      recentSaveItem: "{storyTitle} • {chapterLabel} {chapterNumber}",
+      title: "Account",
+      recentSavesEmpty: "No saves yet.",
+      recentSaveItem: "{storyTitle} - {chapterLabel} {chapterNumber}",
     },
   },
   stories: {
     list: {
       eyebrow: "Stories",
       title: "Story library",
-      description:
-        "All generated stories for the authenticated user. Each story owns its chapters, run state and entitlement checks.",
-      synopsisFallback: "Story set in {universe}.",
-      emptyTitle: "No stories generated",
-      emptyDescription:
-        "Use the new story flow to create a story aggregate, initial chapter and first choice set.",
-      cardUpdated:
-        "{updatedLabel} {updatedAt} • {chapterCount} generated chapters",
+      description: "All your stories in one place.",
+      synopsisFallback: "A story set in {universe}.",
+      emptyTitle: "No stories yet",
+      emptyDescription: "Create a story to get started.",
+      cardUpdated: "{updatedLabel} {updatedAt} - {chapterCount} chapters",
     },
     create: {
-      eyebrow: "Story generation",
-      title: "Create a new story",
-      description:
-        "A new story creates a persisted aggregate with config, first chapter, choices and a run-state snapshot.",
-      formTitle: "Create a new interactive story",
-      formDescription:
-        "This form writes into the story-generation service, not directly into UI state. The first chapter is generated immediately through the provider abstraction.",
+      eyebrow: "New story",
+      title: "Create a story",
+      description: "Set the basics and generate the opening chapter.",
+      formTitle: "New interactive story",
+      formDescription: "Add the world, hero, and tone.",
       fields: {
         contentLanguage: "Story language",
-        title: "Story title",
+        title: "Title",
         synopsis: "Synopsis",
         universe: "Universe",
         protagonist: "Protagonist",
@@ -253,14 +236,12 @@ const enMessages = {
         genre: "Genre",
         tone: "Tone",
       },
-      hints: {
-        contentLanguage:
-          "Controls the language of generated chapters, state summaries and choices. It is independent from the UI locale.",
+      tooltips: {
+        contentLanguage: "Controls the language of chapters and choices.",
       },
       placeholders: {
         title: "The House Behind the Signal",
-        synopsis:
-          "A compact promise of the world, conflict and emotional direction.",
+        synopsis: "What is the story about?",
         universe: "Neo-Victorian megacity",
         protagonist: "A disgraced archivist",
         theme: "Memory manipulation",
@@ -269,93 +250,87 @@ const enMessages = {
       },
     },
     detail: {
-      eyebrow: "Story detail",
-      descriptionFallback: "Interactive story metadata and current run state.",
-      currentStateTitle: "Current story state",
-      activeGoals: "Active goals",
-      tensions: "Tensions",
-      knownFacts: "Known facts",
-      decisionHistory: "Decision history",
-      noDecisions:
-        "No decisions resolved yet. The first chapter is ready in reader mode.",
+      eyebrow: "Story",
+      descriptionFallback: "Story overview.",
+      currentStateTitle: "Current state",
+      activeGoals: "Goals",
+      tensions: "Tension",
+      knownFacts: "Facts",
+      decisionHistory: "Choice history",
+      noDecisions: "No choices yet.",
       decisionItem: "{chapterLabel} {chapterNumber}: {selectedLabel}",
-      chapterTimeline: "Chapter timeline",
+      chapterTimeline: "Chapters",
     },
     reader: {
       eyebrow: "Reader",
-      description:
-        "Play mode for the current story run, including entitlement checks and save checkpoints.",
+      description: "Read, choose, and continue.",
       chapterBadge: "{chapterLabel} {chapterNumber}",
       chooseTitle: "Choose the next move",
-      chooseDescription:
-        "Choices are stored server-side and the next chapter is generated only after access control confirms entitlement.",
-      lockedChoices:
-        "Unlock the next chapter first. Choice forms stay disabled until access is granted by either chapter purchase or an active subscription.",
-      checkpointPlaceholder: "Checkpoint label",
-      saveDescription:
-        "Existing saves: {count}. Saves store the run snapshot and chapter pointer for future resume and branching work.",
-      accessDescription:
-        "Access is evaluated in a dedicated service layer. UI only reflects the decision.",
-      accessAllowed: "Next chapter is already available via {reason} access.",
+      chooseDescription: "Pick what happens next.",
+      lockedChoices: "Unlock the next chapter to continue.",
+      checkpointPlaceholder: "Save name",
+      saveDescription: "{count} saves for this story.",
+      accessAllowed: "Next chapter is available via {reason}.",
       accessLocked:
-        "{chapterLabel} {chapterNumber} is locked. Unlock for {price} or cover it with a subscription.",
+        "{chapterLabel} {chapterNumber} is locked. Unlock it for {price}.",
+      tooltips: {
+        nextChapterAccess:
+          "Use credits or an active plan to open the next chapter.",
+      },
     },
   },
   saves: {
     eyebrow: "Saves",
-    title: "Saved checkpoints",
-    description:
-      "Saves are persisted snapshots that can later support richer resume and branching behavior.",
+    title: "Saved points",
+    description: "Come back to your story anytime.",
     emptyTitle: "No saves yet",
-    emptyDescription:
-      "Open the reader and create a checkpoint. Saved snapshots are ready for richer restore and branching mechanics later.",
-    cardMeta: "{storyTitle} • {chapterLabel} {chapterNumber}",
-    button: "Open save",
+    emptyDescription: "Create a save while reading.",
+    cardMeta: "{storyTitle} - {chapterLabel} {chapterNumber}",
+    button: "Open",
   },
   wallet: {
     eyebrow: "Wallet",
-    title: "Balance and ledger",
-    description:
-      "Credits, ledger history and placeholder top-up flow live in a dedicated wallet service.",
-    descriptionCard:
-      "Wallet balance is updated through a dedicated service and transaction ledger, not with UI-local state. Real payment integration can replace the demo top-up action without changing page components.",
-    ledgerTitle: "Ledger",
+    title: "Credits",
+    description: "Your credits and recent activity.",
+    descriptionCard: "Credits are used to unlock paid chapters.",
+    ledgerTitle: "Activity",
     table: {
       type: "Type",
       description: "Description",
       amount: "Amount",
-      balanceAfter: "Balance after",
+      balanceAfter: "Balance",
       when: "When",
     },
+    tooltips: {
+      balance: "Use credits to unlock paid chapters.",
+    },
     transactionDescriptions: {
-      STARTER_GRANT: "Starter credits granted on first sign-in.",
-      CREDIT_TOP_UP:
-        "Demo credits added for local development and purchase testing.",
-      CHAPTER_PURCHASE: "Credits spent to unlock a premium chapter.",
-      SUBSCRIPTION_PURCHASE: "Credits spent on subscription access.",
-      REFUND: "Credits returned to the wallet.",
-      ADJUSTMENT: "Manual wallet adjustment.",
+      STARTER_GRANT: "Welcome credits",
+      CREDIT_TOP_UP: "Credits added",
+      CHAPTER_PURCHASE: "Chapter unlocked",
+      SUBSCRIPTION_PURCHASE: "Subscription payment",
+      REFUND: "Refund",
+      ADJUSTMENT: "Balance update",
     },
   },
   subscriptions: {
-    eyebrow: "Subscriptions",
-    title: "Subscription access layer",
-    description:
-      "Subscription logic is modeled separately from UI so premium access can later be driven by a billing provider, webhooks and entitlement sync.",
-    currentTitle: "Current subscription",
-    noActive:
-      "No active plan. Subscription architecture is already wired into chapter access, purchases and reader gating.",
+    eyebrow: "Plans",
+    title: "Subscriptions",
+    description: "Choose how you want to unlock premium chapters.",
+    currentTitle: "Current plan",
+    noActive: "No active plan.",
     statusLine: "Status: {status}{endsAt}",
-    statusEndsAt: " • ends {date}",
-    unlimitedPremiumAccess: "Unlimited premium access: {value}",
+    statusEndsAt: " - until {date}",
+    unlimitedPremiumAccess: "Premium chapters: {value}",
     chapterDiscount: "Chapter discount: {value}%",
-    integrationReady:
-      "Foundation ready for future payment and webhook integration",
+    integrationReady: "Use while your plan is active.",
+    tooltips: {
+      currentPlan: "An active plan opens premium chapters while it lasts.",
+    },
     planDescriptions: {
       "fanstory-plus-monthly":
-        "Unlimited premium chapter access while active, prioritized generation queue, and subscription-based gating foundation.",
-      "fanstory-pro-yearly":
-        "Long-term plan for heavy users with yearly billing placeholder and room for future payment provider integration.",
+        "Unlimited access to premium chapters while active.",
+      "fanstory-pro-yearly": "Long-term access with yearly billing.",
     },
   },
   userMenu: {
