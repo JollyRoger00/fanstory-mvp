@@ -16,6 +16,11 @@ enum UserRole {
   ADMIN
 }
 
+enum AppLocale {
+  en
+  ru
+}
+
 enum StoryStatus {
   DRAFT
   ACTIVE
@@ -102,6 +107,7 @@ model User {
   emailVerified          DateTime?
   image                  String?
   role                   UserRole                 @default(USER)
+  preferredLanguage      AppLocale?
   accounts               Account[]
   sessions               Session[]
   authenticators         Authenticator[]

@@ -1,5 +1,6 @@
 import { ReaderView } from "@/features/story-reader/components/reader-view";
 import { PageHeader } from "@/components/shared/page-header";
+import { getI18n } from "@/lib/i18n/server";
 import { requireUser } from "@/server/auth/session";
 import { getReaderView } from "@/server/story-reader/reader.service";
 
@@ -21,13 +22,14 @@ export default async function ReaderPage({
   const query = await searchParams;
   const requestedChapter = query.chapter ? Number(query.chapter) : undefined;
   const reader = await getReaderView(user.id, storyId, requestedChapter);
+  const { t } = await getI18n();
 
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Reader"
+        eyebrow={t("stories.reader.eyebrow")}
         title={reader.story.title}
-        description="Play mode for the current story run, including entitlement checks and save checkpoints."
+        description={t("stories.reader.description")}
       />
       <ReaderView data={reader} />
     </div>

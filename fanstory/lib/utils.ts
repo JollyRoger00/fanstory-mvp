@@ -1,18 +1,41 @@
 import { clsx, type ClassValue } from "clsx";
-import { formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
+import { enUS, ru } from "date-fns/locale";
 import { twMerge } from "tailwind-merge";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCredits(value: number) {
-  return `${value.toLocaleString("en-US")} cr`;
+function getIntlLocale(locale: Locale) {
+  return locale === "ru" ? "ru-RU" : "en-US";
 }
 
-export function formatRelativeDate(value: Date | string) {
+function getDateFnsLocale(locale: Locale) {
+  return locale === "ru" ? ru : enUS;
+}
+
+export function formatCredits(value: number, locale: Locale = defaultLocale) {
+  return `${value.toLocaleString(getIntlLocale(locale))} cr`;
+}
+
+export function formatRelativeDate(
+  value: Date | string,
+  locale: Locale = defaultLocale,
+) {
   return formatDistanceToNow(new Date(value), {
     addSuffix: true,
+    locale: getDateFnsLocale(locale),
+  });
+}
+
+export function formatCalendarDate(
+  value: Date | string,
+  locale: Locale = defaultLocale,
+) {
+  return format(new Date(value), "PPP", {
+    locale: getDateFnsLocale(locale),
   });
 }
 

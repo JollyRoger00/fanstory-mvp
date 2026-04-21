@@ -62,6 +62,13 @@ export type EnumUserRoleFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
 }
 
+export type EnumAppLocaleNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppLocale | Prisma.EnumAppLocaleFieldRefInput<$PrismaModel> | null
+  in?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumAppLocaleNullableFilter<$PrismaModel> | $Enums.AppLocale | null
+}
+
 export type DateTimeFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel>
@@ -136,6 +143,16 @@ export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumUserRoleFilter<$PrismaModel>
   _max?: Prisma.NestedEnumUserRoleFilter<$PrismaModel>
+}
+
+export type EnumAppLocaleNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppLocale | Prisma.EnumAppLocaleFieldRefInput<$PrismaModel> | null
+  in?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumAppLocaleNullableWithAggregatesFilter<$PrismaModel> | $Enums.AppLocale | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAppLocaleNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAppLocaleNullableFilter<$PrismaModel>
 }
 
 export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -520,6 +537,13 @@ export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
 }
 
+export type NestedEnumAppLocaleNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppLocale | Prisma.EnumAppLocaleFieldRefInput<$PrismaModel> | null
+  in?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumAppLocaleNullableFilter<$PrismaModel> | $Enums.AppLocale | null
+}
+
 export type NestedDateTimeFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel>
@@ -609,6 +633,16 @@ export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumUserRoleFilter<$PrismaModel>
   _max?: Prisma.NestedEnumUserRoleFilter<$PrismaModel>
+}
+
+export type NestedEnumAppLocaleNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppLocale | Prisma.EnumAppLocaleFieldRefInput<$PrismaModel> | null
+  in?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.AppLocale[] | Prisma.ListEnumAppLocaleFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumAppLocaleNullableWithAggregatesFilter<$PrismaModel> | $Enums.AppLocale | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAppLocaleNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAppLocaleNullableFilter<$PrismaModel>
 }
 
 export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {

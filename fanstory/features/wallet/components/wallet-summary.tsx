@@ -11,33 +11,39 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getI18n } from "@/lib/i18n/server";
 import { formatCredits, formatRelativeDate } from "@/lib/utils";
 
 type WalletSummaryProps = {
   wallet: WalletOverview;
 };
 
-export function WalletSummary({ wallet }: WalletSummaryProps) {
+export async function WalletSummary({ wallet }: WalletSummaryProps) {
+  const { locale, raw, t } = await getI18n();
+  const transactionTypeLabels = raw<Record<string, string>>(
+    "common.enums.walletTransactionType",
+  );
+  const transactionDescriptions = raw<Record<string, string>>(
+    "wallet.transactionDescriptions",
+  );
+
   return (
     <div className="space-y-6">
       <Card className="border-white/60 bg-slate-950 text-white">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <p className="text-xs font-semibold tracking-[0.24em] text-amber-300 uppercase">
-              Wallet
+              {t("common.labels.wallet")}
             </p>
             <CardTitle className="font-heading text-4xl">
-              {formatCredits(wallet.balance)}
+              {formatCredits(wallet.balance, locale)}
             </CardTitle>
           </div>
           <Coins className="size-6 text-amber-300" />
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="max-w-2xl text-sm leading-7 text-slate-300">
-            Wallet balance is updated through a dedicated service and
-            transaction ledger, not with UI-local state. Real payment
-            integration can replace the demo top-up action without changing page
-            components.
+            {t("wallet.descriptionCard")}
           </p>
           <form action={grantDemoCreditsAction}>
             <Button
@@ -45,7 +51,7 @@ export function WalletSummary({ wallet }: WalletSummaryProps) {
               className="rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
             >
               <Plus className="size-4" />
-              Add demo credits
+              {t("common.actions.addDemoCredits")}
             </Button>
           </form>
         </CardContent>
@@ -53,30 +59,39 @@ export function WalletSummary({ wallet }: WalletSummaryProps) {
 
       <Card className="border-white/60 bg-white/85">
         <CardHeader>
-          <CardTitle className="font-heading text-2xl">Ledger</CardTitle>
+          <CardTitle className="font-heading text-2xl">
+            {t("wallet.ledgerTitle")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Type</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Balance after</TableHead>
-                <TableHead>When</TableHead>
+                <TableHead>{t("wallet.table.type")}</TableHead>
+                <TableHead>{t("wallet.table.description")}</TableHead>
+                <TableHead>{t("wallet.table.amount")}</TableHead>
+                <TableHead>{t("wallet.table.balanceAfter")}</TableHead>
+                <TableHead>{t("wallet.table.when")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {wallet.transactions.map((transaction) => (
                 <TableRow key={transaction.id}>
-                  <TableCell>{transaction.type}</TableCell>
-                  <TableCell>{transaction.description}</TableCell>
-                  <TableCell>{formatCredits(transaction.amount)}</TableCell>
                   <TableCell>
-                    {formatCredits(transaction.balanceAfter)}
+                    {transactionTypeLabels[transaction.type] ?? transaction.type}
                   </TableCell>
                   <TableCell>
-                    {formatRelativeDate(transaction.createdAt)}
+                    {transactionDescriptions[transaction.type] ??
+                      transaction.description}
+                  </TableCell>
+                  <TableCell>
+                    {formatCredits(transaction.amount, locale)}
+                  </TableCell>
+                  <TableCell>
+                    {formatCredits(transaction.balanceAfter, locale)}
+                  </TableCell>
+                  <TableCell>
+                    {formatRelativeDate(transaction.createdAt, locale)}
                   </TableCell>
                 </TableRow>
               ))}

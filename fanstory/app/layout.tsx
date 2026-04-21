@@ -5,6 +5,7 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import { Toaster } from "sonner";
+import { getI18n } from "@/lib/i18n/server";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -24,20 +25,25 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: "FanStory",
-  description:
-    "Interactive AI stories with wallet, saves, chapter access and Google-only authentication.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
 
-export default function RootLayout({
+  return {
+    title: t("metadata.title"),
+    description: t("metadata.description"),
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { locale } = await getI18n();
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${spaceGrotesk.variable} ${cormorant.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans text-slate-950">

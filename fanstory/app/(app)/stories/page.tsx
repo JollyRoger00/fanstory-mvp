@@ -3,25 +3,27 @@ import { StoryCard } from "@/features/stories/components/story-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
+import { getI18n } from "@/lib/i18n/server";
 import { requireUser } from "@/server/auth/session";
 import { listStories } from "@/server/stories/story.service";
 
 export default async function StoriesPage() {
   const user = await requireUser();
   const stories = await listStories(user.id);
+  const { t } = await getI18n();
 
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Stories"
-        title="Story library"
-        description="All generated stories for the authenticated user. Each story owns its chapters, run state and entitlement checks."
+        eyebrow={t("stories.list.eyebrow")}
+        title={t("stories.list.title")}
+        description={t("stories.list.description")}
         actions={
           <Button
             asChild
             className="rounded-full bg-slate-950 hover:bg-slate-800"
           >
-            <Link href="/stories/new">New story</Link>
+            <Link href="/stories/new">{t("common.actions.newStory")}</Link>
           </Button>
         }
       />
@@ -33,14 +35,14 @@ export default async function StoriesPage() {
         </div>
       ) : (
         <EmptyState
-          title="No stories generated"
-          description="Use the new story flow to create a story aggregate, initial chapter and first choice set."
+          title={t("stories.list.emptyTitle")}
+          description={t("stories.list.emptyDescription")}
           action={
             <Button
               asChild
               className="rounded-full bg-slate-950 hover:bg-slate-800"
             >
-              <Link href="/stories/new">Create the first story</Link>
+              <Link href="/stories/new">{t("common.actions.createStory")}</Link>
             </Button>
           }
         />

@@ -31,6 +31,7 @@ fanstory/
     user/
   features/
     auth/
+    i18n/
     profile/
     stories/
     story-reader/
@@ -40,6 +41,7 @@ fanstory/
   lib/
     db/
     env/
+    i18n/
     validations/
   prisma/
     schema.prisma
@@ -171,6 +173,32 @@ The current story run stores structured state on `StoryRun`:
 - `knownFacts`
 
 This is the foundation for evolving the reader into a richer state-driven engine instead of treating prose as the only source of truth.
+
+### 5. i18n architecture
+
+Localization is implemented as an application foundation, not as scattered UI conditionals.
+
+Main pieces:
+
+- `lib/i18n/config.ts` defines supported locales and the locale cookie
+- `lib/i18n/messages/*` stores dictionaries for `en` and `ru`
+- `lib/i18n/translator.ts` resolves string keys and interpolation
+- `lib/i18n/server.ts` resolves the effective locale from cookie or `Accept-Language`
+- `lib/i18n/actions.ts` persists the selected language
+- `features/i18n/components/language-switcher.tsx` switches locale without touching domain services
+
+Rules:
+
+- no business logic was moved into UI for localization
+- `app/*` still only composes routes and screens
+- `server/*` remains focused on use cases, not UI copy
+- components consume translations via the shared i18n layer, not `if (language === ...)`
+
+Persistence:
+
+- current language is stored in the `fanstory-locale` cookie
+- Prisma `User` now has an optional `preferredLanguage` field as a future-ready place for account-level persistence
+- the current implementation still prefers lightweight cookie-based locale selection to avoid coupling auth/session flow to UI localization too early
 
 ## Local Run
 

@@ -17,6 +17,14 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const AppLocale = {
+  en: 'en',
+  ru: 'ru'
+} as const
+
+export type AppLocale = (typeof AppLocale)[keyof typeof AppLocale]
+
+
 export const StoryStatus = {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',

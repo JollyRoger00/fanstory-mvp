@@ -3,24 +3,27 @@ import type { SaveView } from "@/entities/save/types";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getI18n } from "@/lib/i18n/server";
 import { formatRelativeDate } from "@/lib/utils";
 
 type SaveListProps = {
   saves: SaveView[];
 };
 
-export function SaveList({ saves }: SaveListProps) {
+export async function SaveList({ saves }: SaveListProps) {
+  const { locale, t } = await getI18n();
+
   if (!saves.length) {
     return (
       <EmptyState
-        title="No saves yet"
-        description="Open the reader and create a checkpoint. Saved snapshots are ready for richer restore and branching mechanics later."
+        title={t("saves.emptyTitle")}
+        description={t("saves.emptyDescription")}
         action={
           <Button
             asChild
             className="rounded-full bg-slate-950 hover:bg-slate-800"
           >
-            <Link href="/stories">Browse stories</Link>
+            <Link href="/stories">{t("common.actions.browseStories")}</Link>
           </Button>
         }
       />
@@ -39,13 +42,18 @@ export function SaveList({ saves }: SaveListProps) {
           <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
               <p className="text-sm font-medium text-slate-950">
-                {save.storyTitle} • chapter {save.chapterNumber}
+                {t("saves.cardMeta", {
+                  storyTitle: save.storyTitle,
+                  chapterLabel: t("common.labels.chapter"),
+                  chapterNumber: save.chapterNumber,
+                })}
               </p>
               <p className="text-sm leading-7 text-slate-500">
                 {save.stateSummary}
               </p>
               <p className="text-xs tracking-[0.2em] text-slate-400 uppercase">
-                created {formatRelativeDate(save.createdAt)}
+                {t("common.labels.created")}{" "}
+                {formatRelativeDate(save.createdAt, locale)}
               </p>
             </div>
             <Button
@@ -55,7 +63,7 @@ export function SaveList({ saves }: SaveListProps) {
               <Link
                 href={`/stories/${save.storyId}/read?chapter=${save.chapterNumber}`}
               >
-                Open save
+                {t("saves.button")}
               </Link>
             </Button>
           </CardContent>

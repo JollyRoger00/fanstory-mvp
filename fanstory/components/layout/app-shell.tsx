@@ -8,6 +8,8 @@ import {
   LibraryBig,
   Sparkles,
 } from "lucide-react";
+import { LanguageSwitcher } from "@/features/i18n/components/language-switcher";
+import { getI18n } from "@/lib/i18n/server";
 import { UserMenu } from "@/components/layout/user-menu";
 
 type AppShellProps = {
@@ -19,15 +21,20 @@ type AppShellProps = {
   };
 };
 
-const navigation = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/stories", label: "Stories", icon: LibraryBig },
-  { href: "/saves", label: "Saves", icon: BookMarked },
-  { href: "/wallet", label: "Wallet", icon: CreditCard },
-  { href: "/subscriptions", label: "Subscriptions", icon: FolderHeart },
-];
+export async function AppShell({ children, user }: AppShellProps) {
+  const { locale, t } = await getI18n();
+  const navigation = [
+    { href: "/dashboard", label: t("navigation.dashboard"), icon: LayoutDashboard },
+    { href: "/stories", label: t("navigation.stories"), icon: LibraryBig },
+    { href: "/saves", label: t("navigation.saves"), icon: BookMarked },
+    { href: "/wallet", label: t("navigation.wallet"), icon: CreditCard },
+    {
+      href: "/subscriptions",
+      label: t("navigation.subscriptions"),
+      icon: FolderHeart,
+    },
+  ];
 
-export function AppShell({ children, user }: AppShellProps) {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_32%),linear-gradient(180deg,_#fffef8_0%,_#f8f5ef_100%)]">
       <div className="mx-auto grid min-h-screen max-w-7xl gap-6 px-4 py-4 lg:grid-cols-[280px_1fr] lg:px-6">
@@ -39,7 +46,7 @@ export function AppShell({ children, user }: AppShellProps) {
             <span className="rounded-full bg-amber-400 p-2 text-slate-950">
               <Sparkles className="size-4" />
             </span>
-            FanStory
+            {t("common.appName")}
           </Link>
           <div className="mt-10 space-y-2">
             {navigation.map((item) => {
@@ -59,12 +66,10 @@ export function AppShell({ children, user }: AppShellProps) {
           </div>
           <div className="mt-10 rounded-[1.75rem] border border-white/10 bg-white/8 p-4">
             <p className="text-xs font-semibold tracking-[0.24em] text-amber-300 uppercase">
-              Product note
+              {t("navigation.productNote")}
             </p>
             <p className="mt-3 text-sm leading-7 text-slate-300">
-              Chapters, subscriptions, wallet and generation are already
-              separated in the server layer, so payment and AI providers can
-              evolve without rewriting UI routes.
+              {t("navigation.productNoteDescription")}
             </p>
           </div>
         </aside>
@@ -72,17 +77,27 @@ export function AppShell({ children, user }: AppShellProps) {
           <div className="flex flex-col gap-4 border-b border-slate-200/80 pb-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold tracking-[0.24em] text-amber-700 uppercase">
-                Interactive AI storytelling
+                {t("navigation.workspaceEyebrow")}
               </p>
               <h1 className="font-heading text-3xl text-slate-950">
-                Command center
+                {t("navigation.workspaceTitle")}
               </h1>
             </div>
-            <UserMenu
-              name={user.name ?? "FanStory User"}
-              email={user.email}
-              image={user.image}
-            />
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher
+                currentLocale={locale}
+                label={t("common.language.switchTo")}
+                options={[
+                  { value: "en", label: t("common.language.english") },
+                  { value: "ru", label: t("common.language.russian") },
+                ]}
+              />
+              <UserMenu
+                name={user.name ?? t("userMenu.fallbackName")}
+                email={user.email}
+                image={user.image}
+              />
+            </div>
           </div>
           <div className="flex-1">{children}</div>
         </main>

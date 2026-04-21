@@ -1,5 +1,6 @@
 import { ChevronDown, LogOut } from "lucide-react";
 import { signOutAction } from "@/server/auth/actions";
+import { getI18n } from "@/lib/i18n/server";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,8 @@ type UserMenuProps = {
   email?: string | null;
 };
 
-export function UserMenu({ name, image, email }: UserMenuProps) {
+export async function UserMenu({ name, image, email }: UserMenuProps) {
+  const { t } = await getI18n();
   const fallback = name
     .split(" ")
     .map((segment) => segment[0])
@@ -43,7 +45,7 @@ export function UserMenu({ name, image, email }: UserMenuProps) {
             className="w-full justify-start rounded-md"
           >
             <LogOut className="size-4" />
-            Sign out
+            {t("common.actions.signOut")}
           </Button>
         </form>
       </DropdownMenuContent>
