@@ -5,10 +5,11 @@ import type {
   MonetizationOverview,
 } from "@/entities/monetization/types";
 import { prisma } from "@/lib/db/client";
-import { devBillingToolsEnabled } from "@/lib/env/server";
+import { paymentsEnabled } from "@/lib/env/server";
 import { getMonetizationCatalog } from "@/server/monetization/catalog.service";
 import { getEntitlementSnapshot } from "@/server/monetization/entitlement.service";
 import { rewardedAdDevFlowEnabled } from "@/server/monetization/rewarded-ads/provider";
+import { listRecentPayments } from "@/server/payments/payment.service";
 
 function mapLedgerEntry(entry: {
   id: string;
@@ -43,7 +44,7 @@ function mapLedgerEntry(entry: {
 export async function getMonetizationOverview(
   userId: string,
 ): Promise<MonetizationOverview> {
-  const [snapshot, catalog, ledger] = await Promise.all([
+  const [snapshot, catalog, ledger, recentPayments] = await Promise.all([
     getEntitlementSnapshot(userId),
     getMonetizationCatalog(),
     prisma.chapterEntitlementLedger.findMany({
@@ -75,6 +76,7 @@ export async function getMonetizationOverview(
       },
       take: 16,
     }),
+    listRecentPayments(userId),
   ]);
 
   return {
@@ -83,10 +85,11 @@ export async function getMonetizationOverview(
     chapterPacks: catalog.chapterPacks,
     subscriptions: catalog.subscriptions,
     ledger: ledger.map(mapLedgerEntry),
+    recentPayments,
     canClaimRewardedAd: snapshot.canClaimRewardedAd,
     rewardedAdReady: snapshot.rewardedAdReady,
     dailyResetAt: snapshot.dailyResetAt,
-    mockPurchasesEnabled: devBillingToolsEnabled(),
+    paymentsEnabled: paymentsEnabled(),
     rewardedAdEnabled: rewardedAdDevFlowEnabled(),
   };
 }

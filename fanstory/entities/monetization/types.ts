@@ -1,3 +1,5 @@
+import type { PaymentView } from "@/entities/payment/types";
+
 export type EntitlementSource =
   | "WELCOME"
   | "SUBSCRIPTION_DAILY"
@@ -66,9 +68,10 @@ export type MonetizationOverview = {
   chapterPacks: MonetizationProductView[];
   subscriptions: MonetizationProductView[];
   ledger: EntitlementLedgerEntryView[];
+  recentPayments: PaymentView[];
   canClaimRewardedAd: boolean;
   rewardedAdReady: boolean;
   dailyResetAt: Date;
-  mockPurchasesEnabled: boolean;
+  paymentsEnabled: boolean;
   rewardedAdEnabled: boolean;
 };

@@ -103,6 +103,16 @@ export type Subscription = Prisma.SubscriptionModel
  */
 export type Purchase = Prisma.PurchaseModel
 /**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model PaymentWebhookEvent
+ * 
+ */
+export type PaymentWebhookEvent = Prisma.PaymentWebhookEventModel
+/**
  * Model PurchasedChapterAccess
  * 
  */

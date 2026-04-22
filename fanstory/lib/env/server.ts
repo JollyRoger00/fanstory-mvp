@@ -18,7 +18,11 @@ const serverEnvSchema = z
     STORY_PROVIDER: z.enum(["mock", "openai"]).default("mock"),
     OPENAI_API_KEY: z.string().min(1).optional(),
     OPENAI_MODEL: z.string().min(1).optional(),
-    ENABLE_DEV_BILLING_TOOLS: z
+    PAYMENT_PROVIDER: z.enum(["disabled", "yookassa"]).default("disabled"),
+    YOOKASSA_SHOP_ID: z.string().min(1).optional(),
+    YOOKASSA_SECRET_KEY: z.string().min(1).optional(),
+    YOOKASSA_API_URL: z.url().default("https://api.yookassa.ru/v3"),
+    YOOKASSA_WEBHOOK_IP_CHECK: z
       .string()
       .optional()
       .transform((value) => value === "true"),
@@ -33,23 +37,42 @@ const serverEnvSchema = z
       });
     }
 
-    if (value.STORY_PROVIDER !== "openai") {
+    if (value.STORY_PROVIDER === "openai") {
+      if (!value.OPENAI_API_KEY) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["OPENAI_API_KEY"],
+          message: "OPENAI_API_KEY is required when STORY_PROVIDER=openai.",
+        });
+      }
+
+      if (!value.OPENAI_MODEL) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["OPENAI_MODEL"],
+          message: "OPENAI_MODEL is required when STORY_PROVIDER=openai.",
+        });
+      }
+    }
+
+    if (value.PAYMENT_PROVIDER !== "yookassa") {
       return;
     }
 
-    if (!value.OPENAI_API_KEY) {
+    if (!value.YOOKASSA_SHOP_ID) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["OPENAI_API_KEY"],
-        message: "OPENAI_API_KEY is required when STORY_PROVIDER=openai.",
+        path: ["YOOKASSA_SHOP_ID"],
+        message: "YOOKASSA_SHOP_ID is required when PAYMENT_PROVIDER=yookassa.",
       });
     }
 
-    if (!value.OPENAI_MODEL) {
+    if (!value.YOOKASSA_SECRET_KEY) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["OPENAI_MODEL"],
-        message: "OPENAI_MODEL is required when STORY_PROVIDER=openai.",
+        path: ["YOOKASSA_SECRET_KEY"],
+        message:
+          "YOOKASSA_SECRET_KEY is required when PAYMENT_PROVIDER=yookassa.",
       });
     }
   });
@@ -77,7 +100,10 @@ export function getServerEnv(): ServerEnv {
   return cachedEnv;
 }
 
-export function devBillingToolsEnabled() {
-  const env = getServerEnv();
-  return env.NODE_ENV !== "production" && env.ENABLE_DEV_BILLING_TOOLS;
+export function paymentsEnabled() {
+  return getServerEnv().PAYMENT_PROVIDER !== "disabled";
+}
+
+export function yookassaEnabled() {
+  return getServerEnv().PAYMENT_PROVIDER === "yookassa";
 }

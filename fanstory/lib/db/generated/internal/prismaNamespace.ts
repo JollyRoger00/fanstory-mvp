@@ -401,6 +401,8 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   Subscription: 'Subscription',
   Purchase: 'Purchase',
+  Payment: 'Payment',
+  PaymentWebhookEvent: 'PaymentWebhookEvent',
   PurchasedChapterAccess: 'PurchasedChapterAccess',
   RewardedAdGrant: 'RewardedAdGrant',
   ChapterEntitlementLedger: 'ChapterEntitlementLedger',
@@ -420,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "wallet" | "walletTransaction" | "story" | "storyRun" | "storyChapter" | "storyChoice" | "storyDecision" | "save" | "monetizationProduct" | "subscriptionPlan" | "subscription" | "purchase" | "purchasedChapterAccess" | "rewardedAdGrant" | "chapterEntitlementLedger" | "generationLog"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "wallet" | "walletTransaction" | "story" | "storyRun" | "storyChapter" | "storyChoice" | "storyDecision" | "save" | "monetizationProduct" | "subscriptionPlan" | "subscription" | "purchase" | "payment" | "paymentWebhookEvent" | "purchasedChapterAccess" | "rewardedAdGrant" | "chapterEntitlementLedger" | "generationLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1682,6 +1684,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Payment: {
+      payload: Prisma.$PaymentPayload<ExtArgs>
+      fields: Prisma.PaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        update: {
+          args: Prisma.PaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
+        }
+        groupBy: {
+          args: Prisma.PaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    PaymentWebhookEvent: {
+      payload: Prisma.$PaymentWebhookEventPayload<ExtArgs>
+      fields: Prisma.PaymentWebhookEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentWebhookEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentWebhookEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentWebhookEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentWebhookEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentWebhookEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentWebhookEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentWebhookEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentWebhookEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentWebhookEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>
+        }
+        update: {
+          args: Prisma.PaymentWebhookEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentWebhookEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentWebhookEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentWebhookEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentWebhookEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentWebhookEventPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentWebhookEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentWebhookEvent>
+        }
+        groupBy: {
+          args: Prisma.PaymentWebhookEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentWebhookEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentWebhookEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentWebhookEventCountAggregateOutputType> | number
+        }
+      }
+    }
     PurchasedChapterAccess: {
       payload: Prisma.$PurchasedChapterAccessPayload<ExtArgs>
       fields: Prisma.PurchasedChapterAccessFieldRefs
@@ -2261,6 +2411,7 @@ export const SubscriptionScalarFieldEnum = {
   userId: 'userId',
   planId: 'planId',
   productId: 'productId',
+  purchaseId: 'purchaseId',
   status: 'status',
   startsAt: 'startsAt',
   endsAt: 'endsAt',
@@ -2292,6 +2443,53 @@ export const PurchaseScalarFieldEnum = {
 } as const
 
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purchaseId: 'purchaseId',
+  productId: 'productId',
+  provider: 'provider',
+  providerPaymentId: 'providerPaymentId',
+  status: 'status',
+  applyStatus: 'applyStatus',
+  amountRubles: 'amountRubles',
+  currency: 'currency',
+  idempotenceKey: 'idempotenceKey',
+  confirmationUrl: 'confirmationUrl',
+  returnUrl: 'returnUrl',
+  failureReason: 'failureReason',
+  providerPayload: 'providerPayload',
+  paidAt: 'paidAt',
+  canceledAt: 'canceledAt',
+  lastSyncedAt: 'lastSyncedAt',
+  lastWebhookAt: 'lastWebhookAt',
+  appliedAt: 'appliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentWebhookEventScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  provider: 'provider',
+  eventType: 'eventType',
+  providerObjectId: 'providerObjectId',
+  dedupKey: 'dedupKey',
+  status: 'status',
+  remoteIp: 'remoteIp',
+  payload: 'payload',
+  errorMessage: 'errorMessage',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentWebhookEventScalarFieldEnum = (typeof PaymentWebhookEventScalarFieldEnum)[keyof typeof PaymentWebhookEventScalarFieldEnum]
 
 
 export const PurchasedChapterAccessScalarFieldEnum = {
@@ -2379,6 +2577,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -2700,6 +2905,62 @@ export type ListEnumPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'PaymentProvider'
+ */
+export type EnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentProvider[]'
+ */
+export type ListEnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentApplyStatus'
+ */
+export type EnumPaymentApplyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentApplyStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentApplyStatus[]'
+ */
+export type ListEnumPaymentApplyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentApplyStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentWebhookEventStatus'
+ */
+export type EnumPaymentWebhookEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentWebhookEventStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentWebhookEventStatus[]'
+ */
+export type ListEnumPaymentWebhookEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentWebhookEventStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'RewardedAdProvider'
  */
 export type EnumRewardedAdProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardedAdProvider'>
@@ -2894,6 +3155,8 @@ export type GlobalOmitConfig = {
   subscriptionPlan?: Prisma.SubscriptionPlanOmit
   subscription?: Prisma.SubscriptionOmit
   purchase?: Prisma.PurchaseOmit
+  payment?: Prisma.PaymentOmit
+  paymentWebhookEvent?: Prisma.PaymentWebhookEventOmit
   purchasedChapterAccess?: Prisma.PurchasedChapterAccessOmit
   rewardedAdGrant?: Prisma.RewardedAdGrantOmit
   chapterEntitlementLedger?: Prisma.ChapterEntitlementLedgerOmit

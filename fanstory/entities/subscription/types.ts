@@ -7,4 +7,5 @@ export type SubscriptionOverview = {
   activeSubscription: ActiveSubscriptionView | null;
   plans: MonetizationProductView[];
   dailyResetAt: Date;
+  paymentsEnabled: boolean;
 };

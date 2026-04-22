@@ -1,5 +1,5 @@
 import type { SubscriptionOverview } from "@/entities/subscription/types";
-import { activateMockSubscriptionAction } from "@/server/subscriptions/actions";
+import { startSubscriptionCheckoutAction } from "@/server/subscriptions/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,13 +9,9 @@ import { formatCalendarDate, formatRubles } from "@/lib/utils";
 
 type SubscriptionPlansProps = {
   data: SubscriptionOverview;
-  developmentBillingEnabled: boolean;
 };
 
-export async function SubscriptionPlans({
-  data,
-  developmentBillingEnabled,
-}: SubscriptionPlansProps) {
+export async function SubscriptionPlans({ data }: SubscriptionPlansProps) {
   const { locale, raw, t } = await getI18n();
   const intervalLabels = raw<Record<string, string>>(
     "common.enums.subscriptionInterval",
@@ -106,8 +102,8 @@ export async function SubscriptionPlans({
                 </li>
                 <li>{t("subscriptions.dailyQuotaHint")}</li>
               </ul>
-              {developmentBillingEnabled ? (
-                <form action={activateMockSubscriptionAction}>
+              {data.paymentsEnabled ? (
+                <form action={startSubscriptionCheckoutAction}>
                   <input type="hidden" name="productId" value={plan.id} />
                   <Button
                     type="submit"

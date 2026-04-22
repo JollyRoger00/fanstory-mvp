@@ -1,20 +1,14 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { activateSubscriptionSchema } from "@/lib/validations/subscription";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/server/auth/session";
-import { activateMockSubscription } from "@/server/subscriptions/subscription.service";
+import { startSubscriptionCheckout } from "@/server/payments/payment.service";
 
-export async function activateMockSubscriptionAction(formData: FormData) {
+export async function startSubscriptionCheckoutAction(formData: FormData) {
   const user = await requireUser();
-  const input = activateSubscriptionSchema.parse({
+  const checkout = await startSubscriptionCheckout(user.id, {
     productId: formData.get("productId"),
   });
 
-  await activateMockSubscription(user.id, input.productId);
-
-  revalidatePath("/dashboard");
-  revalidatePath("/wallet");
-  revalidatePath("/subscriptions");
-  revalidatePath("/stories");
+  redirect(checkout.redirectUrl);
 }

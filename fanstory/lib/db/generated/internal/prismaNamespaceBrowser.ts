@@ -68,6 +68,8 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   Subscription: 'Subscription',
   Purchase: 'Purchase',
+  Payment: 'Payment',
+  PaymentWebhookEvent: 'PaymentWebhookEvent',
   PurchasedChapterAccess: 'PurchasedChapterAccess',
   RewardedAdGrant: 'RewardedAdGrant',
   ChapterEntitlementLedger: 'ChapterEntitlementLedger',
@@ -334,6 +336,7 @@ export const SubscriptionScalarFieldEnum = {
   userId: 'userId',
   planId: 'planId',
   productId: 'productId',
+  purchaseId: 'purchaseId',
   status: 'status',
   startsAt: 'startsAt',
   endsAt: 'endsAt',
@@ -365,6 +368,53 @@ export const PurchaseScalarFieldEnum = {
 } as const
 
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purchaseId: 'purchaseId',
+  productId: 'productId',
+  provider: 'provider',
+  providerPaymentId: 'providerPaymentId',
+  status: 'status',
+  applyStatus: 'applyStatus',
+  amountRubles: 'amountRubles',
+  currency: 'currency',
+  idempotenceKey: 'idempotenceKey',
+  confirmationUrl: 'confirmationUrl',
+  returnUrl: 'returnUrl',
+  failureReason: 'failureReason',
+  providerPayload: 'providerPayload',
+  paidAt: 'paidAt',
+  canceledAt: 'canceledAt',
+  lastSyncedAt: 'lastSyncedAt',
+  lastWebhookAt: 'lastWebhookAt',
+  appliedAt: 'appliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentWebhookEventScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  provider: 'provider',
+  eventType: 'eventType',
+  providerObjectId: 'providerObjectId',
+  dedupKey: 'dedupKey',
+  status: 'status',
+  remoteIp: 'remoteIp',
+  payload: 'payload',
+  errorMessage: 'errorMessage',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentWebhookEventScalarFieldEnum = (typeof PaymentWebhookEventScalarFieldEnum)[keyof typeof PaymentWebhookEventScalarFieldEnum]
 
 
 export const PurchasedChapterAccessScalarFieldEnum = {
@@ -452,6 +502,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

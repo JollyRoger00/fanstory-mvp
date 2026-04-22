@@ -1,3 +1,4 @@
+import type { PaymentView } from "@/entities/payment/types";
 import type {
   ActiveSubscriptionView,
   ChapterBalanceView,
@@ -11,9 +12,10 @@ export type WalletOverview = {
   chapterPacks: MonetizationProductView[];
   subscriptions: MonetizationProductView[];
   ledger: EntitlementLedgerEntryView[];
+  recentPayments: PaymentView[];
   canClaimRewardedAd: boolean;
   rewardedAdReady: boolean;
   dailyResetAt: Date;
-  mockPurchasesEnabled: boolean;
+  paymentsEnabled: boolean;
   rewardedAdEnabled: boolean;
 };

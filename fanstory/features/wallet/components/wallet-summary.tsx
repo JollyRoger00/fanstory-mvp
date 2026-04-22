@@ -137,7 +137,7 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
                     count: pack.chapterAmount ?? 0,
                   })}
                 </p>
-                {wallet.mockPurchasesEnabled ? (
+                {wallet.paymentsEnabled ? (
                   <form action={purchaseChapterPackAction} className="mt-4">
                     <input type="hidden" name="productId" value={pack.id} />
                     <Button

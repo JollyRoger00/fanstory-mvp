@@ -1,15 +1,57 @@
 import "server-only";
 
 import { addDays, addYears } from "date-fns";
+import type {
+  Prisma,
+  SubscriptionInterval,
+} from "@/lib/db/generated/client";
 import type { SubscriptionOverview } from "@/entities/subscription/types";
-import { FeatureDisabledError } from "@/lib/errors/app-error";
 import { prisma } from "@/lib/db/client";
-import { devBillingToolsEnabled } from "@/lib/env/server";
+import { paymentsEnabled } from "@/lib/env/server";
 import { getMonetizationCatalog } from "@/server/monetization/catalog.service";
 import {
   getActiveSubscriptionRecord,
   getEntitlementSnapshot,
+  getNextUtcDayStart,
+  getUtcDayStart,
 } from "@/server/monetization/entitlement.service";
+
+type ActivateSubscriptionFromPurchaseInput = {
+  userId: string;
+  purchaseId: string;
+  paymentId: string;
+  product: {
+    id: string;
+    code: string;
+    name: string;
+    interval: SubscriptionInterval | null;
+    dailyChapterLimit: number | null;
+  };
+};
+
+function getExistingMetadata(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {};
+  }
+
+  return value as Record<string, unknown>;
+}
+
+function getSubscriptionEndsAt(interval: SubscriptionInterval, now: Date) {
+  switch (interval) {
+    case "YEARLY":
+      return addYears(now, 1);
+    case "LIFETIME":
+      return null;
+    case "MONTHLY":
+    default:
+      return addDays(now, 30);
+  }
+}
+
+function getSubscriptionGrantDedupKey(subscriptionId: string, dayStart: Date) {
+  return `subscription-daily:${subscriptionId}:${dayStart.toISOString()}`;
+}
 
 export async function getActiveSubscription(userId: string) {
   return getActiveSubscriptionRecord(prisma, userId);
@@ -27,111 +69,129 @@ export async function getSubscriptionOverview(
     activeSubscription: snapshot.activeSubscription,
     plans: catalog.subscriptions,
     dailyResetAt: snapshot.dailyResetAt,
+    paymentsEnabled: paymentsEnabled(),
   };
 }
 
-export async function activateMockSubscription(
-  userId: string,
-  productId: string,
+export async function activateSubscriptionFromPurchase(
+  tx: Prisma.TransactionClient,
+  input: ActivateSubscriptionFromPurchaseInput,
 ) {
-  if (!devBillingToolsEnabled()) {
-    throw new FeatureDisabledError(
-      "Mock subscriptions are disabled in the current environment.",
-    );
-  }
-
-  const product = await prisma.monetizationProduct.findFirstOrThrow({
-    where: {
-      id: productId,
-      type: "SUBSCRIPTION",
-      status: "ACTIVE",
-    },
-  });
-
-  if (!product.interval || !product.dailyChapterLimit) {
+  if (!input.product.interval || !input.product.dailyChapterLimit) {
     throw new Error("Subscription product configuration is invalid.");
   }
 
-  const now = new Date();
-  const endsAt =
-    product.interval === "YEARLY"
-      ? addYears(now, 1)
-      : product.interval === "LIFETIME"
-        ? null
-        : addDays(now, 30);
-
-  await prisma.$transaction(async (tx) => {
-    await tx.subscription.updateMany({
-      where: {
-        userId,
-        status: {
-          in: ["ACTIVE", "TRIALING"],
-        },
-      },
-      data: {
-        status: "CANCELED",
-        canceledAt: now,
-      },
-    });
-
-    const subscription = await tx.subscription.create({
-      data: {
-        userId,
-        productId: product.id,
-        status: "ACTIVE",
-        startsAt: now,
-        renewsAt: endsAt,
-        endsAt,
-        metadata: {
-          source: "mock-activation",
-          productCode: product.code,
-        },
-      },
-      include: {
-        product: true,
-      },
-    });
-
-    await tx.purchase.create({
-      data: {
-        userId,
-        productId: product.id,
-        type: "SUBSCRIPTION",
-        status: "COMPLETED",
-        amount: product.priceRubles,
-        description: `Activated ${product.name}.`,
-        metadata: {
-          productCode: product.code,
-        },
-      },
-    });
-
-    const dayStart = new Date(
-      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
-    );
-
-    await tx.chapterEntitlementLedger.upsert({
-      where: {
-        dedupKey: `subscription-daily:${subscription.id}:${dayStart.toISOString()}`,
-      },
-      update: {},
-      create: {
-        userId,
-        subscriptionId: subscription.id,
-        eventType: "GRANT",
-        source: "SUBSCRIPTION_DAILY",
-        quantity: subscription.product?.dailyChapterLimit ?? 25,
-        effectiveDate: dayStart,
-        dedupKey: `subscription-daily:${subscription.id}:${dayStart.toISOString()}`,
-        metadata: {
-          dailyLimit: subscription.product?.dailyChapterLimit ?? 25,
-          resetTimezone: "UTC",
-          resetAt: new Date(
-            dayStart.getTime() + 24 * 60 * 60 * 1000,
-          ).toISOString(),
-          productCode: subscription.product?.code,
-        },
-      },
-    });
+  const purchase = await tx.purchase.findUniqueOrThrow({
+    where: {
+      id: input.purchaseId,
+    },
+    select: {
+      metadata: true,
+    },
   });
+
+  const now = new Date();
+  const dayStart = getUtcDayStart(now);
+  const endsAt = getSubscriptionEndsAt(input.product.interval, now);
+
+  await tx.subscription.updateMany({
+    where: {
+      userId: input.userId,
+      status: {
+        in: ["ACTIVE", "TRIALING"],
+      },
+      purchaseId: {
+        not: input.purchaseId,
+      },
+    },
+    data: {
+      status: "CANCELED",
+      canceledAt: now,
+    },
+  });
+
+  const existingSubscription = await tx.subscription.findUnique({
+    where: {
+      purchaseId: input.purchaseId,
+    },
+  });
+
+  const subscription = existingSubscription
+    ? await tx.subscription.update({
+        where: {
+          id: existingSubscription.id,
+        },
+        data: {
+          productId: input.product.id,
+          purchaseId: input.purchaseId,
+          status: "ACTIVE",
+          startsAt: now,
+          renewsAt: endsAt,
+          endsAt,
+          canceledAt: null,
+          metadata: {
+            ...getExistingMetadata(existingSubscription.metadata),
+            source: "payment",
+            paymentId: input.paymentId,
+            productCode: input.product.code,
+          },
+        },
+      })
+    : await tx.subscription.create({
+        data: {
+          userId: input.userId,
+          productId: input.product.id,
+          purchaseId: input.purchaseId,
+          status: "ACTIVE",
+          startsAt: now,
+          renewsAt: endsAt,
+          endsAt,
+          metadata: {
+            source: "payment",
+            paymentId: input.paymentId,
+            productCode: input.product.code,
+          },
+        },
+      });
+
+  await tx.chapterEntitlementLedger.upsert({
+    where: {
+      dedupKey: getSubscriptionGrantDedupKey(subscription.id, dayStart),
+    },
+    update: {},
+    create: {
+      userId: input.userId,
+      subscriptionId: subscription.id,
+      eventType: "GRANT",
+      source: "SUBSCRIPTION_DAILY",
+      quantity: input.product.dailyChapterLimit,
+      effectiveDate: dayStart,
+      dedupKey: getSubscriptionGrantDedupKey(subscription.id, dayStart),
+      metadata: {
+        dailyLimit: input.product.dailyChapterLimit,
+        resetTimezone: "UTC",
+        resetAt: getNextUtcDayStart(now).toISOString(),
+        paymentId: input.paymentId,
+        productCode: input.product.code,
+        productName: input.product.name,
+      },
+    },
+  });
+
+  await tx.purchase.update({
+    where: {
+      id: input.purchaseId,
+    },
+    data: {
+      status: "COMPLETED",
+      metadata: {
+        ...getExistingMetadata(purchase.metadata),
+        paymentId: input.paymentId,
+        productCode: input.product.code,
+        subscriptionId: subscription.id,
+      },
+    },
+  });
+
+  return subscription;
 }

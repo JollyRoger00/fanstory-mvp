@@ -302,6 +302,7 @@ export type MonetizationProductWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"MonetizationProduct"> | Date | string
   purchases?: Prisma.PurchaseListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type MonetizationProductOrderByWithRelationInput = {
@@ -322,6 +323,7 @@ export type MonetizationProductOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   purchases?: Prisma.PurchaseOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type MonetizationProductWhereUniqueInput = Prisma.AtLeast<{
@@ -345,6 +347,7 @@ export type MonetizationProductWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"MonetizationProduct"> | Date | string
   purchases?: Prisma.PurchaseListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id" | "code">
 
 export type MonetizationProductOrderByWithAggregationInput = {
@@ -409,6 +412,7 @@ export type MonetizationProductCreateInput = {
   updatedAt?: Date | string
   purchases?: Prisma.PurchaseCreateNestedManyWithoutProductInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutProductInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutProductInput
 }
 
 export type MonetizationProductUncheckedCreateInput = {
@@ -429,6 +433,7 @@ export type MonetizationProductUncheckedCreateInput = {
   updatedAt?: Date | string
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutProductInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutProductInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type MonetizationProductUpdateInput = {
@@ -449,6 +454,7 @@ export type MonetizationProductUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUpdateManyWithoutProductNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutProductNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutProductNestedInput
 }
 
 export type MonetizationProductUncheckedUpdateInput = {
@@ -469,6 +475,7 @@ export type MonetizationProductUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutProductNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutProductNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type MonetizationProductCreateManyInput = {
@@ -594,6 +601,11 @@ export type MonetizationProductNullableScalarRelationFilter = {
   isNot?: Prisma.MonetizationProductWhereInput | null
 }
 
+export type MonetizationProductScalarRelationFilter = {
+  is?: Prisma.MonetizationProductWhereInput
+  isNot?: Prisma.MonetizationProductWhereInput
+}
+
 export type EnumMonetizationProductTypeFieldUpdateOperationsInput = {
   set?: $Enums.MonetizationProductType
 }
@@ -638,6 +650,20 @@ export type MonetizationProductUpdateOneWithoutPurchasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MonetizationProductUpdateToOneWithWhereWithoutPurchasesInput, Prisma.MonetizationProductUpdateWithoutPurchasesInput>, Prisma.MonetizationProductUncheckedUpdateWithoutPurchasesInput>
 }
 
+export type MonetizationProductCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.MonetizationProductCreateWithoutPaymentsInput, Prisma.MonetizationProductUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.MonetizationProductCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.MonetizationProductWhereUniqueInput
+}
+
+export type MonetizationProductUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.MonetizationProductCreateWithoutPaymentsInput, Prisma.MonetizationProductUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.MonetizationProductCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.MonetizationProductUpsertWithoutPaymentsInput
+  connect?: Prisma.MonetizationProductWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MonetizationProductUpdateToOneWithWhereWithoutPaymentsInput, Prisma.MonetizationProductUpdateWithoutPaymentsInput>, Prisma.MonetizationProductUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type MonetizationProductCreateWithoutSubscriptionsInput = {
   id?: string
   code: string
@@ -655,6 +681,7 @@ export type MonetizationProductCreateWithoutSubscriptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   purchases?: Prisma.PurchaseCreateNestedManyWithoutProductInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutProductInput
 }
 
 export type MonetizationProductUncheckedCreateWithoutSubscriptionsInput = {
@@ -674,6 +701,7 @@ export type MonetizationProductUncheckedCreateWithoutSubscriptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutProductInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type MonetizationProductCreateOrConnectWithoutSubscriptionsInput = {
@@ -709,6 +737,7 @@ export type MonetizationProductUpdateWithoutSubscriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUpdateManyWithoutProductNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutProductNestedInput
 }
 
 export type MonetizationProductUncheckedUpdateWithoutSubscriptionsInput = {
@@ -728,6 +757,7 @@ export type MonetizationProductUncheckedUpdateWithoutSubscriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutProductNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type MonetizationProductCreateWithoutPurchasesInput = {
@@ -747,6 +777,7 @@ export type MonetizationProductCreateWithoutPurchasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutProductInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutProductInput
 }
 
 export type MonetizationProductUncheckedCreateWithoutPurchasesInput = {
@@ -766,6 +797,7 @@ export type MonetizationProductUncheckedCreateWithoutPurchasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutProductInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type MonetizationProductCreateOrConnectWithoutPurchasesInput = {
@@ -801,6 +833,7 @@ export type MonetizationProductUpdateWithoutPurchasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutProductNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutProductNestedInput
 }
 
 export type MonetizationProductUncheckedUpdateWithoutPurchasesInput = {
@@ -820,6 +853,103 @@ export type MonetizationProductUncheckedUpdateWithoutPurchasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutProductNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutProductNestedInput
+}
+
+export type MonetizationProductCreateWithoutPaymentsInput = {
+  id?: string
+  code: string
+  type: $Enums.MonetizationProductType
+  status?: $Enums.MonetizationProductStatus
+  name: string
+  description?: string | null
+  priceRubles: number
+  currency?: string
+  interval?: $Enums.SubscriptionInterval | null
+  chapterAmount?: number | null
+  dailyChapterLimit?: number | null
+  isPriceFinal?: boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutProductInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutProductInput
+}
+
+export type MonetizationProductUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  code: string
+  type: $Enums.MonetizationProductType
+  status?: $Enums.MonetizationProductStatus
+  name: string
+  description?: string | null
+  priceRubles: number
+  currency?: string
+  interval?: $Enums.SubscriptionInterval | null
+  chapterAmount?: number | null
+  dailyChapterLimit?: number | null
+  isPriceFinal?: boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutProductInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutProductInput
+}
+
+export type MonetizationProductCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.MonetizationProductWhereUniqueInput
+  create: Prisma.XOR<Prisma.MonetizationProductCreateWithoutPaymentsInput, Prisma.MonetizationProductUncheckedCreateWithoutPaymentsInput>
+}
+
+export type MonetizationProductUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.MonetizationProductUpdateWithoutPaymentsInput, Prisma.MonetizationProductUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.MonetizationProductCreateWithoutPaymentsInput, Prisma.MonetizationProductUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.MonetizationProductWhereInput
+}
+
+export type MonetizationProductUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.MonetizationProductWhereInput
+  data: Prisma.XOR<Prisma.MonetizationProductUpdateWithoutPaymentsInput, Prisma.MonetizationProductUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type MonetizationProductUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMonetizationProductTypeFieldUpdateOperationsInput | $Enums.MonetizationProductType
+  status?: Prisma.EnumMonetizationProductStatusFieldUpdateOperationsInput | $Enums.MonetizationProductStatus
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priceRubles?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.NullableEnumSubscriptionIntervalFieldUpdateOperationsInput | $Enums.SubscriptionInterval | null
+  chapterAmount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  dailyChapterLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isPriceFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchases?: Prisma.PurchaseUpdateManyWithoutProductNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutProductNestedInput
+}
+
+export type MonetizationProductUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumMonetizationProductTypeFieldUpdateOperationsInput | $Enums.MonetizationProductType
+  status?: Prisma.EnumMonetizationProductStatusFieldUpdateOperationsInput | $Enums.MonetizationProductStatus
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priceRubles?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.NullableEnumSubscriptionIntervalFieldUpdateOperationsInput | $Enums.SubscriptionInterval | null
+  chapterAmount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  dailyChapterLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isPriceFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutProductNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutProductNestedInput
 }
 
 
@@ -830,11 +960,13 @@ export type MonetizationProductUncheckedUpdateWithoutPurchasesInput = {
 export type MonetizationProductCountOutputType = {
   purchases: number
   subscriptions: number
+  payments: number
 }
 
 export type MonetizationProductCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   purchases?: boolean | MonetizationProductCountOutputTypeCountPurchasesArgs
   subscriptions?: boolean | MonetizationProductCountOutputTypeCountSubscriptionsArgs
+  payments?: boolean | MonetizationProductCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -861,6 +993,13 @@ export type MonetizationProductCountOutputTypeCountSubscriptionsArgs<ExtArgs ext
   where?: Prisma.SubscriptionWhereInput
 }
 
+/**
+ * MonetizationProductCountOutputType without action
+ */
+export type MonetizationProductCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type MonetizationProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -880,6 +1019,7 @@ export type MonetizationProductSelect<ExtArgs extends runtime.Types.Extensions.I
   updatedAt?: boolean
   purchases?: boolean | Prisma.MonetizationProduct$purchasesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.MonetizationProduct$subscriptionsArgs<ExtArgs>
+  payments?: boolean | Prisma.MonetizationProduct$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.MonetizationProductCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["monetizationProduct"]>
 
@@ -941,6 +1081,7 @@ export type MonetizationProductOmit<ExtArgs extends runtime.Types.Extensions.Int
 export type MonetizationProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   purchases?: boolean | Prisma.MonetizationProduct$purchasesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.MonetizationProduct$subscriptionsArgs<ExtArgs>
+  payments?: boolean | Prisma.MonetizationProduct$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.MonetizationProductCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MonetizationProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -951,6 +1092,7 @@ export type $MonetizationProductPayload<ExtArgs extends runtime.Types.Extensions
   objects: {
     purchases: Prisma.$PurchasePayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1364,6 +1506,7 @@ export interface Prisma__MonetizationProductClient<T, Null = never, ExtArgs exte
   readonly [Symbol.toStringTag]: "PrismaPromise"
   purchases<T extends Prisma.MonetizationProduct$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MonetizationProduct$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.MonetizationProduct$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MonetizationProduct$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.MonetizationProduct$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MonetizationProduct$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1846,6 +1989,30 @@ export type MonetizationProduct$subscriptionsArgs<ExtArgs extends runtime.Types.
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * MonetizationProduct.payments
+ */
+export type MonetizationProduct$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

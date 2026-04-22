@@ -129,6 +129,30 @@ enum RewardedAdGrantStatus {
   REVOKED
 }
 
+enum PaymentProvider {
+  YOOKASSA
+}
+
+enum PaymentStatus {
+  PENDING
+  WAITING_FOR_CAPTURE
+  SUCCEEDED
+  CANCELED
+  FAILED
+}
+
+enum PaymentApplyStatus {
+  PENDING
+  APPLIED
+}
+
+enum PaymentWebhookEventStatus {
+  RECEIVED
+  PROCESSED
+  FAILED
+  IGNORED
+}
+
 enum GenerationProvider {
   MOCK
   OPENAI
@@ -161,6 +185,7 @@ model User {
   subscriptions          Subscription[]
   chapterEntitlementEntries ChapterEntitlementLedger[]
   rewardedAdGrants       RewardedAdGrant[]
+  payments               Payment[]
   generationLogs         GenerationLog[]
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
@@ -395,6 +420,7 @@ model MonetizationProduct {
   metadata          Json?
   purchases         Purchase[]
   subscriptions     Subscription[]
+  payments          Payment[]
   createdAt         DateTime                  @default(now())
   updatedAt         DateTime                  @updatedAt
 
@@ -423,6 +449,7 @@ model Subscription {
   userId     String
   planId     String?
   productId  String?
+  purchaseId String?            @unique
   status     SubscriptionStatus @default(TRIALING)
   startsAt   DateTime           @default(now())
   endsAt     DateTime?
@@ -432,6 +459,7 @@ model Subscription {
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   plan       SubscriptionPlan?  @relation(fields: [planId], references: [id], onDelete: SetNull)
   product    MonetizationProduct? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  purchase   Purchase?          @relation("SubscriptionPurchase", fields: [purchaseId], references: [id], onDelete: SetNull)
   chapterEntitlementEntries ChapterEntitlementLedger[]
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
@@ -448,7 +476,7 @@ model Purchase {
   subscriptionPlanId String?
   productId          String?
   type               PurchaseType
-  status             PurchaseStatus           @default(COMPLETED)
+  status             PurchaseStatus           @default(PENDING)
   amount             Int
   chapterNumber      Int?
   description        String?
@@ -461,11 +489,66 @@ model Purchase {
   chapterAccess      PurchasedChapterAccess[]
   chapterEntitlementEntries ChapterEntitlementLedger[]
   walletTransactions WalletTransaction[]
+  payment            Payment?
+  activatedSubscription Subscription?         @relation("SubscriptionPurchase")
   createdAt          DateTime                 @default(now())
   updatedAt          DateTime                 @updatedAt
 
   @@index([userId, createdAt(sort: Desc)])
   @@index([productId])
+}
+
+model Payment {
+  id                String             @id @default(cuid())
+  userId            String
+  purchaseId        String             @unique
+  productId         String
+  provider          PaymentProvider
+  providerPaymentId String?            @unique
+  status            PaymentStatus      @default(PENDING)
+  applyStatus       PaymentApplyStatus @default(PENDING)
+  amountRubles      Int
+  currency          String             @default("RUB")
+  idempotenceKey    String             @unique
+  confirmationUrl   String?            @db.Text
+  returnUrl         String?            @db.Text
+  failureReason     String?            @db.Text
+  providerPayload   Json?
+  paidAt            DateTime?
+  canceledAt        DateTime?
+  lastSyncedAt      DateTime?
+  lastWebhookAt     DateTime?
+  appliedAt         DateTime?
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purchase          Purchase           @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  product           MonetizationProduct @relation(fields: [productId], references: [id], onDelete: Restrict)
+  webhookEvents     PaymentWebhookEvent[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([provider, status, createdAt(sort: Desc)])
+  @@index([productId, createdAt(sort: Desc)])
+}
+
+model PaymentWebhookEvent {
+  id               String                    @id @default(cuid())
+  paymentId        String?
+  provider         PaymentProvider
+  eventType        String
+  providerObjectId String
+  dedupKey         String                    @unique
+  status           PaymentWebhookEventStatus @default(RECEIVED)
+  remoteIp         String?
+  payload          Json
+  errorMessage     String?                   @db.Text
+  processedAt      DateTime?
+  payment          Payment?                  @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+
+  @@index([paymentId, createdAt(sort: Desc)])
+  @@index([provider, providerObjectId, createdAt(sort: Desc)])
 }
 
 model PurchasedChapterAccess {

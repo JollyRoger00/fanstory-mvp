@@ -1,30 +1,14 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/server/auth/session";
-import { purchaseChapterPack } from "@/server/purchases/purchase.service";
-
-function revalidateMonetizationViews(storyId?: string) {
-  revalidatePath("/dashboard");
-  revalidatePath("/wallet");
-  revalidatePath("/subscriptions");
-  revalidatePath("/stories");
-
-  if (!storyId) {
-    return;
-  }
-
-  revalidatePath(`/stories/${storyId}`);
-  revalidatePath(`/stories/${storyId}/read`);
-}
+import { startChapterPackCheckout } from "@/server/payments/payment.service";
 
 export async function purchaseChapterPackAction(formData: FormData) {
   const user = await requireUser();
-  const storyId = formData.get("storyId")?.toString();
-
-  await purchaseChapterPack(user.id, {
+  const checkout = await startChapterPackCheckout(user.id, {
     productId: formData.get("productId"),
   });
 
-  revalidateMonetizationViews(storyId);
+  redirect(checkout.redirectUrl);
 }

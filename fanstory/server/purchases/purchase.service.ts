@@ -1,59 +1,78 @@
 import "server-only";
 
-import { FeatureDisabledError } from "@/lib/errors/app-error";
-import { prisma } from "@/lib/db/client";
-import { devBillingToolsEnabled } from "@/lib/env/server";
-import { purchaseProductSchema } from "@/lib/validations/purchase";
+import type { Prisma } from "@/lib/db/generated/client";
 
-export async function purchaseChapterPack(userId: string, payload: unknown) {
-  if (!devBillingToolsEnabled()) {
-    throw new FeatureDisabledError(
-      "Mock purchases are disabled in the current environment.",
-    );
+type ApplyChapterPackPurchaseInput = {
+  userId: string;
+  purchaseId: string;
+  paymentId: string;
+  product: {
+    code: string;
+    name: string;
+    chapterAmount: number | null;
+  };
+};
+
+function getExistingMetadata(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {};
   }
 
-  const input = purchaseProductSchema.parse(payload);
-  const product = await prisma.monetizationProduct.findFirstOrThrow({
-    where: {
-      id: input.productId,
-      type: "CHAPTER_PACK",
-      status: "ACTIVE",
-    },
-  });
+  return value as Record<string, unknown>;
+}
 
-  const chapterAmount = product.chapterAmount;
+function getChapterPackGrantDedupKey(purchaseId: string) {
+  return `purchase-pack:${purchaseId}`;
+}
 
-  if (!chapterAmount) {
+export async function applyChapterPackPurchase(
+  tx: Prisma.TransactionClient,
+  input: ApplyChapterPackPurchaseInput,
+) {
+  if (!input.product.chapterAmount) {
     throw new Error("Chapter pack configuration is invalid.");
   }
 
-  await prisma.$transaction(async (tx) => {
-    const purchase = await tx.purchase.create({
-      data: {
-        userId,
-        productId: product.id,
-        type: "CHAPTER_PACK",
-        status: "COMPLETED",
-        amount: product.priceRubles,
-        description: `Purchased ${product.name}.`,
-        metadata: {
-          productCode: product.code,
-        },
-      },
-    });
+  const purchase = await tx.purchase.findUniqueOrThrow({
+    where: {
+      id: input.purchaseId,
+    },
+    select: {
+      metadata: true,
+    },
+  });
 
-    await tx.chapterEntitlementLedger.create({
-      data: {
-        userId,
-        purchaseId: purchase.id,
-        eventType: "GRANT",
-        source: "PURCHASE_PACK",
-        quantity: chapterAmount,
-        metadata: {
-          productCode: product.code,
-          productName: product.name,
-        },
+  await tx.chapterEntitlementLedger.upsert({
+    where: {
+      dedupKey: getChapterPackGrantDedupKey(input.purchaseId),
+    },
+    update: {},
+    create: {
+      userId: input.userId,
+      purchaseId: input.purchaseId,
+      eventType: "GRANT",
+      source: "PURCHASE_PACK",
+      quantity: input.product.chapterAmount,
+      dedupKey: getChapterPackGrantDedupKey(input.purchaseId),
+      metadata: {
+        paymentId: input.paymentId,
+        productCode: input.product.code,
+        productName: input.product.name,
       },
-    });
+    },
+  });
+
+  await tx.purchase.update({
+    where: {
+      id: input.purchaseId,
+    },
+    data: {
+      status: "COMPLETED",
+      metadata: {
+        ...getExistingMetadata(purchase.metadata),
+        paymentId: input.paymentId,
+        productCode: input.product.code,
+      },
+    },
   });
 }

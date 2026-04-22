@@ -184,6 +184,42 @@ export const RewardedAdGrantStatus = {
 export type RewardedAdGrantStatus = (typeof RewardedAdGrantStatus)[keyof typeof RewardedAdGrantStatus]
 
 
+export const PaymentProvider = {
+  YOOKASSA: 'YOOKASSA'
+} as const
+
+export type PaymentProvider = (typeof PaymentProvider)[keyof typeof PaymentProvider]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  WAITING_FOR_CAPTURE: 'WAITING_FOR_CAPTURE',
+  SUCCEEDED: 'SUCCEEDED',
+  CANCELED: 'CANCELED',
+  FAILED: 'FAILED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PaymentApplyStatus = {
+  PENDING: 'PENDING',
+  APPLIED: 'APPLIED'
+} as const
+
+export type PaymentApplyStatus = (typeof PaymentApplyStatus)[keyof typeof PaymentApplyStatus]
+
+
+export const PaymentWebhookEventStatus = {
+  RECEIVED: 'RECEIVED',
+  PROCESSED: 'PROCESSED',
+  FAILED: 'FAILED',
+  IGNORED: 'IGNORED'
+} as const
+
+export type PaymentWebhookEventStatus = (typeof PaymentWebhookEventStatus)[keyof typeof PaymentWebhookEventStatus]
+
+
 export const GenerationProvider = {
   MOCK: 'MOCK',
   OPENAI: 'OPENAI'
