@@ -39,13 +39,11 @@ export const monetizationProductCatalog: MonetizationCatalogEntry[] = [
     type: monetizationProductTypes.chapterPack,
     name: "50 chapters",
     description: "One-time pack for 50 extra chapters.",
-    priceRubles: 1000,
+    priceRubles: 799,
     chapterAmount: 50,
-    isPriceFinal: false,
+    isPriceFinal: true,
     metadata: {
-      priceStatus: "provisional",
-      rationale:
-        "Temporary linear placeholder derived from the confirmed 10-chapter pack price.",
+      badge: "Popular",
     },
   },
   {
@@ -53,13 +51,11 @@ export const monetizationProductCatalog: MonetizationCatalogEntry[] = [
     type: monetizationProductTypes.chapterPack,
     name: "100 chapters",
     description: "One-time pack for 100 extra chapters.",
-    priceRubles: 2000,
+    priceRubles: 1299,
     chapterAmount: 100,
-    isPriceFinal: false,
+    isPriceFinal: true,
     metadata: {
-      priceStatus: "provisional",
-      rationale:
-        "Temporary linear placeholder derived from the confirmed 10-chapter pack price.",
+      badge: "Best value",
     },
   },
   {

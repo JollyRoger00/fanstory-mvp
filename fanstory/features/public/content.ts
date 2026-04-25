@@ -45,6 +45,7 @@ export type PublicSiteContent = {
     freeAccessDescription: string;
     chapterPacksTitle: string;
     subscriptionsTitle: string;
+    serviceDeliveryTitle: string;
     packs: PricingTier[];
     subscriptions: PricingTier[];
     fulfillmentNotes: string[];
@@ -65,10 +66,28 @@ export type PublicSiteContent = {
   };
 };
 
+const contactPlaceholdersRu: ContactField[] = [
+  { label: "Исполнитель", value: "[УКАЖИТЕ ФИО]" },
+  { label: "Статус", value: "самозанятый" },
+  { label: "ИНН", value: "[УКАЖИТЕ ИНН]" },
+  { label: "Email", value: "[УКАЖИТЕ EMAIL]" },
+  { label: "Телефон", value: "[УКАЖИТЕ ТЕЛЕФОН]" },
+  { label: "Сайт", value: "https://adalshe.ru" },
+];
+
+const contactPlaceholdersEn: ContactField[] = [
+  { label: "Provider", value: "[FULL NAME]" },
+  { label: "Status", value: "self-employed" },
+  { label: "Tax ID", value: "[TAX ID]" },
+  { label: "Email", value: "[EMAIL]" },
+  { label: "Phone", value: "[PHONE]" },
+  { label: "Website", value: "https://adalshe.ru" },
+];
+
 const ruContent: PublicSiteContent = {
   footer: {
     summary:
-      "Публичные страницы сервиса интерактивных AI-историй для пользователей и модерации платежей.",
+      "Публичные страницы сервиса интерактивных AI-историй для пользователей и проверки платежной интеграции.",
     linksTitle: "Публичные страницы",
     supportTitle: "Контакты",
     contactLine: "Сайт: adalshe.ru",
@@ -85,42 +104,46 @@ const ruContent: PublicSiteContent = {
     eyebrow: "Тарифы",
     title: "Тарифы и описание услуги",
     lead:
-      "А дальше? — сервис генерации интерактивных AI-историй. Пользователь создает историю, развивает сюжет выбором действий и получает новые главы в личном кабинете.",
+      "«А дальше?» — сервис генерации интерактивных AI-историй. Пользователь создаёт историю, делает выборы и получает новые главы в личном кабинете.",
     serviceTitle: "Как работает сервис",
     serviceDescription:
-      "После регистрации пользователь получает доступ к созданию и продолжению AI-историй. Новые главы открываются автоматически после генерации, а оплаченные главы и подписки зачисляются на аккаунт без участия менеджера.",
+      "После регистрации пользователь получает доступ к созданию и продолжению AI-историй. Новые главы открываются в аккаунте автоматически, а купленные главы и подписки зачисляются без ручной обработки.",
     freeAccessTitle: "Бесплатный старт",
     freeAccessDescription:
       "Первые 10 глав доступны бесплатно после регистрации.",
     chapterPacksTitle: "Пакеты глав",
     subscriptionsTitle: "Подписки",
+    serviceDeliveryTitle: "Порядок оказания услуги",
     packs: [
       {
         name: "10 глав",
         price: "200 ₽",
-        description: "Разовая покупка для продолжения интерактивных историй.",
+        description:
+          "Разовая покупка для продолжения одной или нескольких историй.",
       },
       {
         name: "50 глав",
         price: "799 ₽",
-        description: "Подходит для длинных сюжетных веток и нескольких историй.",
+        description:
+          "Подходит для длинных сюжетов и нескольких параллельных веток.",
       },
       {
         name: "100 глав",
-        price: "1499 ₽",
-        description: "Расширенный пакет для активного использования сервиса.",
+        price: "1299 ₽",
+        description:
+          "Максимальный пакет для активного использования сервиса.",
       },
     ],
     subscriptions: [
       {
         name: "Месяц",
-        price: "1599 ₽",
-        description: "Подписка дает 25 глав в день.",
+        price: "1499 ₽",
+        description: "25 глав в день с ежемесячной оплатой.",
       },
       {
         name: "Год",
         price: "5999 ₽",
-        description: "Годовой план с доступом к 25 главам в день.",
+        description: "25 глав в день по сниженной годовой стоимости.",
       },
     ],
     fulfillmentNotes: [
@@ -133,81 +156,72 @@ const ruContent: PublicSiteContent = {
     eyebrow: "Контакты",
     title: "Реквизиты исполнителя",
     lead:
-      "Страница содержит публичные контактные данные и реквизиты исполнителя для пользователей и модерации платежного провайдера.",
+      "Публичная страница с контактами и реквизитами исполнителя для пользователей и проверки платёжной интеграции.",
     detailsTitle: "Реквизиты",
-    details: [
-      { label: "Исполнитель", value: "Ильясов Руслан Александрович" },
-      { label: "Статус", value: "самозанятый" },
-      { label: "ИНН", value: "[380806642556]" },
-      { label: "Email", value: "[ggjgrgg@gmail.com]" },
-      { label: "Телефон", value: "[+7 (983) 403-97-77]" },
-      { label: "Сайт", value: "https://adalshe.ru" },
-    ],
+    details: contactPlaceholdersRu,
     note:
-      "",
+      "Перед отправкой сайта на модерацию замените плейсхолдеры на реальные реквизиты исполнителя.",
   },
   offer: {
     eyebrow: "Оферта",
     title: "Публичная оферта",
     lead:
-      "Настоящая оферта регулирует порядок использования цифрового сервиса интерактивных AI-историй и приобретения пакетов глав и подписок.",
+      "Настоящая оферта регулирует порядок использования цифрового сервиса интерактивных AI-историй, а также покупку пакетов глав и подписок.",
     sections: [
       {
         title: "1. Общие положения",
         paragraphs: [
-          `Настоящий документ является предложением исполнителя заключить договор на использование сервиса ${APP_NAME} на условиях, изложенных ниже.`,
-          "Оплата услуг пользователем означает полное и безоговорочное принятие условий оферты.",
+          `Настоящий документ является предложением заключить договор на использование сервиса ${APP_NAME} на условиях, изложенных ниже.`,
+          "Оплата услуги означает полное и безоговорочное принятие условий оферты.",
         ],
       },
       {
         title: "2. Предмет услуги",
         paragraphs: [
-          `${APP_NAME} предоставляет пользователю доступ к цифровому сервису генерации и продолжения интерактивных AI-историй.`,
-          "Услуга оказывается исключительно в электронном виде через личный кабинет пользователя. Физическая доставка товара или материального носителя не осуществляется.",
+          `${APP_NAME} предоставляет пользователю цифровой доступ к генерации, чтению и продолжению интерактивных AI-историй.`,
+          "Услуга оказывается исключительно в электронном виде через личный кабинет пользователя. Физическая доставка не осуществляется.",
         ],
       },
       {
         title: "3. Регистрация и доступ",
         paragraphs: [
-          "Для использования сервиса пользователь проходит регистрацию и авторизацию через поддерживаемые методы входа.",
-          "Пользователь обязуется предоставлять актуальные данные аккаунта и не передавать доступ к нему третьим лицам.",
+          "Для использования сервиса пользователь проходит регистрацию и авторизацию доступными на сайте способами.",
+          "Пользователь обязуется указывать актуальные данные аккаунта и не передавать доступ третьим лицам.",
         ],
       },
       {
-        title: "4. Тарифы и порядок оплаты",
+        title: "4. Порядок оплаты",
         paragraphs: [
-          "Актуальные тарифы, пакеты глав и подписки размещаются на странице /pricing и являются неотъемлемой частью настоящей оферты.",
-          "Оплата осуществляется в безналичной форме с использованием платежного провайдера, подключенного на сайте исполнителя.",
+          "Актуальные тарифы, пакеты глав и подписки опубликованы на странице /pricing и являются частью настоящей оферты.",
+          "Оплата осуществляется в безналичной форме через подключённого платёжного провайдера.",
         ],
       },
       {
         title: "5. Порядок предоставления глав",
         paragraphs: [
           "После успешной оплаты соответствующее количество глав или доступ по подписке автоматически зачисляется на аккаунт пользователя.",
-          "Пользователь получает возможность генерировать новые главы и продолжать интерактивные истории в пределах оплаченного доступа.",
+          "Пользователь получает доступ к генерации новых глав и продолжению историй в пределах оплаченного доступа.",
         ],
       },
       {
         title: "6. Возвраты",
         paragraphs: [
           "Пользователь вправе обратиться с запросом на возврат денежных средств по контактам исполнителя.",
-          "Запрос рассматривается индивидуально с учетом того, была ли цифровая услуга фактически предоставлена, были ли начислены главы на аккаунт и были ли они использованы.",
-          "Если цифровой доступ уже предоставлен и полностью или частично использован, исполнитель вправе отказать в возврате либо рассчитать сумму возврата пропорционально неиспользованному объему услуги.",
+          "Запрос рассматривается индивидуально с учётом того, был ли цифровой доступ фактически предоставлен и были ли оплаченные главы уже использованы.",
+          "Если цифровая услуга уже оказана полностью или частично, исполнитель вправе отказать в возврате либо уменьшить сумму возврата пропорционально использованному объёму доступа.",
         ],
       },
       {
         title: "7. Ограничение ответственности",
         paragraphs: [
-          "Исполнитель не несет ответственности за временную недоступность сервиса по причинам, не зависящим от него, включая сбои инфраструктуры, внешних API и платежных провайдеров.",
+          "Исполнитель не несёт ответственности за временную недоступность сервиса по причинам, не зависящим от него, включая сбои инфраструктуры, внешних API и платёжных провайдеров.",
           "Исполнитель не гарантирует соответствие сгенерированного контента субъективным ожиданиям пользователя.",
         ],
       },
       {
         title: "8. Контакты исполнителя",
         paragraphs: [
-          "Исполнитель: Ильясов Руслан Александрович.",
-          "ИНН: 380806642556. Email: ggjgrgg@gmail.com. Телефон: [+7 (983) 403-97-77].",
-          "Сайт сервиса: https://adalshe.ru.",
+          "Контакты исполнителя размещены на странице /contacts и являются неотъемлемой частью оферты.",
         ],
       },
     ],
@@ -221,14 +235,14 @@ const ruContent: PublicSiteContent = {
       {
         title: "1. Какие данные мы обрабатываем",
         paragraphs: [
-          "При регистрации и входе через Google OAuth сервис получает и обрабатывает данные, переданные провайдером авторизации, включая имя пользователя и адрес электронной почты.",
-          "При использовании сервиса мы также храним созданные пользователем истории, сохранения, прогресс чтения, сведения о доступе к главам и технические записи, связанные с работой аккаунта.",
+          "При входе через Google OAuth сервис получает и обрабатывает данные, переданные провайдером авторизации, включая имя пользователя и адрес электронной почты.",
+          "В процессе использования сервиса мы также храним созданные пользователем истории, главы, сохранения, данные о покупках и технические записи, связанные с работой аккаунта.",
         ],
       },
       {
         title: "2. Для чего используются данные",
         paragraphs: [
-          "Данные используются для создания и обслуживания аккаунта, предоставления доступа к историям, синхронизации прогресса, начисления бесплатных и оплаченных глав, а также для поддержки пользователей.",
+          "Данные используются для создания и обслуживания аккаунта, синхронизации прогресса, начисления бесплатных и оплаченных глав, а также для поддержки пользователей.",
           "Технические данные и журналы могут использоваться для диагностики ошибок, предотвращения злоупотреблений и обеспечения безопасности сервиса.",
         ],
       },
@@ -236,28 +250,28 @@ const ruContent: PublicSiteContent = {
         title: "3. Хранение историй и пользовательского контента",
         paragraphs: [
           "Созданные пользователем истории, главы, выборы и сохранения хранятся в инфраструктуре сервиса и привязываются к аккаунту пользователя.",
-          "Пользователь соглашается с тем, что эти данные необходимы для функционирования продукта и повторного доступа к истории из личного кабинета.",
+          "Эти данные необходимы для работы продукта и повторного доступа к историям из личного кабинета.",
         ],
       },
       {
-        title: "4. Платежные данные",
+        title: "4. Платёжные данные",
         paragraphs: [
-          "Платежные данные пользователя обрабатываются платежным провайдером и не хранятся сервисом в полном объеме данных банковской карты.",
-          "Сервис может хранить технические сведения о платеже: идентификатор платежа, статус, оплаченный продукт, сумму и служебные данные, необходимые для подтверждения доступа.",
+          "Платёжные данные пользователя обрабатываются платёжным провайдером и не хранятся сервисом в полном объёме данных банковской карты.",
+          "Сервис может хранить только технические сведения о платеже: идентификатор, статус, оплаченный продукт и служебные данные, необходимые для предоставления доступа.",
         ],
       },
       {
         title: "5. Передача данных третьим лицам",
         paragraphs: [
           "Данные могут передаваться только тем сервисам и подрядчикам, которые необходимы для работы сайта, авторизации пользователей, генерации контента и обработки платежей.",
-          "Исполнитель не продает персональные данные пользователя третьим лицам.",
+          "Исполнитель не продаёт персональные данные пользователя третьим лицам.",
         ],
       },
       {
         title: "6. Обращения пользователя",
         paragraphs: [
           "Пользователь может направить запрос по вопросам обработки данных, исправления контактной информации или удаления аккаунта по контактам исполнителя.",
-          "Контакты для запросов: [ggjgrgg@gmail.com], [+7 (983) 403-97-77], https://adalshe.ru.",
+          "Контакты для обращений размещены на странице /contacts.",
         ],
       },
     ],
@@ -272,54 +286,53 @@ const ruContent: PublicSiteContent = {
         title: "1. Использование сервиса",
         paragraphs: [
           `Сервис ${APP_NAME} предназначен для создания, чтения и продолжения интерактивных AI-историй через личный кабинет пользователя.`,
-          "Пользователь обязуется использовать сервис добросовестно и в соответствии с действующим законодательством.",
+          "Пользователь обязуется использовать сервис добросовестно и в соответствии с применимым законодательством.",
         ],
       },
       {
-        title: "2. Запрещенный контент и действия",
+        title: "2. Запрещённый контент и действия",
         paragraphs: [
-          "Пользователю запрещено использовать сервис для создания, хранения, публикации или распространения незаконного контента, вредоносных материалов, призывов к насилию, нарушений прав третьих лиц и иных запрещенных законом действий.",
+          "Пользователю запрещено использовать сервис для создания, хранения, публикации или распространения незаконного, вредоносного или нарушающего права третьих лиц контента.",
         ],
         items: [
           "незаконный, мошеннический или вводящий в заблуждение контент;",
           "контент, нарушающий авторские права, права на изображение или иные права третьих лиц;",
-          "попытки взлома, обхода ограничений, автоматизированного злоупотребления сервисом;",
-          "использование сервиса для спама, фишинга или иной вредоносной активности.",
+          "попытки взлома, обхода ограничений или автоматизированного злоупотребления сервисом;",
+          "спам, фишинг и иная вредоносная активность.",
         ],
       },
       {
         title: "3. Возрастные и контентные ограничения",
         paragraphs: [
-          "Пользователь обязан самостоятельно оценивать допустимость создаваемого или читаемого контента с учетом собственного возраста и требований законодательства страны пребывания.",
+          "Пользователь самостоятельно оценивает допустимость создаваемого и читаемого контента с учётом своего возраста и требований законодательства страны пребывания.",
           "Исполнитель вправе ограничивать отдельные сценарии использования, если они связаны с недопустимыми темами, злоупотреблением сервисом или жалобами третьих лиц.",
         ],
       },
       {
-        title: "4. Оплачиваемый цифровой доступ",
+        title: "4. Платный цифровой доступ",
         paragraphs: [
           "Часть функциональности сервиса предоставляется на платной основе в виде пакетов глав и подписок.",
-          "После оплаты цифровой доступ предоставляется автоматически в аккаунте пользователя, без физической доставки.",
+          "После оплаты цифровой доступ предоставляется автоматически внутри аккаунта пользователя, без физической доставки.",
         ],
       },
       {
         title: "5. Блокировка и ограничение доступа",
         paragraphs: [
-          "Исполнитель вправе временно ограничить доступ к аккаунту или полностью заблокировать его при нарушении условий настоящего соглашения, подозрении на мошенничество, злоупотреблении платежной системой или попытках повлиять на стабильность сервиса.",
-          "В случае серьезного или повторного нарушения исполнитель вправе прекратить обслуживание пользователя без предварительного уведомления.",
+          "Исполнитель вправе временно ограничить или полностью заблокировать доступ при нарушении условий соглашения, подозрении на мошенничество, злоупотреблении платёжной системой или попытках повлиять на стабильность сервиса.",
+          "При серьёзном или повторном нарушении обслуживание может быть прекращено без предварительного уведомления.",
         ],
       },
       {
         title: "6. Ограничение гарантий",
         paragraphs: [
-          "Сервис предоставляется по модели as is в той мере, в какой это допустимо применимым правом.",
+          "Сервис предоставляется по модели as is в той мере, в какой это допускается применимым правом.",
           "Исполнитель не гарантирует бесперебойную и безошибочную работу сервиса в каждый момент времени, но принимает разумные меры для поддержания его доступности.",
         ],
       },
       {
         title: "7. Контакты",
         paragraphs: [
-          "По вопросам использования сервиса, жалобам и обращениям пользователь может связаться с исполнителем по следующим данным:",
-          "Исполнитель: Ильясов Руслан Александрович. Email: ggjgrgg@gmail.com. Телефон: [+7 (983) 403-97-77].",
+          "По вопросам использования сервиса, жалобам и обращениям пользователь может связаться с исполнителем по контактам, размещённым на странице /contacts.",
         ],
       },
     ],
@@ -329,7 +342,7 @@ const ruContent: PublicSiteContent = {
 const enContent: PublicSiteContent = {
   footer: {
     summary:
-      "Public service pages for users and for YooKassa moderation of the payment-enabled website.",
+      "Public pages of the interactive AI story service for users and payment moderation.",
     linksTitle: "Public pages",
     supportTitle: "Contacts",
     contactLine: "Website: adalshe.ru",
@@ -346,41 +359,42 @@ const enContent: PublicSiteContent = {
     eyebrow: "Pricing",
     title: "Pricing and service description",
     lead:
-      `${APP_NAME} is an interactive AI story service. Users create stories, continue them through choices, and receive new chapters inside their account dashboard.`,
+      `${APP_NAME} is an interactive AI story service. Users create stories, make choices, and receive new chapters inside their account dashboard.`,
     serviceTitle: "How the service works",
     serviceDescription:
-      "After registration, the user can create and continue AI stories. New chapters appear digitally in the account, and paid chapters or subscriptions are credited automatically without manual processing.",
+      "After registration, the user can create and continue AI stories. New chapters appear in the account automatically, and paid chapters or subscriptions are credited without manual processing.",
     freeAccessTitle: "Free starter access",
     freeAccessDescription: "The first 10 chapters are free after registration.",
     chapterPacksTitle: "Chapter packs",
     subscriptionsTitle: "Subscriptions",
+    serviceDeliveryTitle: "Service delivery",
     packs: [
       {
         name: "10 chapters",
         price: "200 ₽",
-        description: "One-time purchase for continuing interactive stories.",
+        description: "One-time purchase for continuing one or more stories.",
       },
       {
         name: "50 chapters",
         price: "799 ₽",
-        description: "Suitable for longer story branches and multiple stories.",
+        description: "Suitable for longer plots and several story branches.",
       },
       {
         name: "100 chapters",
         price: "1299 ₽",
-        description: "Expanded pack for active service usage.",
+        description: "The largest pack for active service usage.",
       },
     ],
     subscriptions: [
       {
         name: "1 month",
         price: "1499 ₽",
-        description: "The subscription includes 25 chapters per day.",
+        description: "25 chapters per day with monthly billing.",
       },
       {
         name: "1 year",
         price: "5999 ₽",
-        description: "Yearly plan with 25 chapters per day.",
+        description: "25 chapters per day with discounted yearly billing.",
       },
     ],
     fulfillmentNotes: [
@@ -391,20 +405,13 @@ const enContent: PublicSiteContent = {
   },
   contacts: {
     eyebrow: "Contacts",
-    title: "Service provider details",
+    title: "Provider details",
     lead:
-      "This page contains public contact details and service provider information for users and payment moderation.",
+      "Public page with contact details and provider information for users and payment moderation.",
     detailsTitle: "Details",
-    details: [
-      { label: "Provider", value: "Ильясов Руслан Александрович" },
-      { label: "Status", value: "self-employed" },
-      { label: "Tax ID", value: "380806642556" },
-      { label: "Email", value: "ggjgrgg@gmail.com" },
-      { label: "Phone", value: "[+7 (983) 403-97-77]" },
-      { label: "Website", value: "https://adalshe.ru" },
-    ],
+    details: contactPlaceholdersEn,
     note:
-      "",
+      "Replace the placeholders with real provider details before sending the site for moderation.",
   },
   offer: {
     eyebrow: "Offer",
@@ -415,59 +422,57 @@ const enContent: PublicSiteContent = {
       {
         title: "1. General terms",
         paragraphs: [
-          `This document is an offer by the service provider to enter into an agreement for the use of ${APP_NAME} under the terms below.`,
-          "By paying for the service, the user fully accepts this offer.",
+          `This document is an offer by the provider to enter into an agreement for the use of ${APP_NAME} under the terms below.`,
+          "Payment for the service means full acceptance of this offer.",
         ],
       },
       {
         title: "2. Subject of the service",
         paragraphs: [
-          `${APP_NAME} provides access to a digital service for generating and continuing interactive AI stories.`,
-          "The service is provided only in electronic form through the user's account. No physical goods or delivery are involved.",
+          `${APP_NAME} provides digital access to generating, reading, and continuing interactive AI stories.`,
+          "The service is delivered only in electronic form through the user's dashboard. No physical delivery is provided.",
         ],
       },
       {
         title: "3. Registration and access",
         paragraphs: [
-          "To use the service, the user must register and sign in using the supported authorization methods.",
-          "The user must keep account information up to date and must not share account access with third parties.",
+          "To use the service, the user must register and sign in through the supported authentication methods.",
+          "The user must keep account data up to date and must not share account access with third parties.",
         ],
       },
       {
-        title: "4. Pricing and payment",
+        title: "4. Payment procedure",
         paragraphs: [
-          "Current tariffs, chapter packs, and subscriptions are listed on the /pricing page and form an integral part of this offer.",
-          "Payment is made online through the payment provider connected to the website.",
+          "Current prices, chapter packs, and subscriptions are listed on /pricing and are an integral part of this offer.",
+          "Payments are made in cashless form through the payment provider connected to the website.",
         ],
       },
       {
-        title: "5. Chapter delivery",
+        title: "5. Delivery of chapters",
         paragraphs: [
-          "After successful payment, the relevant number of chapters or subscription access is credited to the user account automatically.",
-          "The user can then generate new chapters and continue interactive stories within the paid access limits.",
+          "After successful payment, the corresponding number of chapters or subscription access is credited to the user account automatically.",
+          "The user receives access to generate new chapters and continue stories within the paid access limits.",
         ],
       },
       {
         title: "6. Refunds",
         paragraphs: [
-          "The user may contact the provider regarding a refund request.",
-          "Each request is reviewed individually based on whether the digital service has already been delivered, whether chapters were credited, and whether they were used.",
-          "If digital access has already been delivered and used in whole or in part, the provider may refuse a refund or calculate it proportionally to the unused part of the service.",
+          "The user may request a refund using the provider contacts.",
+          "Each request is reviewed individually based on whether the digital access was already granted and whether the paid chapters were already used.",
+          "If the digital service was already provided fully or partially, the provider may decline the refund or reduce it proportionally to the used access.",
         ],
       },
       {
         title: "7. Limitation of liability",
         paragraphs: [
-          "The provider is not liable for temporary unavailability caused by factors outside its control, including infrastructure failures, external APIs, or payment provider issues.",
+          "The provider is not liable for temporary service unavailability caused by factors beyond its control, including infrastructure issues, external APIs, and payment providers.",
           "The provider does not guarantee that generated content will match the user's subjective expectations.",
         ],
       },
       {
         title: "8. Provider contacts",
         paragraphs: [
-          "Provider: Ильясов Руслан Александрович.",
-          "Tax ID: 380806642556. Email: ggjgrgg@gmail.com. Phone: [+7 (983) 403-97-77].",
-          "Website: https://adalshe.ru.",
+          "Provider contacts are published on /contacts and form an integral part of this offer.",
         ],
       },
     ],
@@ -476,40 +481,40 @@ const enContent: PublicSiteContent = {
     eyebrow: "Privacy",
     title: "Privacy policy",
     lead:
-      "This policy explains what data the service processes, why it is processed, and how users can contact the provider about personal data matters.",
+      "This policy explains what data the service processes, why it is used, and how users can contact the provider about personal data matters.",
     sections: [
       {
         title: "1. Data we process",
         paragraphs: [
-          "When a user signs in through Google OAuth, the service processes the profile data provided by the authorization provider, including the user's name and email address.",
-          "The service also stores generated stories, saves, reading progress, chapter access information, and technical records related to the account.",
+          "When users sign in with Google OAuth, the service receives and processes the data provided by the authentication provider, including the user's name and email address.",
+          "While using the service, we also store user-created stories, chapters, saves, payment-related records, and technical logs related to account operations.",
         ],
       },
       {
         title: "2. Purpose of processing",
         paragraphs: [
-          "Data is used to create and maintain the account, provide access to stories, synchronize progress, credit free and paid chapters, and support users.",
-          "Technical data and logs may also be used for diagnostics, abuse prevention, and service security.",
+          "Data is used to create and maintain the account, sync progress, grant free and paid chapters, and provide user support.",
+          "Technical data and logs may also be used to diagnose errors, prevent abuse, and protect the service.",
         ],
       },
       {
-        title: "3. Storage of stories and user content",
+        title: "3. Story and content storage",
         paragraphs: [
-          "Stories, chapters, choices, and saves created by the user are stored in the service infrastructure and linked to the user account.",
-          "The user understands that this storage is necessary for product functionality and for reopening the story later from the dashboard.",
+          "User-created stories, chapters, choices, and saves are stored in the service infrastructure and linked to the user's account.",
+          "This data is required for the product to function and for users to access their stories later.",
         ],
       },
       {
         title: "4. Payment data",
         paragraphs: [
-          "Payment data is processed by the payment provider. The service does not store the full bank card details.",
-          "The service may store technical payment data such as payment identifiers, statuses, product references, amounts, and service metadata needed to grant access.",
+          "Payment data is processed by the payment provider and is not stored by the service in the full scope of bank card details.",
+          "The service may store only technical payment information such as the payment identifier, status, product, and service data needed to grant access.",
         ],
       },
       {
         title: "5. Sharing with third parties",
         paragraphs: [
-          "Data may be shared only with services and contractors necessary for running the website, authorizing users, generating content, and processing payments.",
+          "Data may be shared only with services and contractors necessary to run the website, authorize users, generate content, and process payments.",
           "The provider does not sell users' personal data to third parties.",
         ],
       },
@@ -517,7 +522,7 @@ const enContent: PublicSiteContent = {
         title: "6. User requests",
         paragraphs: [
           "Users may send requests related to personal data, contact data correction, or account deletion using the provider contacts.",
-          "Contact details for requests: [ggjgrgg@gmail.com], [+7 (983) 403-97-77], https://adalshe.ru.",
+          "Provider contacts for such requests are published on /contacts.",
         ],
       },
     ],
@@ -526,7 +531,7 @@ const enContent: PublicSiteContent = {
     eyebrow: "Terms",
     title: "User agreement",
     lead:
-      "This agreement defines the rules for using the interactive AI story service, acceptable user conduct, and grounds for restricting access.",
+      "This agreement defines the rules for using the interactive AI story service, acceptable conduct, and the grounds for restricting access.",
     sections: [
       {
         title: "1. Use of the service",
@@ -538,7 +543,7 @@ const enContent: PublicSiteContent = {
       {
         title: "2. Prohibited content and actions",
         paragraphs: [
-          "Users may not use the service to create, store, publish, or distribute illegal content, harmful materials, calls for violence, infringements of third-party rights, or any other unlawful activity.",
+          "Users may not use the service to create, store, publish, or distribute illegal content, harmful materials, infringements of third-party rights, or any other unlawful activity.",
         ],
         items: [
           "illegal, fraudulent, or misleading content;",
@@ -578,8 +583,7 @@ const enContent: PublicSiteContent = {
       {
         title: "7. Contacts",
         paragraphs: [
-          "For questions, complaints, or service-related requests, users may contact the provider:",
-          "Provider: Ильясов Руслан Александрович. Email: ggjgrgg@gmail.com. Phone: [+7 (983) 403-97-77].",
+          "For questions, complaints, or service-related requests, users may contact the provider using the details published on /contacts.",
         ],
       },
     ],

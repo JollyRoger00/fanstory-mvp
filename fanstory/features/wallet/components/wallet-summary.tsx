@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Coins, Gift, PlayCircle, RefreshCcw } from "lucide-react";
 import type { WalletOverview } from "@/entities/wallet/types";
+import {
+  getPaymentCtaCopy,
+  getProductPresentation,
+} from "@/features/monetization/product-copy";
 import { claimRewardedAdChapterAction } from "@/server/monetization/actions";
 import { purchaseChapterPackAction } from "@/server/purchases/actions";
 import { InfoHint } from "@/components/shared/info-hint";
@@ -29,6 +33,7 @@ type WalletSummaryProps = {
 
 export async function WalletSummary({ wallet }: WalletSummaryProps) {
   const { locale, raw, t } = await getI18n();
+  const ctaCopy = getPaymentCtaCopy(locale);
   const entitlementSourceLabels = raw<Record<string, string>>(
     "common.enums.entitlementSource",
   );
@@ -113,47 +118,68 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
             </div>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-3">
-            {wallet.chapterPacks.map((pack) => (
-              <div
-                key={pack.id}
-                className="rounded-3xl border border-slate-200/80 bg-slate-50/70 p-4"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <p className="font-medium text-slate-950">{pack.name}</p>
-                  {pack.isPriceFinal ? null : (
-                    <Badge variant="outline">
-                      {t("wallet.provisionalPrice")}
+            {wallet.chapterPacks.map((pack) => {
+              const presentation = getProductPresentation(pack, locale);
+
+              return (
+                <div
+                  key={pack.id}
+                  className="flex min-h-[280px] flex-col rounded-[2rem] border border-slate-200/80 bg-white p-5 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-semibold tracking-[0.22em] text-slate-500 uppercase">
+                        {presentation.badge}
+                      </p>
+                      <h3 className="mt-2 font-heading text-3xl text-slate-950">
+                        {presentation.title}
+                      </h3>
+                    </div>
+                    <Badge className="bg-amber-100 text-amber-900 hover:bg-amber-100">
+                      {pack.chapterAmount ?? 0}
                     </Badge>
-                  )}
-                </div>
-                <p className="mt-2 text-sm text-slate-500">
-                  {pack.description}
-                </p>
-                <p className="mt-4 text-3xl font-semibold text-slate-950">
-                  {formatRubles(pack.priceRubles, locale)}
-                </p>
-                <p className="mt-1 text-sm text-slate-500">
-                  {t("wallet.packValue", {
-                    count: pack.chapterAmount ?? 0,
-                  })}
-                </p>
-                {wallet.paymentsEnabled ? (
-                  <form action={purchaseChapterPackAction} className="mt-4">
-                    <input type="hidden" name="productId" value={pack.id} />
-                    <Button
-                      type="submit"
-                      className="w-full rounded-full bg-slate-950 hover:bg-slate-800"
-                    >
-                      {t("common.actions.buyPack")}
-                    </Button>
-                  </form>
-                ) : (
-                  <p className="mt-4 text-xs text-slate-500">
-                    {t("wallet.paymentsPending")}
+                  </div>
+
+                  <p className="mt-4 text-sm leading-7 text-slate-600">
+                    {presentation.summary}
                   </p>
-                )}
-              </div>
-            ))}
+                  <p className="mt-2 text-xs leading-6 text-slate-500">
+                    {presentation.detail}
+                  </p>
+
+                  <div className="mt-auto pt-6">
+                    <p className="text-4xl font-semibold text-slate-950">
+                      {formatRubles(pack.priceRubles, locale)}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      {t("wallet.packValue", {
+                        count: pack.chapterAmount ?? 0,
+                      })}
+                    </p>
+
+                    {wallet.paymentsEnabled ? (
+                      <form action={purchaseChapterPackAction} className="mt-5">
+                        <input type="hidden" name="productId" value={pack.id} />
+                        <Button
+                          type="submit"
+                          className="h-11 w-full rounded-full bg-slate-950 text-white hover:bg-slate-800"
+                        >
+                          {ctaCopy.packAction}
+                        </Button>
+                      </form>
+                    ) : (
+                      <Button
+                        type="button"
+                        disabled
+                        className="mt-5 h-11 w-full rounded-full bg-slate-950 text-white"
+                      >
+                        {ctaCopy.unavailable}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
 
@@ -184,10 +210,11 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
                   {t("wallet.noSubscription")}
                 </p>
               )}
-              <Button asChild variant="outline" className="rounded-full">
-                <Link href="/subscriptions">
-                  {t("common.actions.viewPlans")}
-                </Link>
+              <Button
+                asChild
+                className="w-full rounded-full bg-slate-950 hover:bg-slate-800"
+              >
+                <Link href="/subscriptions">{ctaCopy.plansAction}</Link>
               </Button>
             </CardContent>
           </Card>
@@ -244,38 +271,46 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("wallet.table.source")}</TableHead>
-                <TableHead>{t("wallet.table.event")}</TableHead>
-                <TableHead>{t("wallet.table.product")}</TableHead>
-                <TableHead>{t("wallet.table.amount")}</TableHead>
-                <TableHead>{t("wallet.table.when")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {wallet.ledger.map((entry) => (
-                <TableRow key={entry.id}>
-                  <TableCell>
-                    {entitlementSourceLabels[entry.source] ?? entry.source}
-                  </TableCell>
-                  <TableCell>
-                    {entitlementEventLabels[entry.eventType] ?? entry.eventType}
-                  </TableCell>
-                  <TableCell>
-                    {entry.productName ?? t("wallet.activityFallback")}
-                  </TableCell>
-                  <TableCell>
-                    {formatSignedNumber(entry.quantity, locale)}
-                  </TableCell>
-                  <TableCell>
-                    {formatRelativeDate(entry.createdAt, locale)}
-                  </TableCell>
+          {wallet.ledger.length ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("wallet.table.source")}</TableHead>
+                  <TableHead>{t("wallet.table.event")}</TableHead>
+                  <TableHead>{t("wallet.table.product")}</TableHead>
+                  <TableHead>{t("wallet.table.amount")}</TableHead>
+                  <TableHead>{t("wallet.table.when")}</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {wallet.ledger.map((entry) => (
+                  <TableRow key={entry.id}>
+                    <TableCell>
+                      {entitlementSourceLabels[entry.source] ?? entry.source}
+                    </TableCell>
+                    <TableCell>
+                      {entitlementEventLabels[entry.eventType] ?? entry.eventType}
+                    </TableCell>
+                    <TableCell>
+                      {entry.productName ?? t("wallet.activityFallback")}
+                    </TableCell>
+                    <TableCell>
+                      {formatSignedNumber(entry.quantity, locale)}
+                    </TableCell>
+                    <TableCell>
+                      {formatRelativeDate(entry.createdAt, locale)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <p className="text-sm leading-7 text-slate-500">
+              {locale === "ru"
+                ? "Пока операций по главам нет. После первой покупки или списания здесь появится история."
+                : "No chapter activity yet. Your first purchase or usage will appear here."}
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>

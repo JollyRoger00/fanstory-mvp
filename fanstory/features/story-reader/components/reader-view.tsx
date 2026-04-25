@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReaderView as ReaderViewModel } from "@/entities/story/types";
+import { ChapterNavigator } from "@/features/story-reader/components/chapter-navigator";
 import { claimRewardedAdChapterAction } from "@/server/monetization/actions";
 import { createSaveAction } from "@/server/saves/actions";
 import { chooseStoryPathAction } from "@/server/stories/actions";
@@ -24,14 +25,23 @@ export async function ReaderView({ data }: ReaderViewProps) {
   const storyLanguageLabels = raw<Record<string, string>>(
     "common.enums.storyLanguage",
   );
+  const activeChapter = data.activeChapter;
 
   return (
     <div className="space-y-8">
+      <ChapterNavigator
+        storyId={data.story.id}
+        chapters={data.story.chapters}
+        activeChapterNumber={activeChapter.number}
+        currentChapterNumber={data.story.currentChapterNumber}
+        mode="reader"
+      />
+
       <div className="flex flex-wrap gap-3">
         <Badge className="bg-slate-950 text-white hover:bg-slate-950">
           {t("stories.reader.chapterBadge", {
             chapterLabel: t("common.labels.chapter"),
-            chapterNumber: data.story.currentChapterNumber,
+            chapterNumber: activeChapter.number,
           })}
         </Badge>
         <Badge variant="secondary">{data.story.genre}</Badge>
@@ -42,83 +52,97 @@ export async function ReaderView({ data }: ReaderViewProps) {
         </Badge>
       </div>
 
-      {data.visibleChapters.map((chapter) => (
-        <Card key={chapter.id} className="border-white/60 bg-white/90">
-          <CardHeader className="space-y-3">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">
-                {t("stories.reader.chapterBadge", {
-                  chapterLabel: t("common.labels.chapter"),
-                  chapterNumber: chapter.number,
-                })}
-              </p>
-              <CardTitle className="font-heading text-3xl">
-                {chapter.title}
-              </CardTitle>
-            </div>
-            <p className="text-sm text-slate-500">{chapter.summary}</p>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="text-base leading-8 whitespace-pre-line text-slate-700">
-              {chapter.content}
-            </div>
-            {chapter.number === data.story.currentChapterNumber &&
-            data.canContinue ? (
-              <>
-                <Separator />
-                <div className="space-y-4">
-                  <div className="space-y-1">
-                    <h3 className="font-heading text-2xl text-slate-950">
-                      {t("stories.reader.chooseTitle")}
-                    </h3>
-                    <p className="text-sm leading-7 text-slate-500">
-                      {t("stories.reader.chooseDescription")}
-                    </p>
-                  </div>
-                  {data.nextAccess.allowed ? (
-                    <div className="grid gap-3">
-                      {chapter.choices.map((choice) => (
-                        <form key={choice.id} action={chooseStoryPathAction}>
-                          <input
-                            type="hidden"
-                            name="storyId"
-                            value={data.story.id}
-                          />
-                          <input
-                            type="hidden"
-                            name="choiceId"
-                            value={choice.id}
-                          />
-                          <Button
-                            type="submit"
-                            variant="outline"
-                            className="h-auto w-full justify-start rounded-3xl px-5 py-4 text-left"
-                          >
-                            <span className="space-y-1">
-                              <span className="block text-sm font-medium">
-                                {choice.label}
-                              </span>
-                              {choice.outcomeHint ? (
-                                <span className="block text-xs text-slate-500">
-                                  {choice.outcomeHint}
-                                </span>
-                              ) : null}
-                            </span>
-                          </Button>
-                        </form>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm leading-7 text-slate-600">
-                      {t("stories.reader.lockedChoices")}
-                    </div>
-                  )}
+      <Card className="border-white/60 bg-white/90">
+        <CardHeader className="space-y-3">
+          <div>
+            <p className="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase">
+              {t("stories.reader.chapterBadge", {
+                chapterLabel: t("common.labels.chapter"),
+                chapterNumber: activeChapter.number,
+              })}
+            </p>
+            <CardTitle className="font-heading text-3xl">
+              {activeChapter.title}
+            </CardTitle>
+          </div>
+          <p className="text-sm text-slate-500">{activeChapter.summary}</p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="text-base leading-8 whitespace-pre-line text-slate-700">
+            {activeChapter.content}
+          </div>
+          {activeChapter.number === data.story.currentChapterNumber &&
+          data.canContinue ? (
+            <>
+              <Separator />
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h3 className="font-heading text-2xl text-slate-950">
+                    {t("stories.reader.chooseTitle")}
+                  </h3>
+                  <p className="text-sm leading-7 text-slate-500">
+                    {t("stories.reader.chooseDescription")}
+                  </p>
                 </div>
-              </>
-            ) : null}
-          </CardContent>
-        </Card>
-      ))}
+                {data.nextAccess.allowed ? (
+                  <div className="grid gap-3">
+                    {activeChapter.choices.map((choice) => (
+                      <form key={choice.id} action={chooseStoryPathAction}>
+                        <input
+                          type="hidden"
+                          name="storyId"
+                          value={data.story.id}
+                        />
+                        <input
+                          type="hidden"
+                          name="choiceId"
+                          value={choice.id}
+                        />
+                        <Button
+                          type="submit"
+                          variant="outline"
+                          className="h-auto w-full justify-start rounded-3xl px-5 py-4 text-left"
+                        >
+                          <span className="space-y-1">
+                            <span className="block text-sm font-medium">
+                              {choice.label}
+                            </span>
+                            {choice.outcomeHint ? (
+                              <span className="block text-xs text-slate-500">
+                                {choice.outcomeHint}
+                              </span>
+                            ) : null}
+                          </span>
+                        </Button>
+                      </form>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm leading-7 text-slate-600">
+                    {t("stories.reader.lockedChoices")}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : activeChapter.number !== data.story.currentChapterNumber ? (
+            <>
+              <Separator />
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  asChild
+                  className="rounded-full bg-slate-950 hover:bg-slate-800"
+                >
+                  <Link
+                    href={`/stories/${data.story.id}/read?chapter=${data.story.currentChapterNumber}`}
+                  >
+                    {locale === "ru" ? "Открыть последнюю главу" : "Open latest chapter"}
+                  </Link>
+                </Button>
+              </div>
+            </>
+          ) : null}
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
         <Card className="border-white/60 bg-white/85">

@@ -7,14 +7,18 @@ import { getSubscriptionOverview } from "@/server/subscriptions/subscription.ser
 export default async function SubscriptionsPage() {
   const user = await requireUser();
   const subscriptions = await getSubscriptionOverview(user.id);
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
+  const description =
+    locale === "ru"
+      ? "Выберите тариф с ежедневным лимитом глав."
+      : "Choose a plan with a daily chapter allowance.";
 
   return (
     <div className="space-y-8">
       <PageHeader
         eyebrow={t("subscriptions.eyebrow")}
         title={t("subscriptions.title")}
-        description={t("subscriptions.description")}
+        description={description}
       />
       <SubscriptionPlans data={subscriptions} />
     </div>

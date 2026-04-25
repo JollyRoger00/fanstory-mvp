@@ -103,13 +103,16 @@ export default async function PricingPage() {
       <Card className="border-white/60 bg-slate-950 text-white shadow-xl">
         <CardHeader>
           <CardTitle className="font-heading text-3xl">
-            {locale === "ru" ? "Порядок оказания услуги" : "Service delivery"}
+            {pricing.serviceDeliveryTitle}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-3 text-sm leading-7 text-slate-300">
             {pricing.fulfillmentNotes.map((note) => (
-              <li key={note} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <li
+                key={note}
+                className="rounded-2xl border border-white/10 bg-white/5 p-4"
+              >
                 {note}
               </li>
             ))}

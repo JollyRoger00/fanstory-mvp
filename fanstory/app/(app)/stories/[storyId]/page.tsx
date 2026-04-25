@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ChapterNavigator } from "@/features/story-reader/components/chapter-navigator";
 import { PageHeader } from "@/components/shared/page-header";
 import { InfoHint } from "@/components/shared/info-hint";
 import { Badge } from "@/components/ui/badge";
@@ -15,11 +16,26 @@ type StoryPageProps = {
   params: Promise<{
     storyId: string;
   }>;
+  searchParams: Promise<{
+    chapter?: string;
+  }>;
 };
 
-export default async function StoryPage({ params }: StoryPageProps) {
+function truncateText(value: string, limit: number) {
+  if (value.length <= limit) {
+    return value;
+  }
+
+  return `${value.slice(0, limit).trim()}...`;
+}
+
+export default async function StoryPage({
+  params,
+  searchParams,
+}: StoryPageProps) {
   const user = await requireUser();
   const { storyId } = await params;
+  const query = await searchParams;
   const story = await getStoryDetail(user.id, storyId).catch((error) => {
     if (isResourceNotFoundError(error)) {
       notFound();
@@ -33,6 +49,18 @@ export default async function StoryPage({ params }: StoryPageProps) {
   );
   const storyLanguageLabels = raw<Record<string, string>>(
     "common.enums.storyLanguage",
+  );
+  const requestedChapter = query.chapter ? Number(query.chapter) : undefined;
+  const safeChapterNumber =
+    requestedChapter && requestedChapter > 0
+      ? Math.min(requestedChapter, story.currentChapterNumber)
+      : story.currentChapterNumber;
+  const selectedChapter =
+    story.chapters.find((chapter) => chapter.number === safeChapterNumber) ??
+    story.chapters.at(-1);
+  const visibleDecisions = story.decisions.slice(-6).reverse();
+  const chapterLinks = [...story.chapters].sort(
+    (left, right) => right.number - left.number,
   );
 
   return (
@@ -56,6 +84,14 @@ export default async function StoryPage({ params }: StoryPageProps) {
             </Button>
           </>
         }
+      />
+
+      <ChapterNavigator
+        storyId={story.id}
+        chapters={story.chapters}
+        activeChapterNumber={selectedChapter?.number ?? story.currentChapterNumber}
+        currentChapterNumber={story.currentChapterNumber}
+        mode="detail"
       />
 
       <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
@@ -123,8 +159,8 @@ export default async function StoryPage({ params }: StoryPageProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {story.decisions.length ? (
-              story.decisions.map((decision) => (
+            {visibleDecisions.length ? (
+              visibleDecisions.map((decision) => (
                 <div
                   key={decision.id}
                   className="rounded-3xl border border-slate-200/80 p-4"
@@ -137,7 +173,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
                     })}
                   </p>
                   <p className="mt-2 text-sm leading-7 text-slate-600">
-                    {decision.resolutionSummary}
+                    {truncateText(decision.resolutionSummary, 180)}
                   </p>
                 </div>
               ))
@@ -243,25 +279,52 @@ export default async function StoryPage({ params }: StoryPageProps) {
             {t("stories.detail.chapterTimeline")}
           </CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-4">
-          {story.chapters.map((chapter) => (
-            <div
-              key={chapter.id}
-              className="rounded-3xl border border-slate-200/80 p-5"
-            >
-              <div className="flex flex-wrap items-center gap-2">
+        <CardContent className="space-y-5">
+          {selectedChapter ? (
+            <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <Badge variant="secondary">
-                  {t("common.labels.chapter")} {chapter.number}
+                  {t("common.labels.chapter")} {selectedChapter.number}
                 </Badge>
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link
+                    href={`/stories/${story.id}/read?chapter=${selectedChapter.number}`}
+                  >
+                    {t("common.actions.openReader")}
+                  </Link>
+                </Button>
               </div>
-              <h3 className="font-heading mt-3 text-2xl text-slate-950">
-                {chapter.title}
+              <h3 className="font-heading mt-4 text-2xl text-slate-950">
+                {selectedChapter.title}
               </h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
-                {chapter.summary}
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                {selectedChapter.summary}
               </p>
             </div>
-          ))}
+          ) : null}
+
+          <div className="max-h-[32rem] overflow-y-auto pr-1">
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {chapterLinks.map((chapter) => (
+                <Link
+                  key={chapter.id}
+                  href={`/stories/${story.id}?chapter=${chapter.number}`}
+                  className={`rounded-3xl border p-4 transition ${
+                    chapter.number === selectedChapter?.number
+                      ? "border-slate-950 bg-slate-950 text-white"
+                      : "border-slate-200/80 bg-white hover:border-slate-300 hover:bg-slate-50"
+                  }`}
+                >
+                  <p className="text-xs font-semibold tracking-[0.2em] uppercase opacity-70">
+                    {t("common.labels.chapter")} {chapter.number}
+                  </p>
+                  <p className="mt-2 text-sm font-medium leading-6">
+                    {chapter.title}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

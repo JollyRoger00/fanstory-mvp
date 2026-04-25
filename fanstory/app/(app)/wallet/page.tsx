@@ -7,14 +7,18 @@ import { getWalletOverview } from "@/server/wallet/wallet.service";
 export default async function WalletPage() {
   const user = await requireUser();
   const wallet = await getWalletOverview(user.id);
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
+  const description =
+    locale === "ru"
+      ? "Покупайте главы и следите за доступом в одном месте."
+      : "Buy chapters and manage access in one place.";
 
   return (
     <div className="space-y-8">
       <PageHeader
         eyebrow={t("wallet.eyebrow")}
         title={t("wallet.title")}
-        description={t("wallet.description")}
+        description={description}
       />
       <WalletSummary wallet={wallet} />
     </div>

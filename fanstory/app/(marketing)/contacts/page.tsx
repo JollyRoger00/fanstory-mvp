@@ -46,11 +46,13 @@ export default async function ContactsPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-dashed border-amber-300 bg-amber-50 shadow-sm">
-        <CardContent className="p-6 text-sm leading-7 text-amber-950">
-          {contacts.note}
-        </CardContent>
-      </Card>
+      {contacts.note ? (
+        <Card className="border-dashed border-amber-300 bg-amber-50 shadow-sm">
+          <CardContent className="p-6 text-sm leading-7 text-amber-950">
+            {contacts.note}
+          </CardContent>
+        </Card>
+      ) : null}
     </PublicPageShell>
   );
 }
