@@ -9,6 +9,7 @@ import { paymentsEnabled } from "@/lib/env/server";
 import { getMonetizationCatalog } from "@/server/monetization/catalog.service";
 import { getEntitlementSnapshot } from "@/server/monetization/entitlement.service";
 import { rewardedAdDevFlowEnabled } from "@/server/monetization/rewarded-ads/provider";
+import { reconcilePendingPaymentsForUser } from "@/server/payments/payment-recovery.service";
 import { listRecentPayments } from "@/server/payments/payment.service";
 
 function mapLedgerEntry(entry: {
@@ -44,6 +45,8 @@ function mapLedgerEntry(entry: {
 export async function getMonetizationOverview(
   userId: string,
 ): Promise<MonetizationOverview> {
+  await reconcilePendingPaymentsForUser(userId);
+
   const [snapshot, catalog, ledger, recentPayments] = await Promise.all([
     getEntitlementSnapshot(userId),
     getMonetizationCatalog(),

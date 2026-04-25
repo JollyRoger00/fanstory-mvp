@@ -15,6 +15,7 @@ import {
   getNextUtcDayStart,
   getUtcDayStart,
 } from "@/server/monetization/entitlement.service";
+import { reconcilePendingPaymentsForUser } from "@/server/payments/payment-recovery.service";
 
 type ActivateSubscriptionFromPurchaseInput = {
   userId: string;
@@ -60,6 +61,8 @@ export async function getActiveSubscription(userId: string) {
 export async function getSubscriptionOverview(
   userId: string,
 ): Promise<SubscriptionOverview> {
+  await reconcilePendingPaymentsForUser(userId);
+
   const [snapshot, catalog] = await Promise.all([
     getEntitlementSnapshot(userId),
     getMonetizationCatalog(),
