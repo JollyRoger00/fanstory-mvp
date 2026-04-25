@@ -1,7 +1,13 @@
 import type {
   ApplyChoiceRequest,
+  ChoiceHistoryEntry,
+  GeneratedChoice,
   GenerateNextChapterRequest,
   InitialStoryRequest,
+  StoryChapterContext,
+  StoryPlan,
+  StoryProgressSnapshot,
+  StoryStateSnapshot,
 } from "@/server/story-generation/types";
 
 function getLanguageLabel(contentLanguage: "en" | "ru") {
@@ -27,6 +33,13 @@ function getLanguageDirective(contentLanguage: "en" | "ru") {
 function stringifyContext(value: unknown) {
   return JSON.stringify(value, null, 2);
 }
+
+type ChapterScaffoldPromptInput = {
+  title: string;
+  summary: string;
+  sceneBeats: string[];
+  choices: GeneratedChoice[] | Array<{ label: string; outcomeHint?: string }>;
+};
 
 const globalNarrativeRules = [
   "You are the FanStory narrative engine for an interactive branching fiction product.",
@@ -58,6 +71,7 @@ export function buildInitialStoryPrompt(input: InitialStoryRequest) {
     "Build a long-form plan that follows book structure: opening disturbance, progressive complications, midpoint reversal, crisis, climax, aftermath.",
     "The opening chapter should establish the protagonist, the central instability, and a concrete source of pressure.",
     "The opening chapter must move through at least three beats: disturbance, complication, and an irreversible turn.",
+    "In this step, produce the first chapter scaffold only: title, summary, scene beats, and choices. Do not write the full prose chapter yet.",
     "The chapter should feel publication-ready rather than like an outline.",
   ].join(" ");
 
@@ -81,10 +95,8 @@ export function buildInitialStoryPrompt(input: InitialStoryRequest) {
     "- storyPlan.choiceAxes should define the persistent dimensions that user choices can truly alter across the book.",
     "- initialState.summary should explain the current situation in 1-2 sentences.",
     "- activeGoals, unresolvedTensions, and knownFacts should be concrete story truths.",
-    "- firstChapter.text should feel like a 5-10 minute read: substantial, immersive, and not compressed into a short scene.",
-    "- firstChapter.text should be immersive prose with at least six paragraphs and visible progression.",
-    "- Each paragraph should add fresh action, information, or escalation rather than paraphrasing the same danger.",
-    "- Within the chapter, reveal at least one concrete fact and force the protagonist into a changed immediate situation.",
+    "- firstChapter should contain title, summary, 4-6 concrete sceneBeats, and exactly three choices.",
+    "- sceneBeats should describe visible progression from disturbance to complication to irreversible turn.",
     "- End the chapter at a real branching moment.",
     "- The three opening choices must alter the situation in different ways, not just reskin the same move.",
   ].join("\n\n");
@@ -148,7 +160,7 @@ export function buildNextChapterPrompt(request: GenerateNextChapterRequest) {
     "By the end of the chapter, at least one of these must have changed: location, objective, relationship, revealed information, or threat balance.",
     "Avoid chapters that spend their full length in a static standoff, repeated introspection, or a single unchanged moment.",
     "Do not spend climax-level resolution too early; preserve payoffs for the later planned turning points unless the branch logic clearly earns an early break.",
-    "Write a strong chapter rather than an outline, then end on a branching point with exactly three choices.",
+    "In this step, create the chapter scaffold only: title, summary, scene beats, and exactly three branching choices. Do not write the full prose chapter yet.",
   ].join(" ");
 
   const userPrompt = [
@@ -167,10 +179,8 @@ export function buildNextChapterPrompt(request: GenerateNextChapterRequest) {
     "Requirements:",
     "- Chapter title should feel specific to the current story beat.",
     "- summary should capture the chapter's movement and consequence.",
-    "- text should feel like a 5-10 minute read and carry real dramatic weight.",
-    "- text should be immersive prose with at least six paragraphs and concrete progression.",
-    "- Open with consequence already in motion rather than a recap of the previous dilemma.",
-    "- Each paragraph should introduce fresh action, information, or escalation.",
+    "- Return title, summary, 4-6 sceneBeats, and exactly three choices.",
+    "- sceneBeats should show concrete progression and not repeat the same beat in different words.",
     "- The chapter must advance at least one persistent thread from storyPlan.persistentThreads.",
     "- The chapter should perform the structural work implied by storyProgress.currentPhase and storyProgress.phasePurpose.",
     "- The chapter should include a concrete reveal, setback, or cost created by the previous choice.",
@@ -178,6 +188,108 @@ export function buildNextChapterPrompt(request: GenerateNextChapterRequest) {
     "- Each choice should imply a clearly different direction for the next scene.",
     "- Each choice must change at least one axis from storyPlan.choiceAxes in a different way.",
     "- Choices should be scene-specific and should not merely restate generic fight, seek-help, or retreat options unless grounded in a specific tactic, ally, destination, or object.",
+  ].join("\n\n");
+
+  return {
+    instructions,
+    userPrompt,
+  };
+}
+
+export function buildInitialChapterTextPrompt(input: {
+  story: InitialStoryRequest;
+  storyPlan: StoryPlan;
+  initialState: StoryStateSnapshot;
+  chapter: ChapterScaffoldPromptInput;
+}) {
+  const instructions = [
+    getLanguageDirective(input.story.contentLanguage),
+    "Write only the chapter prose as plain text.",
+    "Do not return JSON, markdown fences, headings, bullet lists, or commentary.",
+    "Write a substantial chapter that feels like 5-10 minutes of reading.",
+    "Use at least six paragraphs with visible progression and concrete scene movement.",
+    "Open with the disturbance already present in the world.",
+    "Follow the provided title, summary, and scene beats as canonical.",
+    "End exactly at the branching point that naturally leads into the supplied choices.",
+    "Avoid static filler, generic recap, and circular introspection.",
+    "Prefer indirect speech, em dash dialogue, or angled quotes. Avoid ASCII double quotes inside the prose.",
+  ].join(" ");
+
+  const userPrompt = [
+    `Story language: ${getLanguageLabel(input.story.contentLanguage)}`,
+    "Write the first chapter prose from this context:",
+    stringifyContext({
+      story: {
+        title: input.story.title,
+        synopsis: input.story.synopsis,
+        universe: input.story.universe,
+        protagonist: input.story.protagonist,
+        theme: input.story.theme,
+        genre: input.story.genre,
+        tone: input.story.tone,
+      },
+      storyPlan: input.storyPlan,
+      initialState: input.initialState,
+      chapter: input.chapter,
+    }),
+    "Requirements:",
+    "- Output plain prose only.",
+    "- Honor the scaffold exactly: same chapter direction, same end-state, same choices.",
+    "- Each paragraph should add new action, information, or escalation.",
+    "- Reveal at least one concrete fact and create at least one meaningful setback or irreversible turn.",
+    "- Do not summarize the chapter; dramatize it.",
+  ].join("\n\n");
+
+  return {
+    instructions,
+    userPrompt,
+  };
+}
+
+export function buildNextChapterTextPrompt(input: {
+  story: GenerateNextChapterRequest["story"];
+  storyPlan: StoryPlan;
+  storyProgress: StoryProgressSnapshot;
+  previousChapterSummary: string;
+  currentState: StoryStateSnapshot;
+  recentChapters: StoryChapterContext[];
+  choiceHistory: ChoiceHistoryEntry[];
+  transition: GenerateNextChapterRequest["transition"];
+  chapter: ChapterScaffoldPromptInput;
+}) {
+  const instructions = [
+    getLanguageDirective(input.story.contentLanguage),
+    "Write only the chapter prose as plain text.",
+    "Do not return JSON, markdown fences, headings, bullet lists, or commentary.",
+    "Write a substantial chapter that feels like 5-10 minutes of reading.",
+    "Use at least six paragraphs with visible progression and concrete scene movement.",
+    "Open with consequence already in motion rather than a recap.",
+    "Follow the provided title, summary, scene beats, and branching endpoint as canonical.",
+    "Honor the current book phase and persistent threads.",
+    "Avoid static filler, generic recap, and circular introspection.",
+    "Prefer indirect speech, em dash dialogue, or angled quotes. Avoid ASCII double quotes inside the prose.",
+  ].join(" ");
+
+  const userPrompt = [
+    `Story language: ${getLanguageLabel(input.story.contentLanguage)}`,
+    "Write the next chapter prose from this context:",
+    stringifyContext({
+      story: input.story,
+      storyPlan: input.storyPlan,
+      storyProgress: input.storyProgress,
+      previousChapterSummary: input.previousChapterSummary,
+      currentState: input.currentState,
+      recentChapters: input.recentChapters,
+      choiceHistory: input.choiceHistory,
+      transition: input.transition,
+      chapter: input.chapter,
+    }),
+    "Requirements:",
+    "- Output plain prose only.",
+    "- Honor the scaffold exactly: same chapter direction, same end-state, same choices.",
+    "- Each paragraph should add new action, information, or escalation.",
+    "- Advance at least one persistent thread and pay the cost of the selected choice.",
+    "- Do not summarize the chapter; dramatize it.",
   ].join("\n\n");
 
   return {

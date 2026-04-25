@@ -114,13 +114,25 @@ export const storyPlanSchema = z
     }
   });
 
-const chapterTextSchema = z
+export const chapterTextSchema = z
   .string()
   .min(4000)
   .max(14000)
   .refine((value) => hasMinimumParagraphs(value, 6), {
     message: "Chapter text must contain at least six paragraphs.",
   });
+
+const chapterScaffoldSchema = z
+  .object({
+    title: z.string().min(4).max(120),
+    summary: z.string().min(50).max(360),
+    sceneBeats: z.array(z.string().min(20).max(220)).min(4).max(6),
+    choices: z
+      .array(generatedChoicePayloadSchema)
+      .length(3)
+      .superRefine(uniqueChoicesRefinement),
+  })
+  .strict();
 
 const storyStateSnapshotSchema = z
   .object({
@@ -136,17 +148,7 @@ export const initialStoryResponseSchema = z
     synopsis: z.string().min(40).max(320),
     storyPlan: storyPlanSchema,
     initialState: storyStateSnapshotSchema,
-    firstChapter: z
-      .object({
-        title: z.string().min(4).max(120),
-        summary: z.string().min(50).max(360),
-        text: chapterTextSchema,
-        choices: z
-          .array(generatedChoicePayloadSchema)
-          .length(3)
-          .superRefine(uniqueChoicesRefinement),
-      })
-      .strict(),
+    firstChapter: chapterScaffoldSchema,
   })
   .strict();
 
@@ -160,15 +162,7 @@ export const applyChoiceResponseSchema = z
   .strict();
 
 export const nextChapterResponseSchema = z
-  .object({
-    title: z.string().min(4).max(120),
-    summary: z.string().min(50).max(360),
-    text: chapterTextSchema,
-    choices: z
-      .array(generatedChoicePayloadSchema)
-      .length(3)
-      .superRefine(uniqueChoicesRefinement),
-  })
+  .object(chapterScaffoldSchema.shape)
   .strict();
 
 export type InitialStoryResponsePayload = z.infer<
