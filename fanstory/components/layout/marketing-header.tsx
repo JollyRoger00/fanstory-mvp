@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookOpenText } from "lucide-react";
 import { LanguageSwitcher } from "@/features/i18n/components/language-switcher";
 import { getI18n } from "@/lib/i18n/server";
+import { APP_NAME } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 
 type MarketingHeaderProps = {
@@ -23,7 +24,7 @@ export async function MarketingHeader({
           <span className="rounded-full border border-white/15 bg-white/10 p-2">
             <BookOpenText className="size-4" />
           </span>
-          {t("common.appName")}
+          {APP_NAME}
         </Link>
         <div className="flex items-center gap-3">
           <LanguageSwitcher

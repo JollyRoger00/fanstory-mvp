@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { LanguageSwitcher } from "@/features/i18n/components/language-switcher";
 import { getI18n } from "@/lib/i18n/server";
+import { APP_NAME } from "@/lib/site";
 import { UserMenu } from "@/components/layout/user-menu";
 
 type AppShellProps = {
@@ -50,7 +51,7 @@ export async function AppShell({ children, user }: AppShellProps) {
             <span className="rounded-full bg-amber-400 p-2 text-slate-950">
               <Sparkles className="size-4" />
             </span>
-            {t("common.appName")}
+            {APP_NAME}
           </Link>
           <div className="mt-10 space-y-2">
             {navigation.map((item) => {

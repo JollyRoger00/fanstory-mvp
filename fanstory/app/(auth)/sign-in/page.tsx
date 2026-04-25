@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 import { getI18n } from "@/lib/i18n/server";
+import { APP_NAME } from "@/lib/site";
 import { getCurrentUser } from "@/server/auth/session";
 
 type SignInPageProps = {
@@ -15,8 +16,10 @@ type SignInPageProps = {
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const user = await getCurrentUser();
   const params = await searchParams;
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const callbackUrl = sanitizeCallbackUrl(params.callbackUrl);
+  const signInTitle =
+    locale === "ru" ? `Войти в ${APP_NAME}` : `Continue to ${APP_NAME}`;
 
   if (user) {
     redirect(callbackUrl);
@@ -30,7 +33,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             {t("signIn.badge")}
           </Badge>
           <CardTitle className="font-heading text-5xl text-slate-950">
-            {t("signIn.title")}
+            {signInTitle}
           </CardTitle>
           <p className="text-sm leading-7 text-slate-600">
             {t("signIn.description")}

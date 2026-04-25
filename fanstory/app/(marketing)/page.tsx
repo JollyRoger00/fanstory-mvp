@@ -7,11 +7,11 @@ import {
   Sparkles,
   Waypoints,
 } from "lucide-react";
-import { MarketingHeader } from "@/components/layout/marketing-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getI18n } from "@/lib/i18n/server";
+import { APP_NAME } from "@/lib/site";
 import { getCurrentUser } from "@/server/auth/session";
 
 const pillarIcons = [Sparkles, BookOpenText, Coins];
@@ -19,16 +19,17 @@ const architectureIcons = [LockKeyhole, Coins, Waypoints];
 
 export default async function LandingPage() {
   const user = await getCurrentUser();
-  const { t, raw } = await getI18n();
+  const { locale, t, raw } = await getI18n();
   const pillars =
     raw<Array<{ title: string; description: string }>>("landing.pillars");
   const architectureCards = raw<Array<{ title: string; description: string }>>(
     "landing.architectureCards",
   );
+  const architectureTitle =
+    locale === "ru" ? `Почему ${APP_NAME}` : `Why ${APP_NAME}`;
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,_#020617_0%,_#111827_55%,_#f8f5ef_55%,_#f8f5ef_100%)]">
-      <MarketingHeader isAuthenticated={Boolean(user)} />
+    <div className="bg-[linear-gradient(180deg,_#020617_0%,_#111827_55%,_#f8f5ef_55%,_#f8f5ef_100%)]">
       <main className="pb-24">
         <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
           <div className="space-y-8">
@@ -71,7 +72,7 @@ export default async function LandingPage() {
             <Card className="border-white/10 bg-white/5 text-white md:col-span-2">
               <CardHeader>
                 <CardTitle className="font-heading text-3xl">
-                  {t("landing.architectureTitle")}
+                  {architectureTitle}
                 </CardTitle>
               </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-3">

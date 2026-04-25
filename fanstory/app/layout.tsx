@@ -6,7 +6,8 @@ import {
 } from "next/font/google";
 import { Toaster } from "sonner";
 import { getServerEnv } from "@/lib/env/server";
-import { getI18n } from "@/lib/i18n/server";
+import { getCurrentLocale } from "@/lib/i18n/server";
+import { APP_NAME, getSiteDescription } from "@/lib/site";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -27,16 +28,16 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getI18n();
+  const locale = await getCurrentLocale();
   const env = getServerEnv();
-  const title = t("metadata.title");
-  const description = t("metadata.description");
+  const title = APP_NAME;
+  const description = getSiteDescription(locale);
   const metadataBase = new URL(env.NEXT_PUBLIC_APP_URL);
   const production = env.NODE_ENV === "production";
 
   return {
     metadataBase,
-    applicationName: "FanStory",
+    applicationName: APP_NAME,
     title,
     description,
     robots: production
@@ -50,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
         },
     openGraph: {
       type: "website",
-      siteName: "FanStory",
+      siteName: APP_NAME,
       url: metadataBase,
       title,
       description,
@@ -68,7 +69,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { locale } = await getI18n();
+  const locale = await getCurrentLocale();
 
   return (
     <html
