@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { Coins, Gift, RefreshCcw } from "lucide-react";
+import { Coins, RefreshCcw } from "lucide-react";
 import type { WalletOverview } from "@/entities/wallet/types";
 import {
   getPaymentCtaCopy,
   getProductPresentation,
 } from "@/features/monetization/product-copy";
-import { RewardedAdClaimButton } from "@/features/monetization/components/rewarded-ad-claim-button";
 import { purchaseChapterPackAction } from "@/server/purchases/actions";
 import { InfoHint } from "@/components/shared/info-hint";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +25,6 @@ import {
   formatRubles,
   formatSignedNumber,
 } from "@/lib/utils";
-import { getRewardedAdUiConfig } from "@/server/monetization/rewarded-ads/provider";
 
 type WalletSummaryProps = {
   wallet: WalletOverview;
@@ -35,7 +33,6 @@ type WalletSummaryProps = {
 export async function WalletSummary({ wallet }: WalletSummaryProps) {
   const { locale, raw, t } = await getI18n();
   const ctaCopy = getPaymentCtaCopy(locale);
-  const rewardedAdConfig = getRewardedAdUiConfig();
   const entitlementSourceLabels = raw<Record<string, string>>(
     "common.enums.entitlementSource",
   );
@@ -68,7 +65,7 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
           </div>
           <Coins className="size-6 text-amber-300" />
         </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <CardContent className="grid gap-4 md:grid-cols-3">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
             <p className="text-sm text-slate-300">
               {t("wallet.breakdown.welcome")}
@@ -96,14 +93,6 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
             </p>
             <p className="mt-2 text-2xl font-semibold">
               {wallet.balances.purchased}
-            </p>
-          </div>
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-            <p className="text-sm text-slate-300">
-              {t("wallet.breakdown.rewardedAd")}
-            </p>
-            <p className="mt-2 text-2xl font-semibold">
-              {wallet.balances.rewardedAd}
             </p>
           </div>
         </CardContent>
@@ -220,73 +209,6 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
               >
                 <Link href="/subscriptions">{ctaCopy.plansAction}</Link>
               </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="border-white/60 bg-white/85">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <CardTitle className="font-heading text-2xl">
-                  {t("wallet.adTitle")}
-                </CardTitle>
-                <InfoHint label={t("wallet.tooltips.rewardedAd")} />
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-slate-600">
-                <Gift className="size-4" />
-                <span>{t("wallet.adDescription")}</span>
-              </div>
-              {wallet.rewardedAdEnabled ? (
-                <p className="text-sm text-slate-500">
-                  {wallet.rewardedAdClaimsRemainingToday > 0
-                    ? t("wallet.adQuota", {
-                        remaining: wallet.rewardedAdClaimsRemainingToday,
-                        limit: wallet.rewardedAdDailyLimit,
-                      })
-                    : t("wallet.adLimitReached", {
-                        limit: wallet.rewardedAdDailyLimit,
-                      })}
-                </p>
-              ) : null}
-              {wallet.rewardedAdReady ? (
-                <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
-                  {t("wallet.adReady")}
-                </Badge>
-              ) : null}
-              {wallet.rewardedAdEnabled && wallet.canClaimRewardedAd ? (
-                <RewardedAdClaimButton
-                  provider={rewardedAdConfig.provider}
-                  desktopBlockId={
-                    rewardedAdConfig.provider === "yandex"
-                      ? rewardedAdConfig.desktopBlockId
-                      : null
-                  }
-                  mobileBlockId={
-                    rewardedAdConfig.provider === "yandex"
-                      ? rewardedAdConfig.mobileBlockId
-                      : null
-                  }
-                  label={t("common.actions.getChapterFromAd")}
-                  pendingLabel={t("common.rewardedAds.loading")}
-                  successMessage={t("common.rewardedAds.success")}
-                  incompleteMessage={t("common.rewardedAds.incomplete")}
-                  unavailableMessage={t("common.rewardedAds.unavailable")}
-                  loaderErrorMessage={t("common.rewardedAds.loaderError")}
-                  className="w-full rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
-                />
-              ) : (
-                <p className="text-sm text-slate-500">
-                  {wallet.rewardedAdReady
-                    ? t("wallet.adUseReady")
-                    : wallet.rewardedAdEnabled &&
-                        wallet.rewardedAdClaimsRemainingToday <= 0
-                      ? t("wallet.adLimitReached", {
-                          limit: wallet.rewardedAdDailyLimit,
-                        })
-                      : t("wallet.adHint")}
-                </p>
-              )}
             </CardContent>
           </Card>
         </div>

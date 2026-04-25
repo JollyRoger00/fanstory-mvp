@@ -5,7 +5,6 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import { Toaster } from "sonner";
-import { YandexAdsLoader } from "@/components/ads/yandex-ads-loader";
 import { getServerEnv } from "@/lib/env/server";
 import { getCurrentLocale } from "@/lib/i18n/server";
 import { APP_NAME, getSiteDescription } from "@/lib/site";
@@ -78,7 +77,6 @@ export default async function RootLayout({
       className={`${spaceGrotesk.variable} ${cormorant.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans text-slate-950">
-        <YandexAdsLoader />
         {children}
         <Toaster richColors position="top-right" />
       </body>
