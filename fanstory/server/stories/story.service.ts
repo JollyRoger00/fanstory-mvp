@@ -18,6 +18,15 @@ import {
 import { getChapterAccessState } from "@/server/access/access.service";
 import { consumeNextChapterEntitlement } from "@/server/monetization/entitlement.service";
 import { getStoryGenerationProvider } from "@/server/story-generation/provider";
+import { storyPlanSchema } from "@/server/story-generation/schemas";
+import type {
+  StoryChapterContext,
+  StoryGenerationContext,
+  StoryPlan,
+  StoryProgressSnapshot,
+} from "@/server/story-generation/types";
+
+const DEFAULT_TARGET_CHAPTER_COUNT = 36;
 
 function mapChoice(choice: {
   id: string;
@@ -72,6 +81,224 @@ function mapDecision(decision: {
     resolutionSummary: decision.resolutionSummary,
     createdAt: decision.createdAt,
   };
+}
+
+function createStoryContext(story: {
+  title: string;
+  synopsis: string | null;
+  universe: string;
+  protagonist: string;
+  theme: string;
+  genre: string;
+  tone: string;
+  contentLanguage: "en" | "ru";
+}): StoryGenerationContext {
+  return {
+    title: story.title,
+    synopsis: story.synopsis,
+    universe: story.universe,
+    protagonist: story.protagonist,
+    theme: story.theme,
+    genre: story.genre,
+    tone: story.tone,
+    contentLanguage: story.contentLanguage,
+  };
+}
+
+function buildFallbackStoryPlan(story: StoryGenerationContext): StoryPlan {
+  const targetChapterCount = DEFAULT_TARGET_CHAPTER_COUNT;
+  const actOneEnd = Math.max(6, Math.round(targetChapterCount * 0.22));
+  const actTwoEnd = Math.max(
+    actOneEnd + 6,
+    Math.round(targetChapterCount * 0.5),
+  );
+  const actThreeEnd = Math.max(
+    actTwoEnd + 6,
+    Math.round(targetChapterCount * 0.78),
+  );
+
+  return {
+    targetChapterCount,
+    storyPromise: `${story.protagonist} is forced to confront ${story.theme} inside ${story.universe}, and every choice changes the cost of survival and the shape of the ending.`,
+    centralQuestion: `Can ${story.protagonist} endure ${story.theme} without becoming part of what must be resisted?`,
+    actBlueprint: [
+      {
+        name: "Setup and Fracture",
+        chapterStart: 1,
+        chapterEnd: actOneEnd,
+        purpose:
+          "Establish the protagonist, world pressure, the initial wound in the status quo, and the first irreversible commitments.",
+      },
+      {
+        name: "Escalation and Entanglement",
+        chapterStart: actOneEnd + 1,
+        chapterEnd: actTwoEnd,
+        purpose:
+          "Complicate goals, split loyalties, expose hidden rules, and make every victory carry a cost.",
+      },
+      {
+        name: "Reversal and Crisis",
+        chapterStart: actTwoEnd + 1,
+        chapterEnd: actThreeEnd,
+        purpose:
+          "Deliver reversals, tighten the trap, and force the protagonist to choose between incompatible goods.",
+      },
+      {
+        name: "Climax and Aftermath",
+        chapterStart: actThreeEnd + 1,
+        chapterEnd: targetChapterCount,
+        purpose:
+          "Cash out the major consequences, confront the central antagonist or system, and land a changed end state.",
+      },
+    ],
+    majorTurns: [
+      {
+        chapter: 1,
+        description: `The ordinary balance breaks and ${story.protagonist} is forced to engage.`,
+      },
+      {
+        chapter: actOneEnd,
+        description:
+          "An early commitment closes the easy way back and defines the first major branch.",
+      },
+      {
+        chapter: actTwoEnd,
+        description:
+          "A midpoint reversal changes what the story is really about and who holds power.",
+      },
+      {
+        chapter: actThreeEnd,
+        description:
+          "A crisis strips away the safe options and demands a high-cost decision.",
+      },
+      {
+        chapter: targetChapterCount,
+        description:
+          "The final confrontation resolves the longest-running pressure and shows the price of the chosen path.",
+      },
+    ],
+    persistentThreads: [
+      `How ${story.theme} keeps mutating the rules of ${story.universe}.`,
+      `Who can still be trusted around ${story.protagonist}.`,
+      "What hidden truth or capability could change the balance of power.",
+      "What personal, moral, or strategic cost each advance creates.",
+    ],
+    endingDirections: [
+      `${story.protagonist} wins at severe personal cost and survives changed.`,
+      `${story.protagonist} prevents disaster but loses a core relationship, oath, or part of the self.`,
+      `${story.protagonist} reshapes the conflict by rejecting the expected path and forcing a harder peace.`,
+    ],
+    choiceAxes: [
+      "trust and alliances",
+      "revealed knowledge",
+      "risk and exposure",
+      "initiative and tactical position",
+      "moral cost",
+    ],
+  };
+}
+
+function normalizeStoryPlan(plan: StoryPlan): StoryPlan {
+  return {
+    ...plan,
+    actBlueprint: [...plan.actBlueprint].sort(
+      (left, right) => left.chapterStart - right.chapterStart,
+    ),
+    majorTurns: [...plan.majorTurns].sort(
+      (left, right) => left.chapter - right.chapter,
+    ),
+  };
+}
+
+function extractStoryPlanFromOutput(output: unknown): StoryPlan | null {
+  if (
+    typeof output !== "object" ||
+    output === null ||
+    !("storyPlan" in output)
+  ) {
+    return null;
+  }
+
+  const parsed = storyPlanSchema.safeParse(output.storyPlan);
+
+  if (!parsed.success) {
+    return null;
+  }
+
+  return normalizeStoryPlan(parsed.data);
+}
+
+async function getStoryPlanForRun(
+  storyId: string,
+  storyRunId: string,
+  story: StoryGenerationContext,
+): Promise<StoryPlan> {
+  const log = await prisma.generationLog.findFirst({
+    where: {
+      storyId,
+      storyRunId,
+      eventType: "STORY_CREATED",
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+    select: {
+      output: true,
+    },
+  });
+
+  return (
+    extractStoryPlanFromOutput(log?.output) ?? buildFallbackStoryPlan(story)
+  );
+}
+
+function buildStoryProgress(
+  storyPlan: StoryPlan,
+  chapterNumber: number,
+): StoryProgressSnapshot {
+  const currentPhase =
+    storyPlan.actBlueprint.find(
+      (phase) =>
+        chapterNumber >= phase.chapterStart &&
+        chapterNumber <= phase.chapterEnd,
+    ) ?? storyPlan.actBlueprint.at(-1);
+  const nextMajorTurn =
+    storyPlan.majorTurns.find((turn) => turn.chapter >= chapterNumber) ?? null;
+
+  return {
+    chapterNumber,
+    targetChapterCount: storyPlan.targetChapterCount,
+    chaptersRemaining: Math.max(
+      storyPlan.targetChapterCount - chapterNumber,
+      0,
+    ),
+    completionPercent: Math.min(
+      100,
+      Math.round((chapterNumber / storyPlan.targetChapterCount) * 100),
+    ),
+    currentPhase: currentPhase?.name ?? "Active Story",
+    phasePurpose:
+      currentPhase?.purpose ??
+      "Continue escalating the story while preserving continuity and consequence.",
+    nextMajorTurn: nextMajorTurn
+      ? `Chapter ${nextMajorTurn.chapter}: ${nextMajorTurn.description}`
+      : null,
+  };
+}
+
+function getRecentChapterContext(
+  chapters: Array<{
+    number: number;
+    title: string;
+    summary: string;
+  }>,
+  limit = 4,
+): StoryChapterContext[] {
+  return chapters.slice(-limit).map((chapter) => ({
+    number: chapter.number,
+    title: chapter.title,
+    summary: chapter.summary,
+  }));
 }
 
 async function createUniqueStorySlug(title: string) {
@@ -153,6 +380,17 @@ export async function createStory(userId: string, payload: unknown) {
     userId,
     ...input,
   });
+  const storyContext = createStoryContext({
+    title: generated.title,
+    synopsis: generated.synopsis,
+    universe: input.universe,
+    protagonist: input.protagonist,
+    theme: input.theme,
+    genre: input.genre,
+    tone: input.tone,
+    contentLanguage: input.contentLanguage,
+  });
+  const storyPlan = generated.storyPlan ?? buildFallbackStoryPlan(storyContext);
   const slug = await createUniqueStorySlug(input.title);
 
   const story = await prisma.$transaction(async (tx) => {
@@ -218,7 +456,10 @@ export async function createStory(userId: string, payload: unknown) {
         status: "SUCCESS",
         promptVersion: provider.promptVersion,
         input,
-        output: generated,
+        output: {
+          ...generated,
+          storyPlan,
+        },
       },
     });
 
@@ -344,6 +585,14 @@ export async function advanceStory(userId: string, payload: unknown) {
   }
 
   const nextChapterNumber = run.currentChapterNumber + 1;
+  const storyContext = createStoryContext(story);
+  const storyPlan = await getStoryPlanForRun(story.id, run.id, storyContext);
+  const recentChapters = getRecentChapterContext(run.chapters);
+  const choiceHistory = run.decisions.slice(-8).map((decision) => ({
+    chapterNumber: decision.chapterNumber,
+    selectedLabel: decision.selectedLabel,
+    resolutionSummary: decision.resolutionSummary,
+  }));
   const accessState = await getChapterAccessState({
     userId,
     storyId: story.id,
@@ -355,17 +604,10 @@ export async function advanceStory(userId: string, payload: unknown) {
   }
 
   const transition = await provider.applyChoice({
-    story: {
-      title: story.title,
-      synopsis: story.synopsis,
-      universe: story.universe,
-      protagonist: story.protagonist,
-      theme: story.theme,
-      genre: story.genre,
-      tone: story.tone,
-      contentLanguage: story.contentLanguage,
-    },
+    story: storyContext,
     currentChapterNumber: run.currentChapterNumber,
+    storyPlan,
+    storyProgress: buildStoryProgress(storyPlan, run.currentChapterNumber),
     currentState: {
       summary: run.currentStateSummary,
       activeGoals: run.activeGoals,
@@ -377,25 +619,18 @@ export async function advanceStory(userId: string, payload: unknown) {
       label: selectedChoice.label,
       outcomeHint: selectedChoice.outcomeHint ?? undefined,
     },
-    choiceHistory: run.decisions.map((decision) => ({
-      selectedLabel: decision.selectedLabel,
-      resolutionSummary: decision.resolutionSummary,
-    })),
+    recentChapters,
+    choiceHistory,
   });
 
   const generatedChapter = await provider.generateNextChapter({
-    story: {
-      title: story.title,
-      synopsis: story.synopsis,
-      universe: story.universe,
-      protagonist: story.protagonist,
-      theme: story.theme,
-      genre: story.genre,
-      tone: story.tone,
-      contentLanguage: story.contentLanguage,
-    },
+    story: storyContext,
     nextChapterNumber,
+    storyPlan,
+    storyProgress: buildStoryProgress(storyPlan, nextChapterNumber),
     previousChapterSummary: latestChapter.summary,
+    recentChapters,
+    choiceHistory,
     transition,
   });
 

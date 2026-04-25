@@ -8,6 +8,51 @@ export type StoryStateSnapshot = {
   knownFacts: string[];
 };
 
+export type StoryArcPhase = {
+  name: string;
+  chapterStart: number;
+  chapterEnd: number;
+  purpose: string;
+};
+
+export type StoryMajorTurn = {
+  chapter: number;
+  description: string;
+};
+
+export type StoryPlan = {
+  targetChapterCount: number;
+  storyPromise: string;
+  centralQuestion: string;
+  actBlueprint: StoryArcPhase[];
+  majorTurns: StoryMajorTurn[];
+  persistentThreads: string[];
+  endingDirections: string[];
+  choiceAxes: string[];
+};
+
+export type StoryProgressSnapshot = {
+  chapterNumber: number;
+  targetChapterCount: number;
+  chaptersRemaining: number;
+  completionPercent: number;
+  currentPhase: string;
+  phasePurpose: string;
+  nextMajorTurn: string | null;
+};
+
+export type StoryChapterContext = {
+  number: number;
+  title: string;
+  summary: string;
+};
+
+export type ChoiceHistoryEntry = {
+  chapterNumber: number;
+  selectedLabel: string;
+  resolutionSummary: string;
+};
+
 export type GeneratedChoice = {
   key: string;
   label: string;
@@ -34,6 +79,7 @@ export type GeneratedInitialStory = {
   synopsis: string;
   provider: "MOCK" | "OPENAI";
   promptVersion: string;
+  storyPlan?: StoryPlan;
   initialState: StoryStateSnapshot;
   firstChapter: {
     title: string;
@@ -46,12 +92,12 @@ export type GeneratedInitialStory = {
 export type ApplyChoiceRequest = {
   story: StoryGenerationContext;
   currentChapterNumber: number;
+  storyPlan: StoryPlan;
+  storyProgress: StoryProgressSnapshot;
   currentState: StoryStateSnapshot;
   selectedChoice: GeneratedChoice;
-  choiceHistory: Array<{
-    selectedLabel: string;
-    resolutionSummary: string;
-  }>;
+  recentChapters: StoryChapterContext[];
+  choiceHistory: ChoiceHistoryEntry[];
 };
 
 export type AppliedChoiceResult = {
@@ -64,7 +110,11 @@ export type AppliedChoiceResult = {
 export type GenerateNextChapterRequest = {
   story: StoryGenerationContext;
   nextChapterNumber: number;
+  storyPlan: StoryPlan;
+  storyProgress: StoryProgressSnapshot;
   previousChapterSummary: string;
+  recentChapters: StoryChapterContext[];
+  choiceHistory: ChoiceHistoryEntry[];
   transition: AppliedChoiceResult;
 };
 

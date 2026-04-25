@@ -36,7 +36,7 @@ import type {
   StoryGenerationProvider,
 } from "@/server/story-generation/types";
 
-const PROMPT_VERSION_BASE = "openai-story-engine-v1";
+const PROMPT_VERSION_BASE = "openai-story-engine-v3";
 
 type ParsedResponseLike<T> = {
   id: string;
@@ -328,7 +328,7 @@ export class OpenAIStoryGenerationProvider implements StoryGenerationProvider {
         instructions: prompt.instructions,
         userPrompt: prompt.userPrompt,
         userId: input.userId,
-        maxOutputTokens: 2400,
+        maxOutputTokens: 4600,
         promptVersion: this.promptVersion,
         model: this.model,
       },
@@ -339,6 +339,7 @@ export class OpenAIStoryGenerationProvider implements StoryGenerationProvider {
       synopsis: payload.synopsis,
       provider: "OPENAI",
       promptVersion: this.promptVersion,
+      storyPlan: payload.storyPlan,
       initialState: payload.initialState,
       firstChapter: {
         title: payload.firstChapter.title,
@@ -357,7 +358,7 @@ export class OpenAIStoryGenerationProvider implements StoryGenerationProvider {
       schemaName: "fanstory_apply_choice",
       instructions: prompt.instructions,
       userPrompt: prompt.userPrompt,
-      maxOutputTokens: 900,
+      maxOutputTokens: 1400,
       promptVersion: this.promptVersion,
       model: this.model,
     });
@@ -376,7 +377,7 @@ export class OpenAIStoryGenerationProvider implements StoryGenerationProvider {
       instructions: prompt.instructions,
       userPrompt: prompt.userPrompt,
       nextChapterNumber: input.nextChapterNumber,
-      maxOutputTokens: 2200,
+      maxOutputTokens: 4600,
       promptVersion: this.promptVersion,
       model: this.model,
     });
