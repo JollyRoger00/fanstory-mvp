@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { RewardedAdClaimButton } from "@/features/monetization/components/rewarded-ad-claim-button";
 import { ChapterNavigator } from "@/features/story-reader/components/chapter-navigator";
 import { PageHeader } from "@/components/shared/page-header";
 import { InfoHint } from "@/components/shared/info-hint";
@@ -9,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { isResourceNotFoundError } from "@/lib/errors/app-error";
 import { getI18n } from "@/lib/i18n/server";
 import { requireUser } from "@/server/auth/session";
-import { claimRewardedAdChapterAction } from "@/server/monetization/actions";
+import { getRewardedAdUiConfig } from "@/server/monetization/rewarded-ads/provider";
 import { getStoryDetail } from "@/server/stories/story.service";
 
 type StoryPageProps = {
@@ -44,6 +45,7 @@ export default async function StoryPage({
     throw error;
   });
   const { raw, t } = await getI18n();
+  const rewardedAdConfig = getRewardedAdUiConfig();
   const entitlementSourceLabels = raw<Record<string, string>>(
     "common.enums.entitlementSource",
   );
@@ -238,17 +240,42 @@ export default async function StoryPage({
                     chapterNumber: story.nextAccess.nextChapterNumber,
                   })}
                 </p>
+                {story.nextAccess.rewardedAdDailyLimit > 0 ? (
+                  <p className="text-sm text-slate-500">
+                    {story.nextAccess.rewardedAdClaimsRemainingToday > 0
+                      ? t("stories.detail.adQuota", {
+                          remaining:
+                            story.nextAccess.rewardedAdClaimsRemainingToday,
+                          limit: story.nextAccess.rewardedAdDailyLimit,
+                        })
+                      : t("stories.detail.adLimitReached", {
+                          limit: story.nextAccess.rewardedAdDailyLimit,
+                        })}
+                  </p>
+                ) : null}
                 <div className="flex flex-wrap gap-3">
                   {story.nextAccess.canClaimRewardedAd ? (
-                    <form action={claimRewardedAdChapterAction}>
-                      <input type="hidden" name="storyId" value={story.id} />
-                      <Button
-                        type="submit"
-                        className="rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
-                      >
-                        {t("common.actions.getChapterFromAd")}
-                      </Button>
-                    </form>
+                    <RewardedAdClaimButton
+                      provider={rewardedAdConfig.provider}
+                      desktopBlockId={
+                        rewardedAdConfig.provider === "yandex"
+                          ? rewardedAdConfig.desktopBlockId
+                          : null
+                      }
+                      mobileBlockId={
+                        rewardedAdConfig.provider === "yandex"
+                          ? rewardedAdConfig.mobileBlockId
+                          : null
+                      }
+                      storyId={story.id}
+                      label={t("common.actions.getChapterFromAd")}
+                      pendingLabel={t("common.rewardedAds.loading")}
+                      successMessage={t("common.rewardedAds.success")}
+                      incompleteMessage={t("common.rewardedAds.incomplete")}
+                      unavailableMessage={t("common.rewardedAds.unavailable")}
+                      loaderErrorMessage={t("common.rewardedAds.loaderError")}
+                      className="rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
+                    />
                   ) : null}
                   <Button asChild variant="outline" className="rounded-full">
                     <Link href="/wallet">{t("common.actions.viewPacks")}</Link>

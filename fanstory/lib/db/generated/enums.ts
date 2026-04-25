@@ -168,7 +168,8 @@ export type ChapterEntitlementSource = (typeof ChapterEntitlementSource)[keyof t
 
 
 export const RewardedAdProvider = {
-  MOCK: 'MOCK'
+  MOCK: 'MOCK',
+  YAN: 'YAN'
 } as const
 
 export type RewardedAdProvider = (typeof RewardedAdProvider)[keyof typeof RewardedAdProvider]

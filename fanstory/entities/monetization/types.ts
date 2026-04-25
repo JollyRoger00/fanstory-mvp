@@ -57,6 +57,9 @@ export type NextChapterAccessView = {
   nextSource: EntitlementSource | null;
   canClaimRewardedAd: boolean;
   rewardedAdReady: boolean;
+  rewardedAdDailyLimit: number;
+  rewardedAdClaimsUsedToday: number;
+  rewardedAdClaimsRemainingToday: number;
   balances: ChapterBalanceView;
   activeSubscription: ActiveSubscriptionView | null;
   dailyResetAt: Date;
@@ -71,6 +74,9 @@ export type MonetizationOverview = {
   recentPayments: PaymentView[];
   canClaimRewardedAd: boolean;
   rewardedAdReady: boolean;
+  rewardedAdDailyLimit: number;
+  rewardedAdClaimsUsedToday: number;
+  rewardedAdClaimsRemainingToday: number;
   dailyResetAt: Date;
   paymentsEnabled: boolean;
   rewardedAdEnabled: boolean;

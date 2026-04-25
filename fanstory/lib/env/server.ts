@@ -26,6 +26,12 @@ const serverEnvSchema = z
       .string()
       .optional()
       .transform((value) => value === "true"),
+    REWARDED_AD_PROVIDER: z
+      .enum(["disabled", "mock", "yandex"])
+      .default("disabled"),
+    REWARDED_AD_DAILY_LIMIT: z.coerce.number().int().min(1).max(20).default(5),
+    YAN_REWARDED_DESKTOP_BLOCK_ID: z.string().min(1).optional(),
+    YAN_REWARDED_MOBILE_BLOCK_ID: z.string().min(1).optional(),
   })
   .superRefine((value, ctx) => {
     if (value.NODE_ENV === "production" && value.STORY_PROVIDER === "mock") {
@@ -73,6 +79,37 @@ const serverEnvSchema = z
         path: ["YOOKASSA_SECRET_KEY"],
         message:
           "YOOKASSA_SECRET_KEY is required when PAYMENT_PROVIDER=yookassa.",
+      });
+    }
+
+    if (value.NODE_ENV === "production" && value.REWARDED_AD_PROVIDER === "mock") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["REWARDED_AD_PROVIDER"],
+        message:
+          "REWARDED_AD_PROVIDER=mock is not allowed in production. Use REWARDED_AD_PROVIDER=yandex or disabled.",
+      });
+    }
+
+    if (value.REWARDED_AD_PROVIDER !== "yandex") {
+      return;
+    }
+
+    if (!value.YAN_REWARDED_DESKTOP_BLOCK_ID) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["YAN_REWARDED_DESKTOP_BLOCK_ID"],
+        message:
+          "YAN_REWARDED_DESKTOP_BLOCK_ID is required when REWARDED_AD_PROVIDER=yandex.",
+      });
+    }
+
+    if (!value.YAN_REWARDED_MOBILE_BLOCK_ID) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["YAN_REWARDED_MOBILE_BLOCK_ID"],
+        message:
+          "YAN_REWARDED_MOBILE_BLOCK_ID is required when REWARDED_AD_PROVIDER=yandex.",
       });
     }
   });

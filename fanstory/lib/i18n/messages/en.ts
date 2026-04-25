@@ -30,8 +30,15 @@ const enMessages = {
       buyPack: "Buy pack",
       viewPlans: "View plans",
       viewPacks: "View packs",
-      getChapterFromAd: "Get 1 chapter",
+      getChapterFromAd: "Watch an ad for 1 chapter",
       startSubscription: "Start subscription",
+    },
+    rewardedAds: {
+      loading: "Opening ad...",
+      success: "Chapter unlocked and added to your balance.",
+      incomplete: "The ad was closed before the reward was granted.",
+      unavailable: "Rewarded ads are unavailable right now.",
+      loaderError: "Failed to load the Yandex ad script.",
     },
     states: {
       noActiveSubscription: "No active subscription",
@@ -265,6 +272,8 @@ const enMessages = {
       balanceSubscription: "Today: {count}",
       balancePurchased: "Purchased: {count}",
       balanceAd: "Ad unlocks: {count}",
+      adQuota: "{remaining} of {limit} ad chapters left today.",
+      adLimitReached: "The daily limit of {limit} ad chapters has been reached.",
     },
     reader: {
       eyebrow: "Reader",
@@ -282,6 +291,8 @@ const enMessages = {
       balanceSubscription: "Today: {count}",
       balancePurchased: "Purchased: {count}",
       balanceAd: "Ad unlocks: {count}",
+      adQuota: "{remaining} of {limit} ad chapters left today.",
+      adLimitReached: "The daily limit of {limit} ad chapters has been reached.",
       dailyReset: "Daily subscription chapters reset on {date}.",
       tooltips: {
         nextChapterAccess:
@@ -319,10 +330,12 @@ const enMessages = {
     subscriptionSummary: "{remaining} chapters left for today.",
     noSubscription: "No active subscription.",
     adTitle: "Rewarded ad",
-    adDescription: "One ad unlocks the next chapter.",
+    adDescription: "One completed ad unlocks 1 chapter. Up to 5 chapters a day.",
     adReady: "1 ad chapter is ready.",
     adUseReady: "Use your ad unlock before claiming another one.",
     adHint: "You can use an ad when nothing else is left.",
+    adQuota: "{remaining} of {limit} ad chapters left today.",
+    adLimitReached: "The daily limit of {limit} ad chapters has been reached.",
     activityTitle: "Activity",
     activityHint: "Latest grants and usage",
     activityFallback: "Chapter access",

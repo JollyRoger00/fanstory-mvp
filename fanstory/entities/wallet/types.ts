@@ -15,6 +15,9 @@ export type WalletOverview = {
   recentPayments: PaymentView[];
   canClaimRewardedAd: boolean;
   rewardedAdReady: boolean;
+  rewardedAdDailyLimit: number;
+  rewardedAdClaimsUsedToday: number;
+  rewardedAdClaimsRemainingToday: number;
   dailyResetAt: Date;
   paymentsEnabled: boolean;
   rewardedAdEnabled: boolean;

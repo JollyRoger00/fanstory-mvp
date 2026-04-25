@@ -30,8 +30,15 @@ const ruMessages = {
       buyPack: "Купить пакет",
       viewPlans: "Смотреть планы",
       viewPacks: "Смотреть пакеты",
-      getChapterFromAd: "Получить 1 главу",
+      getChapterFromAd: "Посмотреть рекламу и получить 1 главу",
       startSubscription: "Оформить подписку",
+    },
+    rewardedAds: {
+      loading: "Открываем рекламу...",
+      success: "Глава зачислена на баланс.",
+      incomplete: "Реклама была закрыта до начисления награды.",
+      unavailable: "Рекламный доступ сейчас недоступен.",
+      loaderError: "Не удалось загрузить скрипт Яндекс Рекламы.",
     },
     states: {
       noActiveSubscription: "Нет активной подписки",
@@ -266,6 +273,8 @@ const ruMessages = {
       balanceSubscription: "Сегодня: {count}",
       balancePurchased: "Купленные: {count}",
       balanceAd: "Реклама: {count}",
+      adQuota: "Сегодня осталось {remaining} из {limit} рекламных глав.",
+      adLimitReached: "Лимит {limit} рекламных глав на сегодня исчерпан.",
     },
     reader: {
       eyebrow: "Ридер",
@@ -283,6 +292,8 @@ const ruMessages = {
       balanceSubscription: "Сегодня: {count}",
       balancePurchased: "Купленные: {count}",
       balanceAd: "Реклама: {count}",
+      adQuota: "Сегодня осталось {remaining} из {limit} рекламных глав.",
+      adLimitReached: "Лимит {limit} рекламных глав на сегодня исчерпан.",
       dailyReset: "Лимит по подписке обновится {date}.",
       tooltips: {
         nextChapterAccess:
@@ -321,10 +332,13 @@ const ruMessages = {
     subscriptionSummary: "На сегодня осталось {remaining} глав.",
     noSubscription: "Активной подписки нет.",
     adTitle: "Реклама",
-    adDescription: "Один просмотр открывает следующую главу.",
+    adDescription:
+      "За один полный просмотр вы получаете 1 главу. До 5 глав в день.",
     adReady: "1 глава по рекламе уже готова.",
     adUseReady: "Сначала используйте уже полученную главу по рекламе.",
     adHint: "Реклама появится, когда другие источники закончатся.",
+    adQuota: "Сегодня осталось {remaining} из {limit} рекламных глав.",
+    adLimitReached: "Лимит {limit} рекламных глав на сегодня исчерпан.",
     activityTitle: "Активность",
     activityHint: "Последние начисления и списания",
     activityFallback: "Доступ к главам",

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReaderView as ReaderViewModel } from "@/entities/story/types";
+import { RewardedAdClaimButton } from "@/features/monetization/components/rewarded-ad-claim-button";
 import { ChapterNavigator } from "@/features/story-reader/components/chapter-navigator";
-import { claimRewardedAdChapterAction } from "@/server/monetization/actions";
 import { createSaveAction } from "@/server/saves/actions";
 import { chooseStoryPathAction } from "@/server/stories/actions";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { getI18n } from "@/lib/i18n/server";
 import { formatCalendarDate } from "@/lib/utils";
+import { getRewardedAdUiConfig } from "@/server/monetization/rewarded-ads/provider";
 
 type ReaderViewProps = {
   data: ReaderViewModel;
@@ -19,6 +20,7 @@ type ReaderViewProps = {
 
 export async function ReaderView({ data }: ReaderViewProps) {
   const { locale, raw, t } = await getI18n();
+  const rewardedAdConfig = getRewardedAdUiConfig();
   const entitlementSourceLabels = raw<Record<string, string>>(
     "common.enums.entitlementSource",
   );
@@ -233,20 +235,41 @@ export async function ReaderView({ data }: ReaderViewProps) {
                       chapterNumber: data.nextAccess.nextChapterNumber,
                     })}
                   </p>
+                  {data.nextAccess.rewardedAdDailyLimit > 0 ? (
+                    <p className="text-xs text-slate-400">
+                      {data.nextAccess.rewardedAdClaimsRemainingToday > 0
+                        ? t("stories.reader.adQuota", {
+                            remaining:
+                              data.nextAccess.rewardedAdClaimsRemainingToday,
+                            limit: data.nextAccess.rewardedAdDailyLimit,
+                          })
+                        : t("stories.reader.adLimitReached", {
+                            limit: data.nextAccess.rewardedAdDailyLimit,
+                          })}
+                    </p>
+                  ) : null}
                   {data.nextAccess.canClaimRewardedAd ? (
-                    <form action={claimRewardedAdChapterAction}>
-                      <input
-                        type="hidden"
-                        name="storyId"
-                        value={data.story.id}
-                      />
-                      <Button
-                        type="submit"
-                        className="w-full rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
-                      >
-                        {t("common.actions.getChapterFromAd")}
-                      </Button>
-                    </form>
+                    <RewardedAdClaimButton
+                      provider={rewardedAdConfig.provider}
+                      desktopBlockId={
+                        rewardedAdConfig.provider === "yandex"
+                          ? rewardedAdConfig.desktopBlockId
+                          : null
+                      }
+                      mobileBlockId={
+                        rewardedAdConfig.provider === "yandex"
+                          ? rewardedAdConfig.mobileBlockId
+                          : null
+                      }
+                      storyId={data.story.id}
+                      label={t("common.actions.getChapterFromAd")}
+                      pendingLabel={t("common.rewardedAds.loading")}
+                      successMessage={t("common.rewardedAds.success")}
+                      incompleteMessage={t("common.rewardedAds.incomplete")}
+                      unavailableMessage={t("common.rewardedAds.unavailable")}
+                      loaderErrorMessage={t("common.rewardedAds.loaderError")}
+                      className="w-full rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
+                    />
                   ) : null}
                   <div className="flex flex-wrap gap-3">
                     <Button asChild variant="outline" className="rounded-full">

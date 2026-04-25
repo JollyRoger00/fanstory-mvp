@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Coins, Gift, PlayCircle, RefreshCcw } from "lucide-react";
+import { Coins, Gift, RefreshCcw } from "lucide-react";
 import type { WalletOverview } from "@/entities/wallet/types";
 import {
   getPaymentCtaCopy,
   getProductPresentation,
 } from "@/features/monetization/product-copy";
-import { claimRewardedAdChapterAction } from "@/server/monetization/actions";
+import { RewardedAdClaimButton } from "@/features/monetization/components/rewarded-ad-claim-button";
 import { purchaseChapterPackAction } from "@/server/purchases/actions";
 import { InfoHint } from "@/components/shared/info-hint";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,7 @@ import {
   formatRubles,
   formatSignedNumber,
 } from "@/lib/utils";
+import { getRewardedAdUiConfig } from "@/server/monetization/rewarded-ads/provider";
 
 type WalletSummaryProps = {
   wallet: WalletOverview;
@@ -34,6 +35,7 @@ type WalletSummaryProps = {
 export async function WalletSummary({ wallet }: WalletSummaryProps) {
   const { locale, raw, t } = await getI18n();
   const ctaCopy = getPaymentCtaCopy(locale);
+  const rewardedAdConfig = getRewardedAdUiConfig();
   const entitlementSourceLabels = raw<Record<string, string>>(
     "common.enums.entitlementSource",
   );
@@ -235,26 +237,54 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
                 <Gift className="size-4" />
                 <span>{t("wallet.adDescription")}</span>
               </div>
+              {wallet.rewardedAdEnabled ? (
+                <p className="text-sm text-slate-500">
+                  {wallet.rewardedAdClaimsRemainingToday > 0
+                    ? t("wallet.adQuota", {
+                        remaining: wallet.rewardedAdClaimsRemainingToday,
+                        limit: wallet.rewardedAdDailyLimit,
+                      })
+                    : t("wallet.adLimitReached", {
+                        limit: wallet.rewardedAdDailyLimit,
+                      })}
+                </p>
+              ) : null}
               {wallet.rewardedAdReady ? (
                 <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
                   {t("wallet.adReady")}
                 </Badge>
               ) : null}
               {wallet.rewardedAdEnabled && wallet.canClaimRewardedAd ? (
-                <form action={claimRewardedAdChapterAction}>
-                  <Button
-                    type="submit"
-                    className="w-full rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
-                  >
-                    <PlayCircle className="size-4" />
-                    {t("common.actions.getChapterFromAd")}
-                  </Button>
-                </form>
+                <RewardedAdClaimButton
+                  provider={rewardedAdConfig.provider}
+                  desktopBlockId={
+                    rewardedAdConfig.provider === "yandex"
+                      ? rewardedAdConfig.desktopBlockId
+                      : null
+                  }
+                  mobileBlockId={
+                    rewardedAdConfig.provider === "yandex"
+                      ? rewardedAdConfig.mobileBlockId
+                      : null
+                  }
+                  label={t("common.actions.getChapterFromAd")}
+                  pendingLabel={t("common.rewardedAds.loading")}
+                  successMessage={t("common.rewardedAds.success")}
+                  incompleteMessage={t("common.rewardedAds.incomplete")}
+                  unavailableMessage={t("common.rewardedAds.unavailable")}
+                  loaderErrorMessage={t("common.rewardedAds.loaderError")}
+                  className="w-full rounded-full bg-amber-400 text-slate-950 hover:bg-amber-300"
+                />
               ) : (
                 <p className="text-sm text-slate-500">
                   {wallet.rewardedAdReady
                     ? t("wallet.adUseReady")
-                    : t("wallet.adHint")}
+                    : wallet.rewardedAdEnabled &&
+                        wallet.rewardedAdClaimsRemainingToday <= 0
+                      ? t("wallet.adLimitReached", {
+                          limit: wallet.rewardedAdDailyLimit,
+                        })
+                      : t("wallet.adHint")}
                 </p>
               )}
             </CardContent>

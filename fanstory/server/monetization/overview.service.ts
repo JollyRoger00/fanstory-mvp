@@ -8,7 +8,7 @@ import { prisma } from "@/lib/db/client";
 import { paymentsEnabled } from "@/lib/env/server";
 import { getMonetizationCatalog } from "@/server/monetization/catalog.service";
 import { getEntitlementSnapshot } from "@/server/monetization/entitlement.service";
-import { rewardedAdDevFlowEnabled } from "@/server/monetization/rewarded-ads/provider";
+import { rewardedAdsEnabled } from "@/server/monetization/rewarded-ads/provider";
 import { reconcilePendingPaymentsForUser } from "@/server/payments/payment-recovery.service";
 import { listRecentPayments } from "@/server/payments/payment.service";
 
@@ -91,8 +91,11 @@ export async function getMonetizationOverview(
     recentPayments,
     canClaimRewardedAd: snapshot.canClaimRewardedAd,
     rewardedAdReady: snapshot.rewardedAdReady,
+    rewardedAdDailyLimit: snapshot.rewardedAdDailyLimit,
+    rewardedAdClaimsUsedToday: snapshot.rewardedAdClaimsUsedToday,
+    rewardedAdClaimsRemainingToday: snapshot.rewardedAdClaimsRemainingToday,
     dailyResetAt: snapshot.dailyResetAt,
     paymentsEnabled: paymentsEnabled(),
-    rewardedAdEnabled: rewardedAdDevFlowEnabled(),
+    rewardedAdEnabled: rewardedAdsEnabled(),
   };
 }

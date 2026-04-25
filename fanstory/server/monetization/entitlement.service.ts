@@ -8,7 +8,10 @@ import type {
 } from "@/entities/monetization/types";
 import { prisma } from "@/lib/db/client";
 import { WELCOME_CHAPTER_GRANT } from "@/server/monetization/catalog";
-import { rewardedAdDevFlowEnabled } from "@/server/monetization/rewarded-ads/provider";
+import {
+  getRewardedAdDailyLimit,
+  rewardedAdsEnabled,
+} from "@/server/monetization/rewarded-ads/provider";
 
 type EntitlementExecutor = Pick<
   typeof prisma,
@@ -25,6 +28,9 @@ type EntitlementSnapshot = {
   nextSource: EntitlementSource | null;
   canClaimRewardedAd: boolean;
   rewardedAdReady: boolean;
+  rewardedAdDailyLimit: number;
+  rewardedAdClaimsUsedToday: number;
+  rewardedAdClaimsRemainingToday: number;
   dailyResetAt: Date;
 };
 
@@ -227,6 +233,47 @@ async function getChapterBalances(
   };
 }
 
+async function getRewardedAdClaimStats(
+  executor: EntitlementExecutor,
+  userId: string,
+  now = new Date(),
+) {
+  const dayStart = getUtcDayStart(now);
+  const nextDayStart = getNextUtcDayStart(now);
+  const enabled = rewardedAdsEnabled();
+  const dailyLimit = enabled ? getRewardedAdDailyLimit() : 0;
+
+  if (!enabled) {
+    return {
+      dailyLimit,
+      claimedToday: 0,
+      remainingToday: 0,
+    };
+  }
+
+  const result = await executor.chapterEntitlementLedger.aggregate({
+    where: {
+      userId,
+      source: "REWARDED_AD",
+      eventType: "GRANT",
+      createdAt: {
+        gte: dayStart,
+        lt: nextDayStart,
+      },
+    },
+    _sum: {
+      quantity: true,
+    },
+  });
+  const claimedToday = clampNonNegative(result._sum.quantity);
+
+  return {
+    dailyLimit,
+    claimedToday,
+    remainingToday: Math.max(0, dailyLimit - claimedToday),
+  };
+}
+
 function mapActiveSubscription(
   activeSubscription: NonNullable<ActiveSubscriptionRecord> | null,
   remainingToday: number,
@@ -265,6 +312,7 @@ export async function getEntitlementSnapshot(
     now,
     activeSubscription,
   );
+  const rewardedAdStats = await getRewardedAdClaimStats(prisma, userId, now);
   const nextSource = getNextSourceFromBalances(balances);
   const dailyResetAt = getNextUtcDayStart(now);
 
@@ -277,10 +325,14 @@ export async function getEntitlementSnapshot(
     ),
     nextSource,
     canClaimRewardedAd:
-      rewardedAdDevFlowEnabled() &&
+      rewardedAdsEnabled() &&
       balances.total === 0 &&
+      rewardedAdStats.remainingToday > 0 &&
       balances.rewardedAd === 0,
     rewardedAdReady: balances.rewardedAd > 0,
+    rewardedAdDailyLimit: rewardedAdStats.dailyLimit,
+    rewardedAdClaimsUsedToday: rewardedAdStats.claimedToday,
+    rewardedAdClaimsRemainingToday: rewardedAdStats.remainingToday,
     dailyResetAt,
   };
 }
@@ -297,6 +349,9 @@ export async function getNextChapterAccessState(input: {
     nextSource: snapshot.nextSource,
     canClaimRewardedAd: snapshot.canClaimRewardedAd,
     rewardedAdReady: snapshot.rewardedAdReady,
+    rewardedAdDailyLimit: snapshot.rewardedAdDailyLimit,
+    rewardedAdClaimsUsedToday: snapshot.rewardedAdClaimsUsedToday,
+    rewardedAdClaimsRemainingToday: snapshot.rewardedAdClaimsRemainingToday,
     balances: snapshot.balances,
     activeSubscription: snapshot.activeSubscription,
     dailyResetAt: snapshot.dailyResetAt,
