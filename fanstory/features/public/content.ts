@@ -45,6 +45,7 @@ export type PublicSiteContent = {
     freeAccessDescription: string;
     chapterPacksTitle: string;
     subscriptionsTitle: string;
+    serviceDeliveryTitle: string;
     packs: PricingTier[];
     subscriptions: PricingTier[];
     fulfillmentNotes: string[];
@@ -94,6 +95,7 @@ const ruContent: PublicSiteContent = {
       "Первые 10 глав доступны бесплатно после регистрации.",
     chapterPacksTitle: "Пакеты глав",
     subscriptionsTitle: "Подписки",
+    serviceDeliveryTitle: "Порядок оказания услуги",
     packs: [
       {
         name: "10 глав",
@@ -354,6 +356,7 @@ const enContent: PublicSiteContent = {
     freeAccessDescription: "The first 10 chapters are free after registration.",
     chapterPacksTitle: "Chapter packs",
     subscriptionsTitle: "Subscriptions",
+    serviceDeliveryTitle: "Service delivery",
     packs: [
       {
         name: "10 chapters",
