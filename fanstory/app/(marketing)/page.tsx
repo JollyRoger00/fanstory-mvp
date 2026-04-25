@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getI18n } from "@/lib/i18n/server";
-import { APP_NAME } from "@/lib/site";
 import { getCurrentUser } from "@/server/auth/session";
 
 const pillarIcons = [Sparkles, BookOpenText, Coins];
@@ -19,14 +18,13 @@ const architectureIcons = [LockKeyhole, Coins, Waypoints];
 
 export default async function LandingPage() {
   const user = await getCurrentUser();
-  const { locale, t, raw } = await getI18n();
+  const { t, raw } = await getI18n();
   const pillars =
     raw<Array<{ title: string; description: string }>>("landing.pillars");
   const architectureCards = raw<Array<{ title: string; description: string }>>(
     "landing.architectureCards",
   );
-  const architectureTitle =
-    locale === "ru" ? `Почему ${APP_NAME}` : `Why ${APP_NAME}`;
+  const architectureTitle = t("landing.architectureTitle");
 
   return (
     <div className="bg-[linear-gradient(180deg,_#020617_0%,_#111827_55%,_#f8f5ef_55%,_#f8f5ef_100%)]">
@@ -104,17 +102,17 @@ export default async function LandingPage() {
               return (
                 <Card
                   key={pillar.title}
-                  className="border-white/60 bg-white/80 shadow-sm"
+                  className="h-full border-white/60 bg-white/80 shadow-sm"
                 >
                   <CardHeader>
                     <span className="w-fit rounded-full bg-amber-100 p-3 text-amber-700">
                       <Icon className="size-5" />
                     </span>
-                    <CardTitle className="font-heading text-3xl">
+                    <CardTitle className="font-heading text-[2rem] leading-tight">
                       {pillar.title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-sm leading-7 text-slate-600">
+                  <CardContent className="text-sm leading-6 text-slate-600">
                     {pillar.description}
                   </CardContent>
                 </Card>

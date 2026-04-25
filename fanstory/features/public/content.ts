@@ -69,8 +69,8 @@ export type PublicSiteContent = {
 const ruContent: PublicSiteContent = {
   footer: {
     summary:
-      "Публичные страницы сервиса интерактивных AI-историй для пользователей и модерации платежей.",
-    linksTitle: "Публичные страницы",
+      "Интерактивные AI-истории с выборами, сохранениями и доступом к главам в личном кабинете.",
+    linksTitle: "Полезные страницы",
     supportTitle: "Контакты",
     contactLine: "Сайт: adalshe.ru",
     links: [
@@ -331,8 +331,8 @@ const ruContent: PublicSiteContent = {
 const enContent: PublicSiteContent = {
   footer: {
     summary:
-      "Public service pages for users and for YooKassa moderation of the payment-enabled website.",
-    linksTitle: "Public pages",
+      "Interactive AI stories with choices, saves, and chapter access in your account.",
+    linksTitle: "Useful pages",
     supportTitle: "Contacts",
     contactLine: "Website: adalshe.ru",
     links: [

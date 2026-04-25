@@ -113,7 +113,7 @@ export async function SubscriptionPlans({ data }: SubscriptionPlansProps) {
                       count: plan.dailyChapterLimit ?? 0,
                     })}
                   </p>
-                  <p>{presentation.detail}</p>
+                  {presentation.detail ? <p>{presentation.detail}</p> : null}
                 </div>
                 {data.paymentsEnabled ? (
                   <form action={startSubscriptionCheckoutAction}>

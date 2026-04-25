@@ -124,10 +124,10 @@ const enMessages = {
     badge: "Interactive AI stories",
     title: "Stories that move with your choices",
     description:
-      "Start an AI story, shape each chapter with your decisions, and keep every save in one place.",
+      "Create a story, make choices, and return to your saves anytime.",
     heroPrimary: "Start story",
     heroSecondary: "Open dashboard",
-    architectureTitle: "Why FanStory",
+    architectureTitle: "Why A дальше?",
     architectureCards: [
       {
         title: "Branching stories",
@@ -139,22 +139,24 @@ const enMessages = {
       },
       {
         title: "Flexible access",
-        description: "Use welcome chapters, packs, ads, or a subscription.",
+        description: "Welcome chapters, packs, and subscriptions keep the story moving.",
       },
     ],
     pillars: [
       {
-        title: "Your library",
-        description: "Keep every story and save in your account.",
-      },
-      {
-        title: "Chapter by chapter",
-        description: "Continue when you are ready and reread for free.",
-      },
-      {
-        title: "Clear monetization",
+        title: "Your story library",
         description:
-          "Starter chapters first, then subscription, packs, or ad unlocks.",
+          "Every story and save stays in your account, ready to continue anytime.",
+      },
+      {
+        title: "The story keeps going",
+        description:
+          "After each chapter, you choose the next move and the AI writes what happens next.",
+      },
+      {
+        title: "Easy to start",
+        description:
+          "Create a hero, pick a genre, and get the first chapter in seconds.",
       },
     ],
   },

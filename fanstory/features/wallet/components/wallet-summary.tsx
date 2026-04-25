@@ -117,38 +117,40 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
               <InfoHint label={t("wallet.tooltips.packs")} />
             </div>
           </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-3">
+          <CardContent className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
             {wallet.chapterPacks.map((pack) => {
               const presentation = getProductPresentation(pack, locale);
 
               return (
                 <div
                   key={pack.id}
-                  className="flex min-h-[280px] flex-col rounded-[2rem] border border-slate-200/80 bg-white p-5 shadow-sm"
+                  className="flex min-h-[240px] flex-col rounded-[2rem] border border-slate-200/80 bg-white p-5 shadow-sm lg:p-6"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-xs font-semibold tracking-[0.22em] text-slate-500 uppercase">
                         {presentation.badge}
                       </p>
-                      <h3 className="mt-2 font-heading text-3xl text-slate-950">
+                      <h3 className="mt-2 font-heading text-2xl leading-none text-slate-950 sm:text-3xl">
                         {presentation.title}
                       </h3>
                     </div>
-                    <Badge className="bg-amber-100 text-amber-900 hover:bg-amber-100">
+                    <Badge className="shrink-0 bg-amber-100 text-amber-900 hover:bg-amber-100">
                       {pack.chapterAmount ?? 0}
                     </Badge>
                   </div>
 
-                  <p className="mt-4 text-sm leading-7 text-slate-600">
+                  <p className="mt-4 text-sm leading-6 text-slate-600">
                     {presentation.summary}
                   </p>
-                  <p className="mt-2 text-xs leading-6 text-slate-500">
-                    {presentation.detail}
-                  </p>
+                  {presentation.detail ? (
+                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                      {presentation.detail}
+                    </p>
+                  ) : null}
 
-                  <div className="mt-auto pt-6">
-                    <p className="text-4xl font-semibold text-slate-950">
+                  <div className="mt-auto pt-5">
+                    <p className="text-[2.25rem] leading-none font-semibold text-slate-950">
                       {formatRubles(pack.priceRubles, locale)}
                     </p>
                     <p className="mt-1 text-sm text-slate-500">
@@ -158,7 +160,7 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
                     </p>
 
                     {wallet.paymentsEnabled ? (
-                      <form action={purchaseChapterPackAction} className="mt-5">
+                      <form action={purchaseChapterPackAction} className="mt-4">
                         <input type="hidden" name="productId" value={pack.id} />
                         <Button
                           type="submit"
@@ -171,7 +173,7 @@ export async function WalletSummary({ wallet }: WalletSummaryProps) {
                       <Button
                         type="button"
                         disabled
-                        className="mt-5 h-11 w-full rounded-full bg-slate-950 text-white"
+                        className="mt-4 h-11 w-full rounded-full bg-slate-950 text-white"
                       >
                         {ctaCopy.unavailable}
                       </Button>

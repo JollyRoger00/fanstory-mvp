@@ -43,14 +43,14 @@ export function getProductPresentation(
         ? {
             title: "10 глав",
             badge: "Старт",
-            summary: "Быстрый пакет для продолжения одной истории.",
-            detail: "Главы зачисляются сразу после оплаты.",
+            summary: "Быстрый старт для продолжения истории.",
+            detail: "",
           }
         : {
             title: "10 chapters",
             badge: "Starter",
-            summary: "A quick pack for continuing one story arc.",
-            detail: "Chapters are credited instantly after payment.",
+            summary: "A quick start for continuing your story.",
+            detail: "",
           };
     case "chapter-pack-50":
       return locale === "ru"
@@ -58,55 +58,55 @@ export function getProductPresentation(
             title: "50 глав",
             badge: "Выгодно",
             summary: "Для длинных сюжетов и нескольких веток.",
-            detail: "Удобно для регулярного чтения и генерации.",
+            detail: "",
           }
         : {
             title: "50 chapters",
             badge: "Value",
-            summary: "For longer runs and multiple story branches.",
-            detail: "Good for regular reading and generation.",
+            summary: "For longer stories and multiple branches.",
+            detail: "",
           };
     case "chapter-pack-100":
       return locale === "ru"
         ? {
             title: "100 глав",
             badge: "Максимум",
-            summary: "Большой пакет для активного использования сервиса.",
-            detail: "Лучший вариант для частого чтения и новых историй.",
+            summary: "Максимум глав для активного чтения.",
+            detail: "",
           }
         : {
             title: "100 chapters",
             badge: "Max",
-            summary: "A large pack for heavy usage.",
-            detail: "Best for frequent reading and new stories.",
+            summary: "Maximum access for active reading.",
+            detail: "",
           };
     case "subscription-monthly":
       return locale === "ru"
         ? {
             title: "Месяц",
             badge: "Гибко",
-            summary: "25 глав в день с ежемесячной оплатой.",
-            detail: "Подходит, чтобы попробовать подписку без длинного цикла.",
+            summary: "25 глав в день с оплатой раз в месяц.",
+            detail: "Подходит для регулярного чтения.",
           }
         : {
             title: "Monthly",
             badge: "Flexible",
             summary: "25 chapters a day with monthly billing.",
-            detail: "A good way to start without a long commitment.",
+            detail: "A flexible plan for regular reading.",
           };
     case "subscription-yearly":
       return locale === "ru"
         ? {
             title: "Год",
             badge: "Лучший тариф",
-            summary: "25 глав в день по сниженной годовой стоимости.",
-            detail: "Оптимальный выбор для постоянного использования.",
+            summary: "25 глав в день по выгодной цене за год.",
+            detail: "Лучший вариант для постоянного чтения.",
           }
         : {
             title: "Yearly",
             badge: "Best value",
             summary: "25 chapters a day with discounted yearly billing.",
-            detail: "Best for long-term regular use.",
+            detail: "The best option for long-term reading.",
           };
     default:
       return {
