@@ -144,7 +144,7 @@ const ruContent: PublicSiteContent = {
       { label: "Сайт", value: "https://adalshe.ru" },
     ],
     note:
-      "Замените placeholders на реальные реквизиты перед отправкой сайта на финальную модерацию и запуском приема платежей.",
+      "",
   },
   offer: {
     eyebrow: "Оферта",
@@ -404,7 +404,7 @@ const enContent: PublicSiteContent = {
       { label: "Website", value: "https://adalshe.ru" },
     ],
     note:
-      "Replace placeholders with the real provider details before final moderation and payment launch.",
+      "",
   },
   offer: {
     eyebrow: "Offer",
