@@ -6,7 +6,7 @@ import { getServerEnv } from "@/lib/env/server";
 
 // Bump this when the Prisma schema changes in a way that can break a hot-reloaded
 // dev server holding onto an older global client instance.
-const prismaClientSignature = "2026-04-21-monetization-v1";
+const prismaClientSignature = "2026-04-26-admin-mvp-v1";
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;

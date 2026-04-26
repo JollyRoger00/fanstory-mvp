@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  AdminAuditLog: 'AdminAuditLog',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
@@ -105,6 +106,22 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AdminAuditLogScalarFieldEnum = {
+  id: 'id',
+  adminUserId: 'adminUserId',
+  targetUserId: 'targetUserId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  beforeJson: 'beforeJson',
+  afterJson: 'afterJson',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

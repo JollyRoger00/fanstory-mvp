@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 
 const protectedPrefixes = [
+  "/admin",
   "/dashboard",
   "/stories",
   "/saves",
@@ -30,6 +31,7 @@ export default auth((request) => {
 
 export const config = {
   matcher: [
+    "/admin/:path*",
     "/dashboard/:path*",
     "/stories/:path*",
     "/saves/:path*",

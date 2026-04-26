@@ -188,8 +188,30 @@ model User {
   rewardedAdGrants       RewardedAdGrant[]
   payments               Payment[]
   generationLogs         GenerationLog[]
+  adminAuditLogsAsAdmin  AdminAuditLog[]         @relation("AdminAuditActor")
+  adminAuditLogsAsTarget AdminAuditLog[]         @relation("AdminAuditTarget")
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
+}
+
+model AdminAuditLog {
+  id           String   @id @default(cuid())
+  adminUserId  String
+  targetUserId String?
+  action       String
+  entityType   String?
+  entityId     String?
+  beforeJson   Json?
+  afterJson    Json?
+  reason       String?  @db.Text
+  adminUser    User     @relation("AdminAuditActor", fields: [adminUserId], references: [id], onDelete: Cascade)
+  targetUser   User?    @relation("AdminAuditTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+
+  @@index([adminUserId, createdAt(sort: Desc)])
+  @@index([targetUserId, createdAt(sort: Desc)])
+  @@index([action, createdAt(sort: Desc)])
+  @@index([entityType, entityId, createdAt(sort: Desc)])
 }
 
 model Account {

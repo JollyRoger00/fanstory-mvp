@@ -19,6 +19,7 @@ const serverEnvSchema = z
       .string()
       .optional()
       .transform((value) => value === "true"),
+    ADMIN_EMAILS: z.string().optional().default(""),
     AUTH_TRUST_HOST: z
       .string()
       .optional()

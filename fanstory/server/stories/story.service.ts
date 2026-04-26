@@ -301,6 +301,14 @@ function getRecentChapterContext(
   }));
 }
 
+function getErrorMessage(error: unknown) {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "Unknown story generation error.";
+}
+
 async function createUniqueStorySlug(title: string) {
   const base = slugify(title) || "story";
   const existing = await prisma.story.findMany({
@@ -603,36 +611,79 @@ export async function advanceStory(userId: string, payload: unknown) {
     throw new Error("Next chapter access is not available yet.");
   }
 
-  const transition = await provider.applyChoice({
-    story: storyContext,
-    currentChapterNumber: run.currentChapterNumber,
-    storyPlan,
-    storyProgress: buildStoryProgress(storyPlan, run.currentChapterNumber),
-    currentState: {
-      summary: run.currentStateSummary,
-      activeGoals: run.activeGoals,
-      unresolvedTensions: run.unresolvedTensions,
-      knownFacts: run.knownFacts,
-    },
-    selectedChoice: {
-      key: selectedChoice.key,
-      label: selectedChoice.label,
-      outcomeHint: selectedChoice.outcomeHint ?? undefined,
-    },
-    recentChapters,
-    choiceHistory,
-  });
+  const transition = await provider
+    .applyChoice({
+      story: storyContext,
+      currentChapterNumber: run.currentChapterNumber,
+      storyPlan,
+      storyProgress: buildStoryProgress(storyPlan, run.currentChapterNumber),
+      currentState: {
+        summary: run.currentStateSummary,
+        activeGoals: run.activeGoals,
+        unresolvedTensions: run.unresolvedTensions,
+        knownFacts: run.knownFacts,
+      },
+      selectedChoice: {
+        key: selectedChoice.key,
+        label: selectedChoice.label,
+        outcomeHint: selectedChoice.outcomeHint ?? undefined,
+      },
+      recentChapters,
+      choiceHistory,
+    })
+    .catch(async (error) => {
+      await prisma.generationLog.create({
+        data: {
+          userId,
+          storyId: story.id,
+          storyRunId: run.id,
+          provider: story.provider,
+          eventType: "CHOICE_APPLIED",
+          status: "FAILED",
+          promptVersion: provider.promptVersion,
+          input: {
+            choiceId: selectedChoice.id,
+            choiceLabel: selectedChoice.label,
+          },
+          errorMessage: getErrorMessage(error),
+        },
+      });
 
-  const generatedChapter = await provider.generateNextChapter({
-    story: storyContext,
-    nextChapterNumber,
-    storyPlan,
-    storyProgress: buildStoryProgress(storyPlan, nextChapterNumber),
-    previousChapterSummary: latestChapter.summary,
-    recentChapters,
-    choiceHistory,
-    transition,
-  });
+      throw error;
+    });
+
+  const generatedChapter = await provider
+    .generateNextChapter({
+      story: storyContext,
+      nextChapterNumber,
+      storyPlan,
+      storyProgress: buildStoryProgress(storyPlan, nextChapterNumber),
+      previousChapterSummary: latestChapter.summary,
+      recentChapters,
+      choiceHistory,
+      transition,
+    })
+    .catch(async (error) => {
+      await prisma.generationLog.create({
+        data: {
+          userId,
+          storyId: story.id,
+          storyRunId: run.id,
+          provider: story.provider,
+          eventType: "CHAPTER_GENERATED",
+          status: "FAILED",
+          promptVersion: provider.promptVersion,
+          input: {
+            nextChapterNumber,
+            choiceId: selectedChoice.id,
+            choiceLabel: selectedChoice.label,
+          },
+          errorMessage: getErrorMessage(error),
+        },
+      });
+
+      throw error;
+    });
 
   await prisma.$transaction(
     async (tx) => {

@@ -229,6 +229,8 @@ export type UserWhereInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   generationLogs?: Prisma.GenerationLogListRelationFilter
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogListRelationFilter
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -256,6 +258,8 @@ export type UserOrderByWithRelationInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   generationLogs?: Prisma.GenerationLogOrderByRelationAggregateInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogOrderByRelationAggregateInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -286,6 +290,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   rewardedAdGrants?: Prisma.RewardedAdGrantListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   generationLogs?: Prisma.GenerationLogListRelationFilter
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogListRelationFilter
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -343,6 +349,8 @@ export type UserCreateInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -370,6 +378,8 @@ export type UserUncheckedCreateInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUpdateInput = {
@@ -397,6 +407,8 @@ export type UserUpdateInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -424,6 +436,8 @@ export type UserUncheckedUpdateInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -503,6 +517,11 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -525,6 +544,36 @@ export type NullableEnumAppLocaleFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutAdminAuditLogsAsAdminInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsAdminInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsAdminInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdminAuditLogsAsAdminInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAdminAuditLogsAsTargetInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsTargetInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdminAuditLogsAsTargetInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAdminAuditLogsAsAdminNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsAdminInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsAdminInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdminAuditLogsAsAdminInput
+  upsert?: Prisma.UserUpsertWithoutAdminAuditLogsAsAdminInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAdminAuditLogsAsAdminInput, Prisma.UserUpdateWithoutAdminAuditLogsAsAdminInput>, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsAsAdminInput>
+}
+
+export type UserUpdateOneWithoutAdminAuditLogsAsTargetNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsTargetInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdminAuditLogsAsTargetInput
+  upsert?: Prisma.UserUpsertWithoutAdminAuditLogsAsTargetInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAdminAuditLogsAsTargetInput, Prisma.UserUpdateWithoutAdminAuditLogsAsTargetInput>, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsAsTargetInput>
 }
 
 export type UserCreateNestedOneWithoutAccountsInput = {
@@ -737,6 +786,262 @@ export type UserUpdateOneRequiredWithoutGenerationLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGenerationLogsInput, Prisma.UserUpdateWithoutGenerationLogsInput>, Prisma.UserUncheckedUpdateWithoutGenerationLogsInput>
 }
 
+export type UserCreateWithoutAdminAuditLogsAsAdminInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserUncheckedCreateWithoutAdminAuditLogsAsAdminInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunUncheckedCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
+}
+
+export type UserCreateOrConnectWithoutAdminAuditLogsAsAdminInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsAdminInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsAdminInput>
+}
+
+export type UserCreateWithoutAdminAuditLogsAsTargetInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+}
+
+export type UserUncheckedCreateWithoutAdminAuditLogsAsTargetInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.UserRole
+  preferredLanguage?: $Enums.AppLocale | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  authenticators?: Prisma.AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutOwnerInput
+  storyRuns?: Prisma.StoryRunUncheckedCreateNestedManyWithoutUserInput
+  saves?: Prisma.SaveUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type UserCreateOrConnectWithoutAdminAuditLogsAsTargetInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsTargetInput>
+}
+
+export type UserUpsertWithoutAdminAuditLogsAsAdminInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAdminAuditLogsAsAdminInput, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsAsAdminInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsAdminInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsAdminInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAdminAuditLogsAsAdminInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAdminAuditLogsAsAdminInput, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsAsAdminInput>
+}
+
+export type UserUpdateWithoutAdminAuditLogsAsAdminInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAdminAuditLogsAsAdminInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUncheckedUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
+}
+
+export type UserUpsertWithoutAdminAuditLogsAsTargetInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAdminAuditLogsAsTargetInput, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsAsTargetInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsAsTargetInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAdminAuditLogsAsTargetInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAdminAuditLogsAsTargetInput, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsAsTargetInput>
+}
+
+export type UserUpdateWithoutAdminAuditLogsAsTargetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAdminAuditLogsAsTargetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  preferredLanguage?: Prisma.NullableEnumAppLocaleFieldUpdateOperationsInput | $Enums.AppLocale | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  authenticators?: Prisma.AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutOwnerNestedInput
+  storyRuns?: Prisma.StoryRunUncheckedUpdateManyWithoutUserNestedInput
+  saves?: Prisma.SaveUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput
+  purchasedChapterAccess?: Prisma.PurchasedChapterAccessUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
+  rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
@@ -761,6 +1066,8 @@ export type UserCreateWithoutAccountsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -787,6 +1094,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -829,6 +1138,8 @@ export type UserUpdateWithoutAccountsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -855,6 +1166,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -881,6 +1194,8 @@ export type UserCreateWithoutSessionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -907,6 +1222,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -949,6 +1266,8 @@ export type UserUpdateWithoutSessionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -975,6 +1294,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutAuthenticatorsInput = {
@@ -1001,6 +1322,8 @@ export type UserCreateWithoutAuthenticatorsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthenticatorsInput = {
@@ -1027,6 +1350,8 @@ export type UserUncheckedCreateWithoutAuthenticatorsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthenticatorsInput = {
@@ -1069,6 +1394,8 @@ export type UserUpdateWithoutAuthenticatorsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthenticatorsInput = {
@@ -1095,6 +1422,8 @@ export type UserUncheckedUpdateWithoutAuthenticatorsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -1121,6 +1450,8 @@ export type UserCreateWithoutWalletInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -1147,6 +1478,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -1189,6 +1522,8 @@ export type UserUpdateWithoutWalletInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -1215,6 +1550,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutWalletTransactionsInput = {
@@ -1241,6 +1578,8 @@ export type UserCreateWithoutWalletTransactionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutWalletTransactionsInput = {
@@ -1267,6 +1606,8 @@ export type UserUncheckedCreateWithoutWalletTransactionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutWalletTransactionsInput = {
@@ -1309,6 +1650,8 @@ export type UserUpdateWithoutWalletTransactionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletTransactionsInput = {
@@ -1335,6 +1678,8 @@ export type UserUncheckedUpdateWithoutWalletTransactionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutStoriesInput = {
@@ -1361,6 +1706,8 @@ export type UserCreateWithoutStoriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutStoriesInput = {
@@ -1387,6 +1734,8 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutStoriesInput = {
@@ -1429,6 +1778,8 @@ export type UserUpdateWithoutStoriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoriesInput = {
@@ -1455,6 +1806,8 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutStoryRunsInput = {
@@ -1481,6 +1834,8 @@ export type UserCreateWithoutStoryRunsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutStoryRunsInput = {
@@ -1507,6 +1862,8 @@ export type UserUncheckedCreateWithoutStoryRunsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutStoryRunsInput = {
@@ -1549,6 +1906,8 @@ export type UserUpdateWithoutStoryRunsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoryRunsInput = {
@@ -1575,6 +1934,8 @@ export type UserUncheckedUpdateWithoutStoryRunsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutSavesInput = {
@@ -1601,6 +1962,8 @@ export type UserCreateWithoutSavesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutSavesInput = {
@@ -1627,6 +1990,8 @@ export type UserUncheckedCreateWithoutSavesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutSavesInput = {
@@ -1669,6 +2034,8 @@ export type UserUpdateWithoutSavesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavesInput = {
@@ -1695,6 +2062,8 @@ export type UserUncheckedUpdateWithoutSavesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutSubscriptionsInput = {
@@ -1721,6 +2090,8 @@ export type UserCreateWithoutSubscriptionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -1747,6 +2118,8 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -1789,6 +2162,8 @@ export type UserUpdateWithoutSubscriptionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -1815,6 +2190,8 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutPurchasesInput = {
@@ -1841,6 +2218,8 @@ export type UserCreateWithoutPurchasesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutPurchasesInput = {
@@ -1867,6 +2246,8 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutPurchasesInput = {
@@ -1909,6 +2290,8 @@ export type UserUpdateWithoutPurchasesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchasesInput = {
@@ -1935,6 +2318,8 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -1961,6 +2346,8 @@ export type UserCreateWithoutPaymentsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -1987,6 +2374,8 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -2029,6 +2418,8 @@ export type UserUpdateWithoutPaymentsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -2055,6 +2446,8 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutPurchasedChapterAccessInput = {
@@ -2081,6 +2474,8 @@ export type UserCreateWithoutPurchasedChapterAccessInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutPurchasedChapterAccessInput = {
@@ -2107,6 +2502,8 @@ export type UserUncheckedCreateWithoutPurchasedChapterAccessInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutPurchasedChapterAccessInput = {
@@ -2149,6 +2546,8 @@ export type UserUpdateWithoutPurchasedChapterAccessInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchasedChapterAccessInput = {
@@ -2175,6 +2574,8 @@ export type UserUncheckedUpdateWithoutPurchasedChapterAccessInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutRewardedAdGrantsInput = {
@@ -2201,6 +2602,8 @@ export type UserCreateWithoutRewardedAdGrantsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutRewardedAdGrantsInput = {
@@ -2227,6 +2630,8 @@ export type UserUncheckedCreateWithoutRewardedAdGrantsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutRewardedAdGrantsInput = {
@@ -2269,6 +2674,8 @@ export type UserUpdateWithoutRewardedAdGrantsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRewardedAdGrantsInput = {
@@ -2295,6 +2702,8 @@ export type UserUncheckedUpdateWithoutRewardedAdGrantsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutChapterEntitlementEntriesInput = {
@@ -2321,6 +2730,8 @@ export type UserCreateWithoutChapterEntitlementEntriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutChapterEntitlementEntriesInput = {
@@ -2347,6 +2758,8 @@ export type UserUncheckedCreateWithoutChapterEntitlementEntriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   generationLogs?: Prisma.GenerationLogUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutChapterEntitlementEntriesInput = {
@@ -2389,6 +2802,8 @@ export type UserUpdateWithoutChapterEntitlementEntriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChapterEntitlementEntriesInput = {
@@ -2415,6 +2830,8 @@ export type UserUncheckedUpdateWithoutChapterEntitlementEntriesInput = {
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   generationLogs?: Prisma.GenerationLogUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserCreateWithoutGenerationLogsInput = {
@@ -2441,6 +2858,8 @@ export type UserCreateWithoutGenerationLogsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerCreateNestedManyWithoutUserInput
   rewardedAdGrants?: Prisma.RewardedAdGrantCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserUncheckedCreateWithoutGenerationLogsInput = {
@@ -2467,6 +2886,8 @@ export type UserUncheckedCreateWithoutGenerationLogsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedCreateNestedManyWithoutUserInput
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminUserInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutTargetUserInput
 }
 
 export type UserCreateOrConnectWithoutGenerationLogsInput = {
@@ -2509,6 +2930,8 @@ export type UserUpdateWithoutGenerationLogsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUpdateManyWithoutUserNestedInput
   rewardedAdGrants?: Prisma.RewardedAdGrantUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUpdateManyWithoutTargetUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGenerationLogsInput = {
@@ -2535,6 +2958,8 @@ export type UserUncheckedUpdateWithoutGenerationLogsInput = {
   chapterEntitlementEntries?: Prisma.ChapterEntitlementLedgerUncheckedUpdateManyWithoutUserNestedInput
   rewardedAdGrants?: Prisma.RewardedAdGrantUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  adminAuditLogsAsAdmin?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminUserNestedInput
+  adminAuditLogsAsTarget?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
 }
 
 
@@ -2557,6 +2982,8 @@ export type UserCountOutputType = {
   rewardedAdGrants: number
   payments: number
   generationLogs: number
+  adminAuditLogsAsAdmin: number
+  adminAuditLogsAsTarget: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2574,6 +3001,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   rewardedAdGrants?: boolean | UserCountOutputTypeCountRewardedAdGrantsArgs
   payments?: boolean | UserCountOutputTypeCountPaymentsArgs
   generationLogs?: boolean | UserCountOutputTypeCountGenerationLogsArgs
+  adminAuditLogsAsAdmin?: boolean | UserCountOutputTypeCountAdminAuditLogsAsAdminArgs
+  adminAuditLogsAsTarget?: boolean | UserCountOutputTypeCountAdminAuditLogsAsTargetArgs
 }
 
 /**
@@ -2684,6 +3113,20 @@ export type UserCountOutputTypeCountGenerationLogsArgs<ExtArgs extends runtime.T
   where?: Prisma.GenerationLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAdminAuditLogsAsAdminArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminAuditLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAdminAuditLogsAsTargetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminAuditLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2710,6 +3153,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   rewardedAdGrants?: boolean | Prisma.User$rewardedAdGrantsArgs<ExtArgs>
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   generationLogs?: boolean | Prisma.User$generationLogsArgs<ExtArgs>
+  adminAuditLogsAsAdmin?: boolean | Prisma.User$adminAuditLogsAsAdminArgs<ExtArgs>
+  adminAuditLogsAsTarget?: boolean | Prisma.User$adminAuditLogsAsTargetArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2766,6 +3211,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   rewardedAdGrants?: boolean | Prisma.User$rewardedAdGrantsArgs<ExtArgs>
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   generationLogs?: boolean | Prisma.User$generationLogsArgs<ExtArgs>
+  adminAuditLogsAsAdmin?: boolean | Prisma.User$adminAuditLogsAsAdminArgs<ExtArgs>
+  adminAuditLogsAsTarget?: boolean | Prisma.User$adminAuditLogsAsTargetArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2789,6 +3236,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     rewardedAdGrants: Prisma.$RewardedAdGrantPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     generationLogs: Prisma.$GenerationLogPayload<ExtArgs>[]
+    adminAuditLogsAsAdmin: Prisma.$AdminAuditLogPayload<ExtArgs>[]
+    adminAuditLogsAsTarget: Prisma.$AdminAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3209,6 +3658,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   rewardedAdGrants<T extends Prisma.User$rewardedAdGrantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rewardedAdGrantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RewardedAdGrantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   generationLogs<T extends Prisma.User$generationLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$generationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GenerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adminAuditLogsAsAdmin<T extends Prisma.User$adminAuditLogsAsAdminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adminAuditLogsAsAdminArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adminAuditLogsAsTarget<T extends Prisma.User$adminAuditLogsAsTargetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adminAuditLogsAsTargetArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3992,6 +4443,54 @@ export type User$generationLogsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.GenerationLogScalarFieldEnum | Prisma.GenerationLogScalarFieldEnum[]
+}
+
+/**
+ * User.adminAuditLogsAsAdmin
+ */
+export type User$adminAuditLogsAsAdminArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminAuditLog
+   */
+  select?: Prisma.AdminAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminAuditLog
+   */
+  omit?: Prisma.AdminAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminAuditLogInclude<ExtArgs> | null
+  where?: Prisma.AdminAuditLogWhereInput
+  orderBy?: Prisma.AdminAuditLogOrderByWithRelationInput | Prisma.AdminAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AdminAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdminAuditLogScalarFieldEnum | Prisma.AdminAuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.adminAuditLogsAsTarget
+ */
+export type User$adminAuditLogsAsTargetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminAuditLog
+   */
+  select?: Prisma.AdminAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminAuditLog
+   */
+  omit?: Prisma.AdminAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminAuditLogInclude<ExtArgs> | null
+  where?: Prisma.AdminAuditLogWhereInput
+  orderBy?: Prisma.AdminAuditLogOrderByWithRelationInput | Prisma.AdminAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AdminAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdminAuditLogScalarFieldEnum | Prisma.AdminAuditLogScalarFieldEnum[]
 }
 
 /**

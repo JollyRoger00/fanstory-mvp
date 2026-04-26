@@ -19,6 +19,7 @@ function mapLedgerEntry(entry: {
   quantity: number;
   createdAt: Date;
   purchase: {
+    description: string | null;
     product: {
       name: string;
     } | null;
@@ -37,6 +38,7 @@ function mapLedgerEntry(entry: {
     createdAt: entry.createdAt,
     productName:
       entry.purchase?.product?.name ??
+      entry.purchase?.description ??
       entry.subscription?.product?.name ??
       null,
   };
@@ -56,7 +58,8 @@ export async function getMonetizationOverview(
       },
       include: {
         purchase: {
-          include: {
+          select: {
+            description: true,
             product: {
               select: {
                 name: true,
