@@ -10,6 +10,15 @@ const serverEnvSchema = z
     AUTH_SECRET: z.string().min(32),
     AUTH_GOOGLE_ID: z.string().min(1),
     AUTH_GOOGLE_SECRET: z.string().min(1),
+    AUTH_EMAIL_FROM: z.string().email().optional(),
+    AUTH_EMAIL_SERVER_HOST: z.string().min(1).optional(),
+    AUTH_EMAIL_SERVER_PORT: z.coerce.number().int().positive().optional(),
+    AUTH_EMAIL_SERVER_USER: z.string().min(1).optional(),
+    AUTH_EMAIL_SERVER_PASSWORD: z.string().min(1).optional(),
+    AUTH_EMAIL_SERVER_SECURE: z
+      .string()
+      .optional()
+      .transform((value) => value === "true"),
     AUTH_TRUST_HOST: z
       .string()
       .optional()
@@ -28,6 +37,26 @@ const serverEnvSchema = z
       .transform((value) => value === "true"),
   })
   .superRefine((value, ctx) => {
+    const emailAuthValues = [
+      value.AUTH_EMAIL_FROM,
+      value.AUTH_EMAIL_SERVER_HOST,
+      value.AUTH_EMAIL_SERVER_PORT,
+      value.AUTH_EMAIL_SERVER_USER,
+      value.AUTH_EMAIL_SERVER_PASSWORD,
+    ];
+    const emailAuthConfigured = emailAuthValues.every(Boolean);
+    const emailAuthPartiallyConfigured =
+      !emailAuthConfigured && emailAuthValues.some(Boolean);
+
+    if (emailAuthPartiallyConfigured) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["AUTH_EMAIL_FROM"],
+        message:
+          "AUTH_EMAIL_FROM, AUTH_EMAIL_SERVER_HOST, AUTH_EMAIL_SERVER_PORT, AUTH_EMAIL_SERVER_USER, and AUTH_EMAIL_SERVER_PASSWORD must be set together to enable email sign-in.",
+      });
+    }
+
     if (value.NODE_ENV === "production" && value.STORY_PROVIDER === "mock") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -106,4 +135,16 @@ export function paymentsEnabled() {
 
 export function yookassaEnabled() {
   return getServerEnv().PAYMENT_PROVIDER === "yookassa";
+}
+
+export function emailAuthConfigured() {
+  const env = getServerEnv();
+
+  return Boolean(
+    env.AUTH_EMAIL_FROM &&
+    env.AUTH_EMAIL_SERVER_HOST &&
+    env.AUTH_EMAIL_SERVER_PORT &&
+    env.AUTH_EMAIL_SERVER_USER &&
+    env.AUTH_EMAIL_SERVER_PASSWORD,
+  );
 }

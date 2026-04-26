@@ -1,0 +1,381 @@
+import "server-only";
+
+import { createHash, randomInt } from "node:crypto";
+import type { Transporter } from "nodemailer";
+import nodemailer from "nodemailer";
+import { CredentialsSignin } from "next-auth";
+import { z } from "zod";
+import { prisma } from "@/lib/db/client";
+import {
+  emailAuthConfigured,
+  getServerEnv,
+  type ServerEnv,
+} from "@/lib/env/server";
+import type { Locale } from "@/lib/i18n/config";
+import { APP_NAME } from "@/lib/site";
+
+const EMAIL_CODE_LENGTH = 6;
+const EMAIL_CODE_TTL_MS = 15 * 60 * 1000;
+const EMAIL_CODE_RESEND_COOLDOWN_MS = 60 * 1000;
+const EMAIL_CODE_IDENTIFIER_PREFIX = "email-code";
+
+const emailSchema = z
+  .string()
+  .trim()
+  .email()
+  .transform((value) => value.toLowerCase());
+
+const emailCodeSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{6}$/);
+
+const emailCodeVerificationSchema = z.object({
+  email: emailSchema,
+  code: emailCodeSchema,
+});
+
+type MailTransportCache = {
+  transporter?: Transporter;
+  transporterSignature?: string;
+};
+
+const globalForEmailTransport = globalThis as typeof globalThis & {
+  __fanstoryEmailTransport?: MailTransportCache;
+};
+
+export type EmailCodeIssueResult =
+  | {
+      status: "success";
+      email: string;
+    }
+  | {
+      status: "rate_limited";
+      email: string;
+      retryAfterSeconds: number;
+    };
+
+export class EmailAuthNotConfiguredError extends CredentialsSignin {
+  code = "email_auth_not_configured";
+}
+
+export class InvalidEmailCodeError extends CredentialsSignin {
+  code = "invalid_email_code";
+}
+
+export class ExpiredEmailCodeError extends CredentialsSignin {
+  code = "expired_email_code";
+}
+
+export function normalizeEmail(value: string) {
+  return emailSchema.parse(value);
+}
+
+export function parseEmailCodeVerificationInput(input: {
+  email: string;
+  code: string;
+}) {
+  return emailCodeVerificationSchema.parse(input);
+}
+
+function getEmailCodeIdentifier(email: string) {
+  return `${EMAIL_CODE_IDENTIFIER_PREFIX}:${email}`;
+}
+
+function getEmailCodeIssuedAt(expires: Date) {
+  return new Date(expires.getTime() - EMAIL_CODE_TTL_MS);
+}
+
+function getEmailCodeExpiryDate(now = new Date()) {
+  return new Date(now.getTime() + EMAIL_CODE_TTL_MS);
+}
+
+function generateEmailCode() {
+  return randomInt(0, 10 ** EMAIL_CODE_LENGTH)
+    .toString()
+    .padStart(EMAIL_CODE_LENGTH, "0");
+}
+
+function hashEmailCode(email: string, code: string) {
+  const env = getServerEnv();
+
+  return createHash("sha256")
+    .update(`${env.AUTH_SECRET}:${email}:${code}`)
+    .digest("hex");
+}
+
+function getTransporterSignature(env: ServerEnv) {
+  return [
+    env.AUTH_EMAIL_SERVER_HOST,
+    env.AUTH_EMAIL_SERVER_PORT,
+    env.AUTH_EMAIL_SERVER_USER,
+    env.AUTH_EMAIL_SERVER_PASSWORD,
+    env.AUTH_EMAIL_SERVER_SECURE,
+  ].join(":");
+}
+
+function getMailTransporter() {
+  if (!emailAuthConfigured()) {
+    throw new EmailAuthNotConfiguredError();
+  }
+
+  const env = getServerEnv();
+  const cache =
+    globalForEmailTransport.__fanstoryEmailTransport ??
+    (globalForEmailTransport.__fanstoryEmailTransport = {});
+  const signature = getTransporterSignature(env);
+
+  if (
+    cache.transporter &&
+    cache.transporterSignature &&
+    cache.transporterSignature === signature
+  ) {
+    return cache.transporter;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: env.AUTH_EMAIL_SERVER_HOST,
+    port: env.AUTH_EMAIL_SERVER_PORT,
+    secure: env.AUTH_EMAIL_SERVER_SECURE || env.AUTH_EMAIL_SERVER_PORT === 465,
+    auth: {
+      user: env.AUTH_EMAIL_SERVER_USER,
+      pass: env.AUTH_EMAIL_SERVER_PASSWORD,
+    },
+  });
+
+  cache.transporter = transporter;
+  cache.transporterSignature = signature;
+
+  return transporter;
+}
+
+function buildEmailCopy(locale: Locale, code: string) {
+  if (locale === "ru") {
+    return {
+      subject: `${APP_NAME}: код входа ${code}`,
+      text: [
+        `Код для входа в ${APP_NAME}: ${code}`,
+        "",
+        "Код действует 15 минут.",
+        "Если вы не запрашивали вход, просто проигнорируйте это письмо.",
+      ].join("\n"),
+      html: `
+        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#0f172a">
+          <p style="margin:0 0 16px">Код для входа в <strong>${APP_NAME}</strong></p>
+          <p style="margin:0 0 20px;font-size:32px;font-weight:700;letter-spacing:0.3em">${code}</p>
+          <p style="margin:0 0 8px">Код действует 15 минут.</p>
+          <p style="margin:0">Если вы не запрашивали вход, просто проигнорируйте это письмо.</p>
+        </div>
+      `,
+    };
+  }
+
+  return {
+    subject: `${APP_NAME}: sign-in code ${code}`,
+    text: [
+      `Your ${APP_NAME} sign-in code: ${code}`,
+      "",
+      "This code expires in 15 minutes.",
+      "If you did not request it, you can ignore this email.",
+    ].join("\n"),
+    html: `
+      <div style="font-family:Arial,sans-serif;line-height:1.6;color:#0f172a">
+        <p style="margin:0 0 16px">Your sign-in code for <strong>${APP_NAME}</strong></p>
+        <p style="margin:0 0 20px;font-size:32px;font-weight:700;letter-spacing:0.3em">${code}</p>
+        <p style="margin:0 0 8px">This code expires in 15 minutes.</p>
+        <p style="margin:0">If you did not request it, you can ignore this email.</p>
+      </div>
+    `,
+  };
+}
+
+async function sendEmailCodeMessage({
+  email,
+  code,
+  locale,
+}: {
+  email: string;
+  code: string;
+  locale: Locale;
+}) {
+  if (!emailAuthConfigured()) {
+    throw new EmailAuthNotConfiguredError();
+  }
+
+  const env = getServerEnv();
+  const transporter = getMailTransporter();
+  const message = buildEmailCopy(locale, code);
+
+  await transporter.sendMail({
+    from: env.AUTH_EMAIL_FROM,
+    to: email,
+    subject: message.subject,
+    text: message.text,
+    html: message.html,
+  });
+}
+
+export async function issueEmailSignInCode({
+  email: rawEmail,
+  locale,
+}: {
+  email: string;
+  locale: Locale;
+}): Promise<EmailCodeIssueResult> {
+  if (!emailAuthConfigured()) {
+    throw new EmailAuthNotConfiguredError();
+  }
+
+  const email = normalizeEmail(rawEmail);
+  const identifier = getEmailCodeIdentifier(email);
+  const now = new Date();
+
+  await prisma.verificationToken.deleteMany({
+    where: {
+      identifier,
+      expires: {
+        lte: now,
+      },
+    },
+  });
+
+  const latestToken = await prisma.verificationToken.findFirst({
+    where: {
+      identifier,
+    },
+    orderBy: {
+      expires: "desc",
+    },
+  });
+
+  if (latestToken) {
+    const resendAvailableAt = new Date(
+      getEmailCodeIssuedAt(latestToken.expires).getTime() +
+        EMAIL_CODE_RESEND_COOLDOWN_MS,
+    );
+
+    if (resendAvailableAt > now) {
+      return {
+        status: "rate_limited",
+        email,
+        retryAfterSeconds: Math.ceil(
+          (resendAvailableAt.getTime() - now.getTime()) / 1000,
+        ),
+      };
+    }
+  }
+
+  const code = generateEmailCode();
+  const expires = getEmailCodeExpiryDate(now);
+  const token = hashEmailCode(email, code);
+
+  await prisma.verificationToken.deleteMany({
+    where: {
+      identifier,
+    },
+  });
+
+  await prisma.verificationToken.create({
+    data: {
+      identifier,
+      token,
+      expires,
+    },
+  });
+
+  try {
+    await sendEmailCodeMessage({
+      email,
+      code,
+      locale,
+    });
+  } catch (error) {
+    await prisma.verificationToken.deleteMany({
+      where: {
+        identifier,
+      },
+    });
+
+    throw error;
+  }
+
+  return {
+    status: "success",
+    email,
+  };
+}
+
+export async function authorizeEmailCodeSignIn(credentials: {
+  email?: unknown;
+  code?: unknown;
+}) {
+  if (!emailAuthConfigured()) {
+    throw new EmailAuthNotConfiguredError();
+  }
+
+  const { email, code } = parseEmailCodeVerificationInput({
+    email: String(credentials.email ?? ""),
+    code: String(credentials.code ?? ""),
+  });
+  const identifier = getEmailCodeIdentifier(email);
+  const token = hashEmailCode(email, code);
+
+  return prisma.$transaction(async (tx) => {
+    const verificationToken = await tx.verificationToken.findFirst({
+      where: {
+        identifier,
+        token,
+      },
+    });
+
+    if (!verificationToken) {
+      throw new InvalidEmailCodeError();
+    }
+
+    if (verificationToken.expires <= new Date()) {
+      await tx.verificationToken.deleteMany({
+        where: {
+          identifier,
+        },
+      });
+
+      throw new ExpiredEmailCodeError();
+    }
+
+    await tx.verificationToken.deleteMany({
+      where: {
+        identifier,
+      },
+    });
+
+    const existingUser = await tx.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    const user = existingUser
+      ? await tx.user.update({
+          where: {
+            id: existingUser.id,
+          },
+          data: {
+            emailVerified: existingUser.emailVerified ?? new Date(),
+          },
+        })
+      : await tx.user.create({
+          data: {
+            email,
+            emailVerified: new Date(),
+          },
+        });
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role: user.role,
+    };
+  });
+}

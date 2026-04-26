@@ -70,7 +70,7 @@ fanstory/
 - shadcn/ui
 - Prisma 7
 - PostgreSQL
-- Auth.js / NextAuth with Google login
+- Auth.js / NextAuth with Google login and email code sign-in
 - Zod
 - Server Actions
 - ESLint + Prettier
@@ -78,7 +78,7 @@ fanstory/
 ## What Is Implemented
 
 - Landing page
-- Google-only sign-in page
+- Sign-in page with Google and email confirmation codes
 - Protected application routes via `proxy.ts`
 - Dashboard / profile center
 - Story list page
@@ -123,7 +123,7 @@ Core persisted models:
 Important product rules already encoded in the server layer:
 
 - unauthenticated users do not reach dashboard/product routes
-- Google login creates a persisted account through the Auth.js Prisma adapter
+- Google login and verified email-code sign-in create or reuse a persisted account
 - the profile is the center of user operations
 - chapter access is evaluated outside UI in `server/access`
 - monetization is sourced from the entitlement ledger, not from React state
@@ -240,6 +240,11 @@ Required envs:
 - `AUTH_SECRET`
 - `AUTH_GOOGLE_ID`
 - `AUTH_GOOGLE_SECRET`
+- `AUTH_EMAIL_FROM` for email-code sign-in
+- `AUTH_EMAIL_SERVER_HOST` for email-code sign-in
+- `AUTH_EMAIL_SERVER_PORT` for email-code sign-in
+- `AUTH_EMAIL_SERVER_USER` for email-code sign-in
+- `AUTH_EMAIL_SERVER_PASSWORD` for email-code sign-in
 - `AUTH_TRUST_HOST`
 - `NEXT_PUBLIC_APP_URL`
 - `STORY_PROVIDER`
@@ -309,8 +314,8 @@ These are enough to exercise pack purchases, subscription activation, and access
 
 ## Current Product Flow
 
-1. User signs in with Google.
-2. Auth.js persists `User` + `Account` data.
+1. User signs in with Google or a one-time email confirmation code.
+2. Auth.js persists or reuses the `User`, and OAuth sign-in also persists `Account` data.
 3. The first protected request ensures a one-time welcome grant of 10 chapters.
 4. User creates a story.
 5. Story service calls the active generation provider and persists:

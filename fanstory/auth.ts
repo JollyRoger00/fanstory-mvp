@@ -1,15 +1,17 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/db/client";
 import { getServerEnv } from "@/lib/env/server";
+import { authorizeEmailCodeSignIn } from "@/server/auth/email-code";
 
 const env = getServerEnv();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   pages: {
     signIn: "/sign-in",
@@ -20,14 +22,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google({
       clientId: env.AUTH_GOOGLE_ID,
       clientSecret: env.AUTH_GOOGLE_SECRET,
-      allowDangerousEmailAccountLinking: false,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Credentials({
+      id: "email-code",
+      name: "Email code",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "email",
+        },
+        code: {
+          label: "Code",
+          type: "text",
+        },
+      },
+      authorize: authorizeEmailCodeSignIn,
     }),
   ],
   callbacks: {
-    session({ session, user }) {
+    jwt({ token, user }) {
+      if (user?.role) {
+        token.role = user.role;
+      }
+
+      return token;
+    },
+    session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
-        session.user.role = user.role ?? "USER";
+        session.user.id = token.sub ?? "";
+        session.user.role =
+          typeof token.role === "string" ? token.role : "USER";
       }
 
       return session;

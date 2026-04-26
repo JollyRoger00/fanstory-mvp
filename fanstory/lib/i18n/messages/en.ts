@@ -146,7 +146,8 @@ const enMessages = {
       },
       {
         title: "Flexible access",
-        description: "Welcome chapters, packs, and subscriptions keep the story moving.",
+        description:
+          "Welcome chapters, packs, and subscriptions keep the story moving.",
       },
     ],
     pillars: [
@@ -168,11 +169,46 @@ const enMessages = {
     ],
   },
   signIn: {
-    badge: "Google sign-in",
-    title: "Enter FanStory",
+    badge: "Sign in or create account",
+    title: "Continue to FanStory",
     description:
-      "Sign in with Google to open your stories, saves, and chapter access.",
-    foundation: "Secure sign-in",
+      "Use a one-time email code or Google to open your stories, saves, and chapter access.",
+    orDivider: "or",
+    errors: {
+      oauthAccountNotLinked:
+        "This Google account is not linked yet. Sign in with email first or use the original provider.",
+      accessDenied: "Sign-in was denied. Please try again.",
+      generic: "Sign-in failed. Please try again.",
+    },
+    email: {
+      title: "Continue with email",
+      description:
+        "We will send a 6-digit confirmation code to your email address.",
+      emailLabel: "Email",
+      emailPlaceholder: "you@example.com",
+      sendCode: "Send code",
+      sendingCode: "Sending code...",
+      resendCode: "Resend code",
+      codeLabel: "Confirmation code",
+      codePlaceholder: "123456",
+      verifyCode: "Continue",
+      verifyingCode: "Checking code...",
+      codeSentNotice: "We sent a 6-digit code to {email}.",
+      rateLimitedNotice:
+        "A code was already sent recently. Please wait {seconds} seconds before trying again.",
+      errors: {
+        invalidEmail: "Enter a valid email address.",
+        invalidCode: "Enter the 6-digit code from your email.",
+        invalidEmailCode:
+          "The code is incorrect. Request a new one or try again.",
+        expiredCode: "This code has expired. Request a new one.",
+        notConfigured:
+          "Email sign-in is not configured yet. Use Google or finish the email server setup.",
+        deliveryFailed:
+          "We could not send the email right now. Please try again in a moment.",
+        unexpected: "Something went wrong. Please try again.",
+      },
+    },
   },
   dashboard: {
     eyebrow: "Profile",
@@ -273,7 +309,8 @@ const enMessages = {
       balancePurchased: "Purchased: {count}",
       balanceAd: "Ad unlocks: {count}",
       adQuota: "{remaining} of {limit} ad chapters left today.",
-      adLimitReached: "The daily limit of {limit} ad chapters has been reached.",
+      adLimitReached:
+        "The daily limit of {limit} ad chapters has been reached.",
     },
     reader: {
       eyebrow: "Reader",
@@ -292,7 +329,8 @@ const enMessages = {
       balancePurchased: "Purchased: {count}",
       balanceAd: "Ad unlocks: {count}",
       adQuota: "{remaining} of {limit} ad chapters left today.",
-      adLimitReached: "The daily limit of {limit} ad chapters has been reached.",
+      adLimitReached:
+        "The daily limit of {limit} ad chapters has been reached.",
       dailyReset: "Daily subscription chapters reset on {date}.",
       tooltips: {
         nextChapterAccess:
@@ -330,7 +368,8 @@ const enMessages = {
     subscriptionSummary: "{remaining} chapters left for today.",
     noSubscription: "No active subscription.",
     adTitle: "Rewarded ad",
-    adDescription: "One completed ad unlocks 1 chapter. Up to 5 chapters a day.",
+    adDescription:
+      "One completed ad unlocks 1 chapter. Up to 5 chapters a day.",
     adReady: "1 ad chapter is ready.",
     adUseReady: "Use your ad unlock before claiming another one.",
     adHint: "You can use an ad when nothing else is left.",

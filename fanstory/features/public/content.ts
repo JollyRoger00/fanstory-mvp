@@ -1,4 +1,4 @@
-import type { Locale } from "@/lib/i18n/config";
+﻿import type { Locale } from "@/lib/i18n/config";
 import { APP_NAME } from "@/lib/site";
 
 type FooterLink = {
@@ -85,8 +85,7 @@ const ruContent: PublicSiteContent = {
   pricing: {
     eyebrow: "Тарифы",
     title: "Тарифы и описание услуги",
-    lead:
-      "А дальше? — сервис генерации интерактивных AI-историй. Пользователь создает историю, развивает сюжет выбором действий и получает новые главы в личном кабинете.",
+    lead: "А дальше? — сервис генерации интерактивных AI-историй. Пользователь создает историю, развивает сюжет выбором действий и получает новые главы в личном кабинете.",
     serviceTitle: "Как работает сервис",
     serviceDescription:
       "После регистрации пользователь получает доступ к созданию и продолжению AI-историй. Новые главы открываются автоматически после генерации, а оплаченные главы и подписки зачисляются на аккаунт без участия менеджера.",
@@ -105,7 +104,8 @@ const ruContent: PublicSiteContent = {
       {
         name: "50 глав",
         price: "799 ₽",
-        description: "Подходит для длинных сюжетных веток и нескольких историй.",
+        description:
+          "Подходит для длинных сюжетных веток и нескольких историй.",
       },
       {
         name: "100 глав",
@@ -134,8 +134,7 @@ const ruContent: PublicSiteContent = {
   contacts: {
     eyebrow: "Контакты",
     title: "Реквизиты исполнителя",
-    lead:
-      "Страница содержит публичные контактные данные и реквизиты исполнителя для пользователей и модерации платежного провайдера.",
+    lead: "Страница содержит публичные контактные данные и реквизиты исполнителя для пользователей и модерации платежного провайдера.",
     detailsTitle: "Реквизиты",
     details: [
       { label: "Исполнитель", value: "Ильясов Руслан Александрович" },
@@ -145,14 +144,12 @@ const ruContent: PublicSiteContent = {
       { label: "Телефон", value: "[+7 (983) 403-97-77]" },
       { label: "Сайт", value: "https://adalshe.ru" },
     ],
-    note:
-      "",
+    note: "",
   },
   offer: {
     eyebrow: "Оферта",
     title: "Публичная оферта",
-    lead:
-      "Настоящая оферта регулирует порядок использования цифрового сервиса интерактивных AI-историй и приобретения пакетов глав и подписок.",
+    lead: "Настоящая оферта регулирует порядок использования цифрового сервиса интерактивных AI-историй и приобретения пакетов глав и подписок.",
     sections: [
       {
         title: "1. Общие положения",
@@ -217,13 +214,12 @@ const ruContent: PublicSiteContent = {
   privacy: {
     eyebrow: "Конфиденциальность",
     title: "Политика конфиденциальности",
-    lead:
-      "Политика описывает, какие данные собирает сервис, для чего они используются и как пользователь может обратиться по вопросам обработки персональных данных.",
+    lead: "Политика описывает, какие данные собирает сервис, для чего они используются и как пользователь может обратиться по вопросам обработки персональных данных.",
     sections: [
       {
         title: "1. Какие данные мы обрабатываем",
         paragraphs: [
-          "При регистрации и входе через Google OAuth сервис получает и обрабатывает данные, переданные провайдером авторизации, включая имя пользователя и адрес электронной почты.",
+          "??? ??????????? ??? ????? ????? Google OAuth ???? ??????????? ??? ?? email ?????? ???????? ? ???????????? ??????, ??????????? ??? ???????????, ??????? ??? ???????????? ? ????? ??????????? ?????.",
           "При использовании сервиса мы также храним созданные пользователем истории, сохранения, прогресс чтения, сведения о доступе к главам и технические записи, связанные с работой аккаунта.",
         ],
       },
@@ -267,8 +263,7 @@ const ruContent: PublicSiteContent = {
   terms: {
     eyebrow: "Соглашение",
     title: "Пользовательское соглашение",
-    lead:
-      "Соглашение определяет правила использования сервиса интерактивных AI-историй, допустимое поведение пользователей и основания для ограничения доступа.",
+    lead: "Соглашение определяет правила использования сервиса интерактивных AI-историй, допустимое поведение пользователей и основания для ограничения доступа.",
     sections: [
       {
         title: "1. Использование сервиса",
@@ -347,8 +342,7 @@ const enContent: PublicSiteContent = {
   pricing: {
     eyebrow: "Pricing",
     title: "Pricing and service description",
-    lead:
-      `${APP_NAME} is an interactive AI story service. Users create stories, continue them through choices, and receive new chapters inside their account dashboard.`,
+    lead: `${APP_NAME} is an interactive AI story service. Users create stories, continue them through choices, and receive new chapters inside their account dashboard.`,
     serviceTitle: "How the service works",
     serviceDescription:
       "After registration, the user can create and continue AI stories. New chapters appear digitally in the account, and paid chapters or subscriptions are credited automatically without manual processing.",
@@ -395,8 +389,7 @@ const enContent: PublicSiteContent = {
   contacts: {
     eyebrow: "Contacts",
     title: "Service provider details",
-    lead:
-      "This page contains public contact details and service provider information for users and payment moderation.",
+    lead: "This page contains public contact details and service provider information for users and payment moderation.",
     detailsTitle: "Details",
     details: [
       { label: "Provider", value: "Ильясов Руслан Александрович" },
@@ -406,14 +399,12 @@ const enContent: PublicSiteContent = {
       { label: "Phone", value: "[+7 (983) 403-97-77]" },
       { label: "Website", value: "https://adalshe.ru" },
     ],
-    note:
-      "",
+    note: "",
   },
   offer: {
     eyebrow: "Offer",
     title: "Public offer",
-    lead:
-      "This public offer governs the use of the digital interactive AI story service and the purchase of chapter packs and subscriptions.",
+    lead: "This public offer governs the use of the digital interactive AI story service and the purchase of chapter packs and subscriptions.",
     sections: [
       {
         title: "1. General terms",
@@ -478,13 +469,12 @@ const enContent: PublicSiteContent = {
   privacy: {
     eyebrow: "Privacy",
     title: "Privacy policy",
-    lead:
-      "This policy explains what data the service processes, why it is processed, and how users can contact the provider about personal data matters.",
+    lead: "This policy explains what data the service processes, why it is processed, and how users can contact the provider about personal data matters.",
     sections: [
       {
         title: "1. Data we process",
         paragraphs: [
-          "When a user signs in through Google OAuth, the service processes the profile data provided by the authorization provider, including the user's name and email address.",
+          "When a user signs in with Google OAuth or a one-time email confirmation code, the service processes the data required for authentication, including the user's name and email address.",
           "The service also stores generated stories, saves, reading progress, chapter access information, and technical records related to the account.",
         ],
       },
@@ -528,8 +518,7 @@ const enContent: PublicSiteContent = {
   terms: {
     eyebrow: "Terms",
     title: "User agreement",
-    lead:
-      "This agreement defines the rules for using the interactive AI story service, acceptable user conduct, and grounds for restricting access.",
+    lead: "This agreement defines the rules for using the interactive AI story service, acceptable user conduct, and grounds for restricting access.",
     sections: [
       {
         title: "1. Use of the service",
