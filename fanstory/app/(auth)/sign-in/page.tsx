@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
-import { emailAuthConfigured } from "@/lib/env/server";
+import { emailSignInAvailable } from "@/lib/env/server";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/server/auth/session";
 
@@ -24,7 +24,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const params = await searchParams;
   const { locale } = await getI18n();
   const callbackUrl = sanitizeCallbackUrl(params.callbackUrl);
-  const emailEnabled = emailAuthConfigured();
+  const emailEnabled = emailSignInAvailable();
   const copy = getSignInPageCopy(locale);
   const authError = resolveSignInErrorMessage(
     copy,

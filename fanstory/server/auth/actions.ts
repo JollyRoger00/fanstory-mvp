@@ -5,13 +5,15 @@ import { AuthError } from "next-auth";
 import { ZodError } from "zod";
 import { signIn, signOut } from "@/auth";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
-import { emailAuthConfigured } from "@/lib/env/server";
+import { emailAuthConfigured, emailSignInAvailable } from "@/lib/env/server";
 import { getCurrentLocale } from "@/lib/i18n/server";
 import {
   EmailAuthNotConfiguredError,
+  isYookassaTestAccountEmail,
   issueEmailSignInCode,
   normalizeEmail,
   parseEmailCodeVerificationInput,
+  YOOKASSA_TEST_ACCOUNT_CODE,
 } from "@/server/auth/email-code";
 
 export type EmailSignInNoticeCode = "code_sent" | "rate_limited";
@@ -78,8 +80,11 @@ export async function submitEmailSignInForm(
 
 async function handleEmailCodeRequest(formData: FormData) {
   const email = formData.get("email")?.toString() ?? "";
+  const callbackUrl = sanitizeCallbackUrl(
+    formData.get("callbackUrl")?.toString(),
+  );
 
-  if (!emailAuthConfigured()) {
+  if (!emailSignInAvailable()) {
     return createEmailSignInState({
       step: "email",
       email,
@@ -88,8 +93,23 @@ async function handleEmailCodeRequest(formData: FormData) {
   }
 
   try {
+    const normalizedEmail = normalizeEmail(email);
+
+    if (isYookassaTestAccountEmail(normalizedEmail)) {
+      await signIn("email-code", {
+        email: normalizedEmail,
+        code: YOOKASSA_TEST_ACCOUNT_CODE,
+        redirectTo: callbackUrl,
+      });
+
+      return createEmailSignInState({
+        step: "email",
+        email: normalizedEmail,
+      });
+    }
+
     const result = await issueEmailSignInCode({
-      email,
+      email: normalizedEmail,
       locale: await getCurrentLocale(),
     });
 
@@ -108,6 +128,10 @@ async function handleEmailCodeRequest(formData: FormData) {
       noticeCode: "code_sent",
     });
   } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
+
     if (error instanceof ZodError) {
       return createEmailSignInState({
         step: "email",

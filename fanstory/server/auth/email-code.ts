@@ -8,6 +8,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db/client";
 import {
   emailAuthConfigured,
+  getYookassaTestAccountEmails,
   getServerEnv,
   type ServerEnv,
 } from "@/lib/env/server";
@@ -18,6 +19,7 @@ const EMAIL_CODE_LENGTH = 6;
 const EMAIL_CODE_TTL_MS = 15 * 60 * 1000;
 const EMAIL_CODE_RESEND_COOLDOWN_MS = 60 * 1000;
 const EMAIL_CODE_IDENTIFIER_PREFIX = "email-code";
+export const YOOKASSA_TEST_ACCOUNT_CODE = "__yookassa_test_account__";
 
 const emailSchema = z
   .string()
@@ -78,6 +80,12 @@ export function parseEmailCodeVerificationInput(input: {
   return emailCodeVerificationSchema.parse(input);
 }
 
+export function isYookassaTestAccountEmail(email: string) {
+  const normalizedEmail = normalizeEmail(email);
+
+  return getYookassaTestAccountEmails().includes(normalizedEmail);
+}
+
 function maskEmailForLogs(email: string) {
   const [localPart = "", domain = ""] = email.split("@");
 
@@ -108,7 +116,9 @@ function logEmailAuthError(
   details: Record<string, unknown> = {},
 ) {
   const smtpError =
-    error && typeof error === "object" ? (error as Record<string, unknown>) : {};
+    error && typeof error === "object"
+      ? (error as Record<string, unknown>)
+      : {};
 
   console.error("[email-auth:error]", {
     event,
@@ -404,12 +414,40 @@ export async function authorizeEmailCodeSignIn(credentials: {
   email?: unknown;
   code?: unknown;
 }) {
+  const email = normalizeEmail(String(credentials.email ?? ""));
+
+  if (
+    String(credentials.code ?? "") === YOOKASSA_TEST_ACCOUNT_CODE &&
+    isYookassaTestAccountEmail(email)
+  ) {
+    const user = await prisma.user.upsert({
+      where: {
+        email,
+      },
+      update: {
+        emailVerified: new Date(),
+      },
+      create: {
+        email,
+        emailVerified: new Date(),
+      },
+    });
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role: user.role,
+    };
+  }
+
   if (!emailAuthConfigured()) {
     throw new EmailAuthNotConfiguredError();
   }
 
-  const { email, code } = parseEmailCodeVerificationInput({
-    email: String(credentials.email ?? ""),
+  const { code } = parseEmailCodeVerificationInput({
+    email,
     code: String(credentials.code ?? ""),
   });
   const identifier = getEmailCodeIdentifier(email);

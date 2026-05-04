@@ -36,6 +36,7 @@ const serverEnvSchema = z
       .string()
       .optional()
       .transform((value) => value === "true"),
+    YOOKASSA_TEST_ACCOUNT_EMAILS: z.string().optional().default(""),
   })
   .superRefine((value, ctx) => {
     const emailAuthValues = [
@@ -148,4 +149,19 @@ export function emailAuthConfigured() {
     env.AUTH_EMAIL_SERVER_USER &&
     env.AUTH_EMAIL_SERVER_PASSWORD,
   );
+}
+
+export function getYookassaTestAccountEmails() {
+  return getServerEnv()
+    .YOOKASSA_TEST_ACCOUNT_EMAILS.split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function yookassaTestAccountConfigured() {
+  return getYookassaTestAccountEmails().length > 0;
+}
+
+export function emailSignInAvailable() {
+  return emailAuthConfigured() || yookassaTestAccountConfigured();
 }
