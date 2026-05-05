@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { ReaderView as ReaderViewModel } from "@/entities/story/types";
 import { ChapterNavigator } from "@/features/story-reader/components/chapter-navigator";
+import { ChoiceList } from "@/features/story-reader/components/choice-list";
 import { createSaveAction } from "@/server/saves/actions";
-import { chooseStoryPathAction } from "@/server/stories/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -84,38 +84,20 @@ export async function ReaderView({ data }: ReaderViewProps) {
                   </p>
                 </div>
                 {data.nextAccess.allowed ? (
-                  <div className="grid gap-3">
-                    {activeChapter.choices.map((choice) => (
-                      <form key={choice.id} action={chooseStoryPathAction}>
-                        <input
-                          type="hidden"
-                          name="storyId"
-                          value={data.story.id}
-                        />
-                        <input
-                          type="hidden"
-                          name="choiceId"
-                          value={choice.id}
-                        />
-                        <Button
-                          type="submit"
-                          variant="outline"
-                          className="h-auto w-full justify-start rounded-3xl px-5 py-4 text-left"
-                        >
-                          <span className="space-y-1">
-                            <span className="block text-sm font-medium">
-                              {choice.label}
-                            </span>
-                            {choice.outcomeHint ? (
-                              <span className="block text-xs text-slate-500">
-                                {choice.outcomeHint}
-                              </span>
-                            ) : null}
-                          </span>
-                        </Button>
-                      </form>
-                    ))}
-                  </div>
+                  <ChoiceList
+                    storyId={data.story.id}
+                    choices={activeChapter.choices}
+                    pendingLabel={
+                      locale === "ru"
+                        ? "Генерируем следующую главу..."
+                        : "Generating next chapter..."
+                    }
+                    pendingDescription={
+                      locale === "ru"
+                        ? "Выбор принят. Кнопки заблокированы до завершения запроса."
+                        : "Your choice is submitted. Buttons are locked until the request finishes."
+                    }
+                  />
                 ) : (
                   <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm leading-7 text-slate-600">
                     {t("stories.reader.lockedChoices")}

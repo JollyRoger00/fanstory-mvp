@@ -1,5 +1,4 @@
 import { createStoryAction } from "@/server/stories/actions";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,6 +10,7 @@ import { InfoHint } from "@/components/shared/info-hint";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { CreateStorySubmit } from "@/features/stories/components/create-story-submit";
 import { getI18n } from "@/lib/i18n/server";
 
 export async function CreateStoryForm() {
@@ -28,7 +28,7 @@ export async function CreateStoryForm() {
         <CardDescription>{t("stories.create.formDescription")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={createStoryAction} className="grid gap-6">
+        <form action={createStoryAction} className="relative grid gap-6">
           <div className="grid gap-2">
             <div className="flex items-center gap-2">
               <Label htmlFor="contentLanguage">
@@ -117,12 +117,19 @@ export async function CreateStoryForm() {
               />
             </div>
           </div>
-          <Button
-            type="submit"
-            className="w-full rounded-full bg-slate-950 hover:bg-slate-800"
-          >
-            {t("common.actions.generateFirstChapter")}
-          </Button>
+          <CreateStorySubmit
+            idleLabel={t("common.actions.generateFirstChapter")}
+            pendingLabel={
+              locale === "ru"
+                ? "Генерируем первую главу..."
+                : "Generating first chapter..."
+            }
+            pendingDescription={
+              locale === "ru"
+                ? "Запрос уже отправлен. Дождитесь результата."
+                : "The request has been sent. Please wait for the result."
+            }
+          />
         </form>
       </CardContent>
     </Card>
