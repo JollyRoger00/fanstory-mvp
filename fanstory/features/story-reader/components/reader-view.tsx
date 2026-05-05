@@ -85,6 +85,7 @@ export async function ReaderView({ data }: ReaderViewProps) {
                 </div>
                 {data.nextAccess.allowed ? (
                   <ChoiceList
+                    key={activeChapter.id}
                     storyId={data.story.id}
                     choices={activeChapter.choices}
                     pendingLabel={

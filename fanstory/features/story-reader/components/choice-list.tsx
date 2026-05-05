@@ -1,6 +1,11 @@
 "use client";
 
-import { type FormEvent, useRef, useState } from "react";
+import {
+  type FormEvent,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { LoaderCircle } from "lucide-react";
 import type { StoryChoiceView } from "@/entities/story/types";
 import { chooseStoryPathAction } from "@/server/stories/actions";
@@ -19,23 +24,24 @@ export function ChoiceList({
   pendingLabel,
   pendingDescription,
 }: ChoiceListProps) {
-  const submittedRef = useRef(false);
-  const [submittingChoiceId, setSubmittingChoiceId] = useState<string | null>(
+  const submittedSignatureRef = useRef<string | null>(null);
+  const [submittingSignature, setSubmittingSignature] = useState<string | null>(
     null,
   );
-  const isSubmitting = submittingChoiceId !== null;
+  const choiceSignature = useMemo(
+    () => `${storyId}:${choices.map((choice) => choice.id).join("|")}`,
+    [choices, storyId],
+  );
+  const isSubmitting = submittingSignature === choiceSignature;
 
-  function handleSubmit(
-    event: FormEvent<HTMLFormElement>,
-    choiceId: string,
-  ) {
-    if (submittedRef.current) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    if (submittedSignatureRef.current === choiceSignature) {
       event.preventDefault();
       return;
     }
 
-    submittedRef.current = true;
-    setSubmittingChoiceId(choiceId);
+    submittedSignatureRef.current = choiceSignature;
+    setSubmittingSignature(choiceSignature);
   }
 
   return (
@@ -57,7 +63,7 @@ export function ChoiceList({
         <form
           key={choice.id}
           action={chooseStoryPathAction}
-          onSubmit={(event) => handleSubmit(event, choice.id)}
+          onSubmit={handleSubmit}
         >
           <input type="hidden" name="storyId" value={storyId} />
           <input type="hidden" name="choiceId" value={choice.id} />
