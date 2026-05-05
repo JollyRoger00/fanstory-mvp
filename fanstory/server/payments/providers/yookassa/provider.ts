@@ -5,6 +5,7 @@ import {
   yookassaPaymentSchema,
   yookassaWebhookSchema,
 } from "@/server/payments/providers/yookassa/schemas";
+import { getServerEnv } from "@/lib/env/server";
 import type {
   CreateExternalPaymentInput,
   ExternalPaymentSnapshot,
@@ -50,12 +51,44 @@ function toAmountValue(amountRubles: number) {
   return amountRubles.toFixed(2);
 }
 
+function getReceipt(input: CreateExternalPaymentInput) {
+  const env = getServerEnv();
+
+  if (!env.YOOKASSA_RECEIPT_ENABLED) {
+    return undefined;
+  }
+
+  if (!input.userEmail) {
+    throw new Error("User email is required for YooKassa receipt creation.");
+  }
+
+  return {
+    customer: {
+      email: input.userEmail,
+    },
+    items: [
+      {
+        description: input.productName.slice(0, 128),
+        quantity: 1.0,
+        amount: {
+          value: toAmountValue(input.amountRubles),
+          currency: input.currency,
+        },
+        vat_code: env.YOOKASSA_RECEIPT_VAT_CODE,
+        payment_mode: "full_prepayment",
+        payment_subject: "service",
+      },
+    ],
+  };
+}
+
 export class YookassaPaymentProvider implements PaymentProviderAdapter {
   readonly provider = "YOOKASSA" as const;
 
   async createPayment(
     input: CreateExternalPaymentInput,
   ): Promise<ExternalPaymentSnapshot> {
+    const receipt = getReceipt(input);
     const response = await yookassaRequest("/payments", {
       method: "POST",
       idempotenceKey: input.paymentId,
@@ -76,6 +109,11 @@ export class YookassaPaymentProvider implements PaymentProviderAdapter {
           user_id: input.userId,
           product_code: input.productCode,
         },
+        ...(receipt
+          ? {
+              receipt,
+            }
+          : {}),
       },
     });
 
@@ -109,4 +147,3 @@ export class YookassaPaymentProvider implements PaymentProviderAdapter {
     };
   }
 }
-

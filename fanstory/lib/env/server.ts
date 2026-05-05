@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const optionalNonEmptyString = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.string().min(1).optional(),
+);
+
 const serverEnvSchema = z
   .object({
     NODE_ENV: z
@@ -26,16 +31,21 @@ const serverEnvSchema = z
       .transform((value) => value === "true"),
     NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
     STORY_PROVIDER: z.enum(["mock", "openai"]).default("mock"),
-    OPENAI_API_KEY: z.string().min(1).optional(),
-    OPENAI_MODEL: z.string().min(1).optional(),
+    OPENAI_API_KEY: optionalNonEmptyString,
+    OPENAI_MODEL: optionalNonEmptyString,
     PAYMENT_PROVIDER: z.enum(["disabled", "yookassa"]).default("disabled"),
-    YOOKASSA_SHOP_ID: z.string().min(1).optional(),
-    YOOKASSA_SECRET_KEY: z.string().min(1).optional(),
+    YOOKASSA_SHOP_ID: optionalNonEmptyString,
+    YOOKASSA_SECRET_KEY: optionalNonEmptyString,
     YOOKASSA_API_URL: z.url().default("https://api.yookassa.ru/v3"),
     YOOKASSA_WEBHOOK_IP_CHECK: z
       .string()
       .optional()
       .transform((value) => value === "true"),
+    YOOKASSA_RECEIPT_ENABLED: z
+      .string()
+      .optional()
+      .transform((value) => value === "true"),
+    YOOKASSA_RECEIPT_VAT_CODE: z.coerce.number().int().min(1).max(12).default(1),
     YOOKASSA_TEST_ACCOUNT_EMAILS: z.string().optional().default(""),
   })
   .superRefine((value, ctx) => {

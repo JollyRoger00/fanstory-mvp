@@ -47,6 +47,11 @@ type StartCheckoutOptions = {
   returnPath: string;
 };
 
+type CheckoutUser = {
+  id: string;
+  email?: string | null;
+};
+
 export type StartCheckoutResult = {
   payment: PaymentView;
   redirectUrl: string;
@@ -150,7 +155,7 @@ async function findReusableCheckout(userId: string, productId: string) {
 }
 
 async function startCheckout(
-  userId: string,
+  user: CheckoutUser,
   payload: unknown,
   options: StartCheckoutOptions,
 ): Promise<StartCheckoutResult> {
@@ -160,6 +165,7 @@ async function startCheckout(
 
   const input = startPaymentCheckoutSchema.parse(payload);
   const provider = getPaymentProvider();
+  const userId = user.id;
   const product = await prisma.monetizationProduct.findFirstOrThrow({
     where: {
       id: input.productId,
@@ -249,7 +255,7 @@ async function startCheckout(
       paymentId,
       purchaseId: createdCheckout.id,
       userId,
-      userEmail: null,
+      userEmail: user.email ?? null,
       productCode: product.code,
       productName: product.name,
       description,
@@ -302,20 +308,20 @@ async function startCheckout(
 }
 
 export async function startChapterPackCheckout(
-  userId: string,
+  user: CheckoutUser,
   payload: unknown,
 ) {
-  return startCheckout(userId, payload, {
+  return startCheckout(user, payload, {
     productType: "CHAPTER_PACK",
     returnPath: "/wallet",
   });
 }
 
 export async function startSubscriptionCheckout(
-  userId: string,
+  user: CheckoutUser,
   payload: unknown,
 ) {
-  return startCheckout(userId, payload, {
+  return startCheckout(user, payload, {
     productType: "SUBSCRIPTION",
     returnPath: "/subscriptions",
   });

@@ -6,7 +6,7 @@ import { startSubscriptionCheckout } from "@/server/payments/payment.service";
 
 export async function startSubscriptionCheckoutAction(formData: FormData) {
   const user = await requireUser();
-  const checkout = await startSubscriptionCheckout(user.id, {
+  const checkout = await startSubscriptionCheckout(user, {
     productId: formData.get("productId"),
   });
 

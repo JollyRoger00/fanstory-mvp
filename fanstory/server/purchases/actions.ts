@@ -6,7 +6,7 @@ import { startChapterPackCheckout } from "@/server/payments/payment.service";
 
 export async function purchaseChapterPackAction(formData: FormData) {
   const user = await requireUser();
-  const checkout = await startChapterPackCheckout(user.id, {
+  const checkout = await startChapterPackCheckout(user, {
     productId: formData.get("productId"),
   });
 

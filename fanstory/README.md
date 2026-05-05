@@ -250,7 +250,11 @@ Required envs:
 - `STORY_PROVIDER`
 - `OPENAI_API_KEY` when `STORY_PROVIDER=openai`
 - `OPENAI_MODEL` when `STORY_PROVIDER=openai`
-- `ENABLE_DEV_BILLING_TOOLS` for local-only mock purchases and mock subscription activation
+- `PAYMENT_PROVIDER` set to `yookassa` to enable real payments
+- `YOOKASSA_SHOP_ID` from the YooKassa merchant cabinet
+- `YOOKASSA_SECRET_KEY` from Integration -> API keys in the YooKassa merchant cabinet
+- `YOOKASSA_WEBHOOK_IP_CHECK` to validate incoming YooKassa webhook source IPs
+- `YOOKASSA_RECEIPT_ENABLED` and `YOOKASSA_RECEIPT_VAT_CODE` if receipts are configured through YooKassa
 
 ### 3. Generate Prisma client
 
@@ -346,7 +350,40 @@ The mock provider remains available for local development or offline work.
 
 ### Real payments
 
-Replace mock pack purchases and mock subscription activation with:
+YooKassa payments are wired through the `server/payments` provider layer.
+
+To enable them:
+
+```bash
+PAYMENT_PROVIDER="yookassa"
+YOOKASSA_SHOP_ID="1336694"
+YOOKASSA_SECRET_KEY="<secret-key-from-yookassa>"
+NEXT_PUBLIC_APP_URL="https://your-production-domain"
+```
+
+In the YooKassa merchant cabinet, configure HTTP notifications to:
+
+```text
+https://your-production-domain/api/payments/yookassa/webhook
+```
+
+Enable these events:
+
+- `payment.succeeded`
+- `payment.canceled`
+
+The application creates redirect payments with a stable idempotence key, stores the provider payment id, reconciles status on webhook and on the user's next wallet/subscription page load, and applies entitlements only after YooKassa reports `succeeded`.
+
+If YooKassa receipts are connected for the shop, enable:
+
+```bash
+YOOKASSA_RECEIPT_ENABLED="true"
+YOOKASSA_RECEIPT_VAT_CODE="1"
+```
+
+The receipt uses the signed-in user's email and marks digital chapter packs/subscriptions as a `service` with `full_prepayment`. Confirm the VAT code with accounting before production.
+
+Provider extension points remain:
 
 - payment intent creation
 - provider webhooks
