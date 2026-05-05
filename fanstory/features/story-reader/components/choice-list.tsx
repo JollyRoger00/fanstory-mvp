@@ -70,13 +70,15 @@ export function ChoiceList({
           <Button
             type="submit"
             variant="outline"
-            className="h-auto w-full justify-start rounded-3xl px-5 py-4 text-left"
+            className="h-auto w-full items-start justify-start rounded-3xl px-5 py-4 text-left whitespace-normal"
             disabled={isSubmitting}
           >
-            <span className="space-y-1">
-              <span className="block text-sm font-medium">{choice.label}</span>
+            <span className="min-w-0 space-y-1 whitespace-normal">
+              <span className="block text-wrap text-sm leading-6 font-medium">
+                {choice.label}
+              </span>
               {choice.outcomeHint ? (
-                <span className="block text-xs text-slate-500">
+                <span className="block text-wrap text-xs leading-5 text-slate-500">
                   {choice.outcomeHint}
                 </span>
               ) : null}
